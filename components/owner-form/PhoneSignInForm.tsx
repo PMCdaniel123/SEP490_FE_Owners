@@ -13,10 +13,15 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { OwnerPhoneSignInProps } from "@/types";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/stores";
+import { login } from "@/stores/slices/authSlice";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface PhoneSignInFormProps {
   initialData?: OwnerPhoneSignInProps | null;
@@ -33,6 +38,8 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
         },
   });
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (initialData) {
@@ -40,9 +47,83 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
     }
   }, [initialData, form]);
 
-  const onSignIn = (values: z.infer<typeof ownerPhoneSchema>) => {
-    console.log(JSON.stringify(values));
-    router.push("/dashboard");
+  const onSignIn = async (values: z.infer<typeof ownerPhoneSchema>) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("https://localhost:5050/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          auth: values.phone,
+          password: values.password,
+        }),
+      });
+
+      if (!response.ok) {
+        toast.error("Đăng nhập thất bại! Vui lòng kiểm tra lại.", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          theme: "dark",
+        });
+        return;
+      }
+
+      const result = await response.json();
+      const token = result.token;
+
+      localStorage.setItem("token", token);
+      router.push("/dashboard");
+
+      try {
+        const decodeResponse = await fetch(
+          "https://localhost:5050/users/decodejwttoken",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: token,
+            }),
+          }
+        );
+        const decoded = await decodeResponse.json();
+        const customerData = {
+          fullName: decoded.claims.name,
+          email: decoded.claims.email,
+          phone: decoded.claims.Phone,
+          roleId: decoded.claims.RoleId,
+        };
+        toast.success("Đăng nhập thành công!", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          theme: "dark",
+        });
+
+        dispatch(login(customerData));
+      } catch {
+        toast.error("Có lỗi xảy ra khi giải mã token.", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          theme: "dark",
+        });
+        return;
+      }
+    } catch {
+      toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        theme: "dark",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -100,8 +181,13 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
             <button
               className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
               type="submit"
+              disabled={isLoading}
             >
-              <span className="font-bold">Đăng nhập</span>
+              {isLoading ? (
+                <LoadingOutlined style={{ color: "white" }} />
+              ) : (
+                <span className="font-bold">Đăng nhập</span>
+              )}
             </button>
           </div>
           <div className="flex items-center my-2 w-full sm:col-span-3">

@@ -4,6 +4,7 @@ import {
   AmenityProps,
   BeverageProps,
   CustomerProps,
+  formatCurrency,
   PromotionProps,
   TopWorkspace,
   WithdrawalProps,
@@ -42,8 +43,8 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
           <Image
             src={row.original.image}
             alt=""
-            width={50}
-            height={50}
+            width={48}
+            height={48}
             className="border rounded-full"
           />
           <div className="flex flex-col gap-1">
@@ -60,7 +61,7 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
       return (
         <div
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center gap-2 cursor-pointer"
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
         >
           <p>Tổng lượt đặt</p>
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -79,7 +80,7 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
       return (
         <div
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center gap-2 cursor-pointer"
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
         >
           <p>Đơn giá</p>
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -87,7 +88,11 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p className="text-center font-medium">{row.getValue("price")}</p>;
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(Number(row.getValue("price")))}
+        </p>
+      );
     },
   },
   {
@@ -96,7 +101,7 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
       return (
         <div
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center gap-2 cursor-pointer"
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
         >
           <p>Doanh thu</p>
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -105,7 +110,9 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("amount")}</p>
+        <p className="text-center font-medium">
+          {formatCurrency(row.getValue("amount"))}
+        </p>
       );
     },
   },
@@ -201,7 +208,7 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
       return (
         <div
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center gap-2 cursor-pointer"
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
         >
           <p>Giới tính</p>
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -306,7 +313,8 @@ export const WorkspaceTableColumns: ColumnDef<WorkspaceProps>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {row.getValue("shortTermPrice")} - {row.getValue("longTermPrice")}
+          {formatCurrency(Number(row.getValue("shortTermPrice")))} -{" "}
+          {formatCurrency(Number(row.getValue("longTermPrice")))}
         </p>
       );
     },
@@ -456,7 +464,11 @@ export const AmenityTableColumns: ColumnDef<AmenityProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p className="text-center font-medium">{row.getValue("price")}</p>;
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(Number(row.getValue("price")))}
+        </p>
+      );
     },
   },
   {
@@ -604,7 +616,11 @@ export const BeverageTableColumns: ColumnDef<BeverageProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p className="text-center font-medium">{row.getValue("price")}</p>;
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(Number(row.getValue("price")))}
+        </p>
+      );
     },
   },
   {
@@ -856,7 +872,11 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p className="text-center font-medium">{row.getValue("money")}</p>;
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(Number(row.getValue("money")))}
+        </p>
+      );
     },
   },
   {

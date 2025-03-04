@@ -1,6 +1,7 @@
-import "./globals.css";
+import "../globals.css";
 import { Montserrat } from "next/font/google";
 import type { Metadata } from "next";
+import { Providers } from "@/stores/Providers";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -17,8 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body className="min-h-screen bg-third flex items-center justify-center">
-        <div className="min-w-5xl">{children}</div>
+      <body className="min-h-screen bg-third flex items-center justify-center w-full">
+        <Providers>
+          <div>{children}</div>
+        </Providers>
       </body>
     </html>
   );
