@@ -19,7 +19,7 @@ function Sidebar() {
         WorkHive
       </h1>
       <nav className="flex flex-col gap-2 mt-10">
-        <SidebarItem icon={Home} label="Trang chủ" href="/" />
+        <SidebarItem icon={Home} label="Trang chủ" href="/dashboard" />
         <SidebarItem
           icon={UsersRound}
           label="Quản lý khách hàng"

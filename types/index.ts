@@ -1,14 +1,5 @@
 import { LucideIcon } from "lucide-react";
 
-export interface SignInFormProps {
-  className?: string;
-  onClose: () => void;
-}
-
-export interface ValidatePayload {
-  input: string;
-}
-
 export interface MenuItemProps {
   name: string;
   path: string;
@@ -203,4 +194,14 @@ export interface TimeItemProps {
   startDate: string;
   endDate: string;
   status: string;
+}
+
+export interface OwnerEmailSignInProps {
+  email: string;
+  password: string;
+}
+
+export interface OwnerPhoneSignInProps {
+  phone: string;
+  password: string;
 }
