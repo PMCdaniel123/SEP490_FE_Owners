@@ -5,7 +5,7 @@ import PhoneSignInForm from "@/components/owner-form/PhoneSignInForm";
 
 function LoginPage() {
   return (
-    <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center min-h-[600px] border border-primary rounded-md shadow-2xl">
+    <div className="w-5xl mx-auto flex flex-col md:flex-row items-center justify-center min-h-[600px] border border-primary rounded-md shadow-2xl">
       <div className="relative w-full h-[600px] flex-1/2">
         <Image
           src="/signup.jpg"

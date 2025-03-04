@@ -11,6 +11,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Separator } from "../ui/separator";
 import OwnerNotification from "../owner-notification/owner-notification";
+import { formatCurrency } from "@/types";
+import { motion } from "framer-motion";
 
 function TopNav() {
   const [open, setOpen] = useState(false);
@@ -36,12 +38,12 @@ function TopNav() {
   }, [open]);
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center justify-between w-[590px] bg-white rounded-xl py-2 px-4">
+    <div className="flex items-start justify-between gap-4">
+      <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
         <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
         <p className="bg-primary text-white text-sm px-3 py-1 rounded-lg flex items-center gap-2">
           <Banknote />
-          1,000,000 VND
+          {formatCurrency(1000000)}
         </p>
       </div>
       <div className="flex items-center justify-end w-full mb-4 gap-4">
@@ -65,7 +67,12 @@ function TopNav() {
             <ChevronsUpDown size={20} />
           </div>
           {open && (
-            <ul className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4 border"
+            >
               <div className="flex items-center justify-center py-2 px-4 gap-4">
                 <Image
                   src="/logo.png"
@@ -89,7 +96,7 @@ function TopNav() {
               <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer">
                 <LogOut size={16} /> <span>Đăng xuất</span>
               </li>
-            </ul>
+            </motion.div>
           )}
         </div>
       </div>
