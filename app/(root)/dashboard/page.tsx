@@ -15,6 +15,7 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 import CustomerAnalysisChart from "@/components/charts/customer-analysis-chart";
+import { formatCurrency } from "@/types";
 
 // import Loader from "@/components/loader/Loader";
 
@@ -41,7 +42,7 @@ export default function OwnerPage() {
           </div>
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
             <p className="font-bold">Doanh thu</p>
-            <p className="text-[#6F757E] text-xl">$214,00</p>
+            <p className="text-[#6F757E] text-xl">{formatCurrency(20000000)}</p>
             <div className="flex gap-1 items-center justify-start text-[#FF8E29] text-sm">
               <TrendingUp /> <span>+55% tháng trước</span>
             </div>

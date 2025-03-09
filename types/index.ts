@@ -1,13 +1,11 @@
 import { LucideIcon } from "lucide-react";
 
-export interface SignInFormProps {
-  className?: string;
-  onClose: () => void;
-}
-
-export interface ValidatePayload {
-  input: string;
-}
+export const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value);
+};
 
 export interface MenuItemProps {
   name: string;
@@ -203,4 +201,14 @@ export interface TimeItemProps {
   startDate: string;
   endDate: string;
   status: string;
+}
+
+export interface OwnerEmailSignInProps {
+  email: string;
+  password: string;
+}
+
+export interface OwnerPhoneSignInProps {
+  phone: string;
+  password: string;
 }

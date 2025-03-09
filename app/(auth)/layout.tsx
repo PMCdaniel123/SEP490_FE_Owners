@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
+import "../globals.css";
 import { Montserrat } from "next/font/google";
-import "./globals.css";
-import TopNav from "@/components/layout/top-nav";
-import Sidebar from "@/components/layout/sidebar";
-import { ToastContainer } from "react-toastify";
+import type { Metadata } from "next";
+import { Providers } from "@/stores/Providers";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -15,20 +13,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={montserrat.className}>
-        <div className="flex bg-third p-4 gap-4 min-h-screen">
-          <Sidebar />
-          <main className="flex-1">
-            <TopNav />
-            {children}
-          </main>
-        </div>
-        <ToastContainer />
+    <html lang="en" className={montserrat.className}>
+      <body className="min-h-screen bg-third flex items-center justify-center w-full">
+        <Providers>
+          <div>{children}</div>
+        </Providers>
       </body>
     </html>
   );
