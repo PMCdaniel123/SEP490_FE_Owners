@@ -212,3 +212,23 @@ export interface OwnerPhoneSignInProps {
   phone: string;
   password: string;
 }
+
+export interface BookingProps {
+  id: string;
+  price: string;
+  startDate: string;
+  endDate: string;
+  customerId: string;
+  workspaceId: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface FeedbackProps {
+  id: string;
+  customerId: string;
+  workspaceId: string;
+  content: string;
+  image: string;
+  createdAt: string;
+}

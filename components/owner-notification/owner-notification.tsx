@@ -81,7 +81,7 @@ const OwnerNotification = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute right-0 mt-2 w-80 bg-[#835101] shadow-lg rounded-lg border overflow-hidden"
+          className="absolute right-0 mt-2 w-80 bg-primary shadow-lg rounded-lg border overflow-hidden z-50"
         >
           <div className="px-4 py-2 font-semibold border-b text-white">
             Thông báo
@@ -91,7 +91,7 @@ const OwnerNotification = () => {
               <div
                 key={notification.id}
                 className={`p-4 flex items-center justify-between cursor-pointer transition-all hover:bg-gray-100 gap-2 ${
-                  notification.read ? "bg-gray-50" : "bg-white"
+                  notification.read ? "bg-gray-200" : "bg-white"
                 }`}
                 onClick={() => markAsRead(notification.id)}
               >
