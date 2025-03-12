@@ -3,9 +3,11 @@
 import {
   Boxes,
   DiamondPercent,
+  History,
   Home,
   KeyRound,
   Landmark,
+  MessageSquareQuote,
   Sofa,
   UsersRound,
   UtensilsCrossed,
@@ -21,19 +23,18 @@ function Sidebar() {
       <nav className="flex flex-col gap-2 mt-10">
         <SidebarItem icon={Home} label="Trang chủ" href="/dashboard" />
         <SidebarItem
-          icon={UsersRound}
-          label="Quản lý khách hàng"
-          href="/customers"
+          icon={KeyRound}
+          label="Xác thực doanh nghiệp"
+          href="/authentication"
         />
-        <SidebarItem
-          icon={Sofa}
-          label="Quản lý không gian"
-          href="/workspaces"
-        />
-        <SidebarItem icon={Boxes} label="Quản lý tiện ích" href="/amenities" />
+        <SidebarItem icon={History} label="Quản lý đặt chỗ" href="/bookings" />
+        <SidebarItem icon={UsersRound} label="Khách hàng" href="/customers" />
+        <SidebarItem icon={Sofa} label="Không gian" href="/workspaces" />
+
+        <SidebarItem icon={Boxes} label="Tiện ích" href="/amenities" />
         <SidebarItem
           icon={UtensilsCrossed}
-          label="Quản lý thực đơn"
+          label="Thực đơn"
           href="/beverages"
         />
         <SidebarItem
@@ -42,10 +43,11 @@ function Sidebar() {
           href="/promotions"
         />
         <SidebarItem
-          icon={KeyRound}
-          label="Xác thực doanh nghiệp"
-          href="/authentication"
+          icon={MessageSquareQuote}
+          label="Phản hồi"
+          href="/feedback"
         />
+
         <SidebarItem icon={Landmark} label="Rút tiền" href="/withdrawal" />
       </nav>
     </aside>

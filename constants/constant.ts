@@ -1,7 +1,9 @@
 import {
   AmenityProps,
   BeverageProps,
+  BookingProps,
   CustomerProps,
+  FeedbackProps,
   MenuItemProps,
   NewCustomerItemProps,
   PromotionProps,
@@ -588,5 +590,65 @@ export const timeList: TimeItemProps[] = [
     startDate: "08:00 04/03/2025",
     endDate: "09:00 04/03/2025",
     status: "1",
+  },
+];
+
+export const bookingList: BookingProps[] = [
+  {
+    id: "1",
+    price: "100000",
+    startDate: "08:00 04/03/2025",
+    endDate: "09:00 04/03/2025",
+    customerId: "1",
+    workspaceId: "1",
+    status: "1",
+    createdAt: "04/03/2025",
+  },
+  {
+    id: "2",
+    price: "200000",
+    startDate: "18:00 04/03/2025",
+    endDate: "19:00 04/03/2025",
+    customerId: "2",
+    workspaceId: "2",
+    status: "2",
+    createdAt: "04/03/2025",
+  },
+  {
+    id: "3",
+    price: "300000",
+    startDate: "21:00 04/03/2025",
+    endDate: "23:00 04/03/2025",
+    customerId: "3",
+    workspaceId: "3",
+    status: "3",
+    createdAt: "04/03/2025",
+  },
+];
+
+export const feedbackList: FeedbackProps[] = [
+  {
+    id: "1",
+    customerId: "1",
+    workspaceId: "1",
+    content: "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 1",
+    image: "/trasua.png",
+    createdAt: "04/03/2025",
+  },
+  {
+    id: "2",
+    customerId: "2",
+    workspaceId: "2",
+    content: "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 2",
+    image: "/trasua.png",
+    createdAt: "04/03/2025",
+  },
+  {
+    id: "3",
+    customerId: "3",
+    workspaceId: "3",
+    content: "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 3",
+    image: "/trasua.png",
+    createdAt: "04/03/2025",
   },
 ];
