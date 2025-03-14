@@ -50,7 +50,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
   const onSignIn = async (values: z.infer<typeof ownerPhoneSchema>) => {
     setIsLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/users/login", {
+      const response = await fetch("https://localhost:5050/owners/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,11 +91,10 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
           }
         );
         const decoded = await decodeResponse.json();
-        const customerData = {
-          fullName: decoded.claims.name,
+        const ownerData = {
+          id: decoded.claims.sub,
           email: decoded.claims.email,
           phone: decoded.claims.Phone,
-          roleId: decoded.claims.RoleId,
         };
         toast.success("Đăng nhập thành công!", {
           position: "bottom-right",
@@ -104,7 +103,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
           theme: "dark",
         });
 
-        dispatch(login(customerData));
+        dispatch(login(ownerData));
       } catch {
         toast.error("Có lỗi xảy ra khi giải mã token.", {
           position: "bottom-right",

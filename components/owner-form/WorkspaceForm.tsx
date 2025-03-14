@@ -34,6 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { Checkbox } from "../ui/checkbox";
 
 interface WorkspaceFormProps {
   initialData?: WorkspaceProps | null;
@@ -47,8 +48,9 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       : {
           name: "",
           description: "",
-          address: "",
-          googleMapUrl: "",
+          openTime: "",
+          closeTime: "",
+          is24h: 0,
           area: "",
           cleanTime: "",
           shortTermPrice: "",
@@ -57,10 +59,11 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           facilities: [],
           policies: [],
           capacity: "",
-          category: "1",
-          status: "1",
+          category: "Bàn cá nhân",
+          status: "Active",
         },
   });
+  const is24h = form.watch("is24h");
 
   useEffect(() => {
     if (initialData) {
@@ -89,64 +92,104 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           onSubmit={form.handleSubmit(onCreate)}
         >
           <div className="sm:col-span-3 items-start justify-between gap-6 grid sm:grid-cols-3">
-            <div className="sm:col-span-2 flex flex-col gap-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
-                      Tên không gian
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
-                        placeholder="Nhập tên không gian..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-xs" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
-                      Địa chỉ
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
-                        placeholder="Nhập địa chỉ..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-xs" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="googleMapUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
-                      Link Google Map
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
-                        placeholder="Nhập link Google Map..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-xs" />
-                  </FormItem>
-                )}
-              />
+            <div className="sm:col-span-2 grid sm:grid-cols-2 gap-6">
+              <div className="sm:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Tên không gian
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          placeholder="Nhập tên không gian..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-2 my-1">
+                <FormField
+                  control={form.control}
+                  name="is24h"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-6">
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Mở cửa 24h
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          {...field}
+                          checked={field.value === 1}
+                          onCheckedChange={(value) => {
+                            field.onChange(value ? 1 : 0);
+                            if (value) {
+                              form.setValue("openTime", "00:00");
+                              form.setValue("closeTime", "23:59");
+                            } else {
+                              form.setValue("openTime", "");
+                              form.setValue("closeTime", "");
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-2 gap-6 grid sm:grid-cols-2">
+                <div className="sm:col-span-1">
+                  <FormField
+                    control={form.control}
+                    name="openTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-fourth font-bold text-base ml-6">
+                          Thời gian mở cửa
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="py-6 px-4 rounded-md file:bg-seventh"
+                            placeholder="Nhập thời gian mở cửa..."
+                            disabled={is24h === 1}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500 text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="sm:col-span-1">
+                  <FormField
+                    control={form.control}
+                    name="closeTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-fourth font-bold text-base ml-6">
+                          Thời gian đóng cửa
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="py-6 px-4 rounded-md file:bg-seventh"
+                            placeholder="Nhập thời gian đóng cửa..."
+                            disabled={is24h === 1}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500 text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="sm:col-span-1 flex flex-col gap-6 h-full justify-center w-full p-4 bg-primary rounded-md">
@@ -205,7 +248,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Select
-                      value={field.value || "2"}
+                      value={field.value || "Văn phòng"}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -214,25 +257,25 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Bàn cá nhân"
                         >
                           Bàn cá nhân
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Văn phòng"
                         >
                           Văn phòng
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="3"
+                          value="Phòng họp"
                         >
                           Phòng họp
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="4"
+                          value="Phòng hội thảo"
                         >
                           Phòng hội thảo
                         </SelectItem>
@@ -379,7 +422,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Select
-                      value={field.value || "2"}
+                      value={field.value || "Inactive"}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -388,13 +431,13 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Active"
                         >
                           Hoạt động
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Inactive"
                         >
                           Ngừng hoạt động
                         </SelectItem>

@@ -31,8 +31,9 @@ export const passwordSchema = z.object({
 
 export const workspaceSchema = z.object({
   name: z.string().min(3, "Tên không gian phải có ít nhất 3 ký tự"),
-  address: z.string().min(3, "Địa chỉ không gian phải có ít nhất 3 ký tự"),
-  googleMapUrl: z.string().min(3, "Google map url phải có ít nhất 3 ký tự"),
+  openTime: z.string().nonempty("Vui lòng chọn thời gian mở cửa"),
+  closeTime: z.string().nonempty("Vui lòng chọn thời gian đóng cửa"),
+  is24h: z.number().min(0).max(1),
   category: z.string({
     required_error: "Vui lòng loại không gian hợp lệ",
   }),
@@ -84,7 +85,10 @@ export const amenitySchema = z.object({
   quantity: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: "Số lượng phải lớn hơn 0",
   }),
-  image: z.string().url("Vui lòng tải lên một hình ảnh hợp lệ"),
+  imgUrl: z.union([
+    z.string().url("Vui lòng tải lên một hình ảnh hợp lệ"),
+    z.instanceof(File, { message: "Vui lòng tải lên một hình ảnh hợp lệ" }),
+  ]),
   status: z.string({
     required_error: "Vui lòng chọn trạng thái hợp lệ",
   }),
@@ -97,7 +101,10 @@ export const beverageSchema = z.object({
   price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
     message: "Giá phải lớn hơn 0",
   }),
-  image: z.string().url("Vui lòng tải lên một hình ảnh hợp lệ"),
+  imgUrl: z.union([
+    z.string().url("Vui lòng tải lên một hình ảnh hợp lệ"),
+    z.instanceof(File, { message: "Vui lòng tải lên một hình ảnh hợp lệ" }),
+  ]),
   status: z.string({
     required_error: "Vui lòng chọn trạng thái hợp lệ",
   }),

@@ -68,12 +68,6 @@ export interface LabelIconProps {
   label: string;
 }
 
-export interface DetailsListProps {
-  roomCapacity: number;
-  roomSize: number;
-  roomType: string;
-}
-
 export interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -91,11 +85,53 @@ export interface CustomerProps {
   dateOfBirth: string;
 }
 
+export interface Image {
+  id: string;
+  imgUrl: string;
+}
+
+export interface Price {
+  id: string;
+  category: string;
+  price: number;
+}
+
+export interface Facilities {
+  id: string;
+  facilityName: string;
+}
+
+export interface Policies {
+  id: string;
+  policyName: string;
+}
+
+export interface Workspace {
+  id: string;
+  name: string;
+  description: string;
+  capacity: string;
+  category: string;
+  status: string;
+  cleanTime: string;
+  area: string;
+  ownerId: string;
+  openTime: string;
+  closeTime: string;
+  is24h: number;
+  shortTermPrice: number;
+  longTermPrice: number;
+  prices: Price[];
+  facilities: Facilities[];
+  policies: Policies[];
+  images: Image[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface WorkspaceProps {
   id: string;
   name: string;
-  address: string;
-  googleMapUrl: string;
   capacity: string;
   category: string;
   area: string;
@@ -106,7 +142,9 @@ export interface WorkspaceProps {
   facilities: string[];
   policies: string[];
   images: string[];
-  rating: number;
+  openTime: string;
+  closeTime: string;
+  is24h: number;
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -117,12 +155,11 @@ export interface AmenityProps {
   name: string;
   description: string;
   price: string;
-  image: string;
+  imgUrl: string;
   quantity: string;
   category: string;
   status: string;
-  createdAt: string;
-  updatedAt: string;
+  ownerId: string;
 }
 
 export interface BeverageProps {
@@ -130,11 +167,10 @@ export interface BeverageProps {
   name: string;
   description: string;
   price: string;
-  image: string;
+  imgUrl: string;
   category: string;
   status: string;
-  createdAt: string;
-  updatedAt: string;
+  ownerId: string;
 }
 
 export interface PromotionProps {

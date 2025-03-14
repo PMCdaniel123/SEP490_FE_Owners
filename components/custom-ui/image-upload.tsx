@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 
 interface ImageUploadProps {
   value: string;
-  handleChange: (value: string) => void;
+  handleChange: (file: File | string) => void;
   handleRemove: () => void;
 }
 
@@ -16,25 +16,26 @@ const ImageUpload = ({
   handleChange,
   handleRemove,
 }: ImageUploadProps) => {
-  const [image, setImage] = useState<string>("");
+  const [preview, setPreview] = useState<string>("");
 
   useEffect(() => {
-    setImage(value);
+    if (typeof value === "string") {
+      setPreview(value);
+    }
   }, [value]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
       const url = URL.createObjectURL(file);
-      handleChange(url);
-      setImage(url);
+      setPreview(url);
+      handleChange(file);
     }
   };
 
   const removeImage = () => {
     handleRemove();
-    URL.revokeObjectURL(image);
-    setImage("");
+    setPreview("");
   };
 
   return (
@@ -46,10 +47,10 @@ const ImageUpload = ({
         accept="image/*"
         onChange={handleImageChange}
       />
-      {image && (
+      {preview && (
         <div className="relative w-36 h-36 border rounded-md overflow-hidden">
           <img
-            src={image}
+            src={preview}
             alt="Preview"
             className="w-full h-full object-cover"
           />
