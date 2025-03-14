@@ -10,7 +10,7 @@ import {
   PromotionProps,
   TopWorkspace,
   WithdrawalProps,
-  WorkspaceProps,
+  Workspace,
 } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
@@ -242,13 +242,13 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
 ];
 
 const workspaceCategory: Record<string, string> = {
-  "1": "Bàn cá nhân",
-  "2": "Văn phòng",
-  "3": "Phòng họp",
-  "4": "Phòng hội thảo",
+  "Bàn cá nhân": "Bàn cá nhân",
+  "Văn phòng": "Văn phòng",
+  "Phòng họp": "Phòng họp",
+  "Phòng hội thảo": "Phòng hội thảo",
 };
 
-export const WorkspaceTableColumns: ColumnDef<WorkspaceProps>[] = [
+export const WorkspaceTableColumns: ColumnDef<Workspace>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -277,10 +277,10 @@ export const WorkspaceTableColumns: ColumnDef<WorkspaceProps>[] = [
       return (
         <div className="flex items-center justify-center">
           <Image
-            src={row.original.images[0]}
+            src={row.original.images[0].imgUrl}
             alt={row.original.name}
-            width={160}
-            height={160}
+            width={100}
+            height={100}
             className="object-cover rounded-md"
           />
         </div>
@@ -333,21 +333,42 @@ export const WorkspaceTableColumns: ColumnDef<WorkspaceProps>[] = [
     },
   },
   {
-    accessorKey: "rating",
+    accessorKey: "capacity",
     header: ({ column }) => {
       return (
         <div
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
         >
-          <p>Đánh giá</p>
+          <p>Sức chứa</p>
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("rating")}</p>
+        <p className="text-center font-medium">
+          {row.getValue("capacity")} người
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "area",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Diện tích</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">{row.getValue("area")} m2</p>
       );
     },
   },
@@ -365,7 +386,7 @@ export const WorkspaceTableColumns: ColumnDef<WorkspaceProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return row.getValue("status") === "1" ? (
+      return row.getValue("status") === "Active" ? (
         <p className="text-center font-medium flex items-center justify-center text-green-500">
           <span>Hoạt động</span>
         </p>
@@ -431,10 +452,10 @@ export const AmenityTableColumns: ColumnDef<AmenityProps>[] = [
       return (
         <div className="flex items-center justify-center">
           <Image
-            src={row.original.image}
+            src={row.original.imgUrl}
             alt={row.original.name}
-            width={160}
-            height={160}
+            width={100}
+            height={100}
             className="object-cover rounded-md"
           />
         </div>
@@ -514,7 +535,7 @@ export const AmenityTableColumns: ColumnDef<AmenityProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return row.getValue("status") === "1" ? (
+      return row.getValue("status") === "Active" ? (
         <p className="text-center font-medium flex items-center justify-center text-green-500">
           <span>Hoạt động</span>
         </p>
@@ -550,10 +571,6 @@ export const AmenityTableColumns: ColumnDef<AmenityProps>[] = [
   },
 ];
 
-const beverageCategory: Record<string, string> = {
-  "1": "Thức uống",
-  "2": "Đồ ăn",
-};
 export const BeverageTableColumns: ColumnDef<BeverageProps>[] = [
   {
     accessorKey: "name",
@@ -583,10 +600,10 @@ export const BeverageTableColumns: ColumnDef<BeverageProps>[] = [
       return (
         <div className="flex items-center justify-center">
           <Image
-            src={row.original.image}
+            src={row.original.imgUrl}
             alt={row.original.name}
-            width={160}
-            height={160}
+            width={100}
+            height={100}
             className="object-cover rounded-md"
           />
         </div>
@@ -629,10 +646,7 @@ export const BeverageTableColumns: ColumnDef<BeverageProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">
-          {beverageCategory[String(row.getValue("category"))] ||
-            "Không xác định"}
-        </p>
+        <p className="text-center font-medium">{row.getValue("category")}</p>
       );
     },
   },
@@ -650,7 +664,7 @@ export const BeverageTableColumns: ColumnDef<BeverageProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return row.getValue("status") === "1" ? (
+      return row.getValue("status") === "Active" ? (
         <p className="text-center font-medium flex items-center justify-center text-green-500">
           <span>Hoạt động</span>
         </p>

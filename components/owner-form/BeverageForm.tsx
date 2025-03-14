@@ -26,12 +26,18 @@ import {
   FormMessage,
 } from "../ui/form";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface BeverageFormProps {
   initialData?: BeverageProps | null;
 }
 
 function BeverageForm({ initialData }: BeverageFormProps) {
+  const { owner } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
   const form = useForm<z.infer<typeof beverageSchema>>({
     resolver: zodResolver(beverageSchema),
     defaultValues: initialData
@@ -40,9 +46,9 @@ function BeverageForm({ initialData }: BeverageFormProps) {
           name: "",
           description: "",
           price: "",
-          image: "",
-          category: "1",
-          status: "1",
+          imgUrl: "",
+          category: "Thức uống",
+          status: "Active",
         },
   });
 
@@ -52,8 +58,156 @@ function BeverageForm({ initialData }: BeverageFormProps) {
     }
   }, [initialData, form]);
 
-  const onCreate = (values: z.infer<typeof beverageSchema>) => {
-    alert(JSON.stringify(values));
+  const uploadImage = async (image: File) => {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    try {
+      const response = await fetch("https://localhost:5050/images/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+      }
+
+      const result = await response.json();
+      return result.data[0];
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onCreate = async (values: z.infer<typeof beverageSchema>) => {
+    let imgUrl = values.imgUrl;
+
+    if (typeof imgUrl !== "string") {
+      try {
+        const uploadedUrl = await uploadImage(imgUrl);
+        if (!uploadedUrl) {
+          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+        }
+        imgUrl = uploadedUrl;
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        return;
+      }
+    }
+
+    const data = {
+      ...beverageSchema.parse(values),
+      imgUrl,
+      ownerId: owner?.id,
+    };
+
+    try {
+      const response = await fetch("https://localhost:5050/beverages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tạo món.");
+      }
+
+      toast.success("Tạo món thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/beverages");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onUpdate = async (values: z.infer<typeof beverageSchema>) => {
+    let imgUrl = values.imgUrl;
+
+    if (typeof imgUrl !== "string") {
+      try {
+        const uploadedUrl = await uploadImage(imgUrl);
+        if (!uploadedUrl) {
+          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+        }
+        imgUrl = uploadedUrl;
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        return;
+      }
+    }
+
+    const data = {
+      ...beverageSchema.parse(values),
+      imgUrl,
+    };
+
+    try {
+      const response = await fetch(
+        "https://localhost:5050/beverages/" + initialData?.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi cập nhật món.");
+      }
+
+      toast.success("Cập nhật món thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/beverages");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -66,7 +220,11 @@ function BeverageForm({ initialData }: BeverageFormProps) {
       <Form {...form}>
         <form
           className="grid sm:grid-cols-3 gap-6"
-          onSubmit={form.handleSubmit(onCreate)}
+          onSubmit={
+            initialData
+              ? form.handleSubmit(onUpdate)
+              : form.handleSubmit(onCreate)
+          }
         >
           <div className="sm:col-span-3 items-start justify-between gap-6 grid sm:grid-cols-3">
             <div className="sm:col-span-2 flex flex-col gap-6">
@@ -136,13 +294,13 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Thức uống"
                         >
                           Thức uống
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Đồ ăn"
                         >
                           Đồ ăn
                         </SelectItem>
@@ -186,7 +344,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Select
-                      value={field.value || "2"}
+                      value={field.value || "Inactive"}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -195,13 +353,13 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Active"
                         >
                           Hoạt động
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Inactive"
                         >
                           Ngừng hoạt động
                         </SelectItem>
@@ -216,22 +374,30 @@ function BeverageForm({ initialData }: BeverageFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
-                    Hình ảnh
-                  </FormLabel>
-                  <FormControl>
-                    <ImageUpload
-                      value={field.value}
-                      handleChange={(image) => field.onChange(image)}
-                      handleRemove={() => field.onChange("")}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500 text-xs" />
-                </FormItem>
-              )}
+              name="imgUrl"
+              render={({ field }) => {
+                const imageUrl =
+                  typeof field.value === "string"
+                    ? field.value
+                    : field.value instanceof File
+                    ? URL.createObjectURL(field.value)
+                    : "";
+                return (
+                  <FormItem>
+                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                      Hình ảnh
+                    </FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        value={imageUrl}
+                        handleChange={(image) => field.onChange(image)}
+                        handleRemove={() => field.onChange("")}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500 text-xs" />
+                  </FormItem>
+                );
+              }}
             />
           </div>
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
