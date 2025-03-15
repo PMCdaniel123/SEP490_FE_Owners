@@ -15,7 +15,7 @@ import { formatCurrency } from "@/types";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "@/stores/slices/authSlice";
+import { login, logout } from "@/stores/slices/authSlice";
 import { toast } from "react-toastify";
 import { RootState } from "@/stores";
 
@@ -93,6 +93,11 @@ function TopNav() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
+  const handleLogOut = () => {
+    dispatch(logout());
+    window.location.reload();
+  };
+
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
@@ -153,7 +158,10 @@ function TopNav() {
               <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer">
                 <LockKeyhole size={16} /> <span>Đổi mật khẩu</span>
               </li>
-              <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer">
+              <li
+                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
+                onClick={handleLogOut}
+              >
                 <LogOut size={16} /> <span>Đăng xuất</span>
               </li>
             </motion.div>

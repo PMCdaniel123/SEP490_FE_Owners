@@ -4,7 +4,6 @@ import { Info, Save, SquarePen } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { WorkspaceProps } from "@/types";
 import { Textarea } from "../ui/textarea";
 import {
   Select,
@@ -27,7 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -35,12 +34,24 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Checkbox } from "../ui/checkbox";
+import { Workspace } from "@/types";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+// import { useRouter } from "next/navigation";
 
 interface WorkspaceFormProps {
-  initialData?: WorkspaceProps | null;
+  initialData?: Workspace | null;
 }
 
 function WorkspaceForm({ initialData }: WorkspaceFormProps) {
+  const { owner } = useSelector((state: RootState) => state.auth);
+  // const router = useRouter();
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>(
+    initialData ? initialData.imagesStr : []
+  );
+
   const form = useForm<z.infer<typeof workspaceSchema>>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: initialData
@@ -55,9 +66,10 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           cleanTime: "",
           shortTermPrice: "",
           longTermPrice: "",
-          images: [],
-          facilities: [],
-          policies: [],
+          imagesStr: existingImages,
+          newImages: [],
+          facilitiesStr: [],
+          policiesStr: [],
           capacity: "",
           category: "Bàn cá nhân",
           status: "Active",
@@ -71,8 +83,110 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
     }
   }, [initialData, form]);
 
-  const onCreate = (values: z.infer<typeof workspaceSchema>) => {
-    alert(JSON.stringify(values));
+  const uploadImage = async (image: File) => {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    try {
+      const response = await fetch("https://localhost:5050/images/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+      }
+
+      const result = await response.json();
+      return result.data[0];
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onCreate = async (values: z.infer<typeof workspaceSchema>) => {
+    const uploadedUrls: string[] = [...existingImages];
+
+    for (const file of selectedFiles) {
+      const url = await uploadImage(file);
+      if (url) uploadedUrls.push(url);
+    }
+
+    if (uploadedUrls.length === 0) {
+      toast.error("Bạn phải tải lên ít nhất một ảnh hợp lệ.");
+      return;
+    }
+
+    const data = {
+      name: values.name,
+      description: values.description,
+      openTime: values.openTime,
+      closeTime: values.closeTime,
+      is24h: values.is24h,
+      area: Number(values.area),
+      cleanTime: Number(values.cleanTime),
+      prices: [
+        {
+          price: Number(values.shortTermPrice),
+          category: "Giờ",
+        },
+        {
+          price: Number(values.longTermPrice),
+          category: "Ngày",
+        },
+      ],
+      images: uploadedUrls,
+      facilities: values.facilitiesStr.map((facility) => ({
+        facilityName: facility,
+      })),
+      policies: values.policiesStr.map((policy) => ({
+        policyName: policy,
+      })),
+      capacity: Number(values.capacity),
+      category: values.category,
+      status: values.status,
+      ownerId: Number(owner?.id),
+    };
+
+    console.log(data);
+
+    // try {
+    //   const response = await fetch("https://localhost:5050/amenities", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(data),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error("Có lỗi xảy ra khi tạo tiện ích.");
+    //   }
+
+    //   toast.success("Tạo tiện ích thành công!", {
+    //     position: "top-right",
+    //     autoClose: 2000,
+    //     hideProgressBar: false,
+    //     theme: "light",
+    //   });
+    //   router.push("/amenities");
+    // } catch (error) {
+    //   const errorMessage =
+    //     error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+    //   toast.error(errorMessage, {
+    //     position: "top-right",
+    //     autoClose: 2000,
+    //     hideProgressBar: false,
+    //     theme: "light",
+    //   });
+    // }
   };
 
   return (
@@ -130,8 +244,8 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                           onCheckedChange={(value) => {
                             field.onChange(value ? 1 : 0);
                             if (value) {
-                              form.setValue("openTime", "00:00");
-                              form.setValue("closeTime", "23:59");
+                              form.setValue("openTime", "00:00:00");
+                              form.setValue("closeTime", "23:59:00");
                             } else {
                               form.setValue("openTime", "");
                               form.setValue("closeTime", "");
@@ -374,7 +488,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="facilities"
+              name="facilitiesStr"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
@@ -452,7 +566,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="policies"
+              name="policiesStr"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
@@ -492,8 +606,8 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="images"
-              render={({ field }) => (
+              name="imagesStr"
+              render={() => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
                     <span>Hình ảnh</span>
@@ -512,15 +626,18 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <MultiImageUpload
-                      value={field.value}
-                      handleChange={(tag) =>
-                        field.onChange([...field.value, tag])
-                      }
-                      handleRemove={(tag) =>
-                        field.onChange([
-                          ...field.value.filter((item) => item !== tag),
-                        ])
-                      }
+                      // value={field.value}
+                      // handleChange={(tag) =>
+                      //   field.onChange([...field.value, tag])
+                      // }
+                      // handleRemove={(tag) =>
+                      //   field.onChange([
+                      //     ...field.value.filter((item) => item !== tag),
+                      //   ])
+                      // }
+                      existingImages={existingImages}
+                      onExistingImagesChange={setExistingImages}
+                      onNewImagesChange={setSelectedFiles}
                     />
                   </FormControl>
                   <FormMessage className="text-red-500 text-xs" />
