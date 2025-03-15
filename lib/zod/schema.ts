@@ -120,11 +120,14 @@ export const promotionSchema = z
       .refine((val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) < 100, {
         message: "% phải lớn hơn 0 và nhỏ hơn 100",
       }),
-    startDate: z.string().nonempty("Vui lòng chọn ngày bắt đầu"),
+      startDate: z.string().nonempty("Vui lòng chọn ngày bắt đầu").refine((val) => new Date(val) > new Date(), {
+        message: "Ngày bắt đầu không thể là ngày trong quá khứ",
+      }),
     endDate: z.string().nonempty("Vui lòng chọn ngày kết thúc"),
     status: z.string({
       required_error: "Vui lòng chọn trạng thái hợp lệ",
     }),
+    workspaceId: z.number().min(1, "Vui lòng chọn không gian"),
   })
   .refine((data) => new Date(data.endDate) > new Date(data.startDate), {
     message: "Ngày kết thúc phải lớn hơn ngày bắt đầu",
