@@ -253,14 +253,24 @@ export interface OwnerPhoneSignInProps {
 }
 
 export interface BookingProps {
-  id: string;
+  bookingId: string;
+  start_Date: string;
+  end_Date: string;
   price: string;
-  startDate: string;
-  endDate: string;
-  customerId: string;
-  workspaceId: string;
   status: string;
-  createdAt: string;
+  created_At: string;
+  payment_Method: string;
+  userId: string;
+  workspaceId: string;
+  promotionId: string;
+  amenities: {
+    amenityId: string;
+    quanity: string;
+  }[];
+  beverages: {
+    beverageId: string;
+    quantity: string;
+  }[];
 }
 
 export interface FeedbackProps {

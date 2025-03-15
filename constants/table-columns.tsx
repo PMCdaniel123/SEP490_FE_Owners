@@ -33,6 +33,7 @@ import {
 import CustomerDropdown from "@/components/owner-dropdown/customer-dropdown";
 import BookingDropdown from "@/components/owner-dropdown/booking-dropdown";
 import FeedbackDropdown from "@/components/owner-dropdown/feedback-dropdown";
+import dayjs from "dayjs";
 
 const formatDate = (dateStr: string): string => {
   const [year, month, day] = dateStr.split("-");
@@ -938,66 +939,7 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
 
 export const BookingTableColumns: ColumnDef<BookingProps>[] = [
   {
-    accessorKey: "price",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Tổng tiền</p>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">
-          {formatCurrency(Number(row.getValue("price")))}
-        </p>
-      );
-    },
-  },
-  {
-    accessorKey: "startDate",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Bắt đầu</p>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">{row.getValue("startDate")}</p>
-      );
-    },
-  },
-  {
-    accessorKey: "endDate",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Kết thúc</p>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">{row.getValue("endDate")}</p>
-      );
-    },
-  },
-  {
-    accessorKey: "customerId",
+    accessorKey: "userId",
     header: ({ column }) => {
       return (
         <div
@@ -1011,7 +953,7 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("customerId")}</p>
+        <p className="text-center font-medium">{row.getValue("userId")}</p>
       );
     },
   },
@@ -1035,7 +977,70 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "price",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Tổng tiền</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(Number(row.getValue("price")))}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "start_Date",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Bắt đầu</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {dayjs(row.getValue("start_Date")).format("HH:mm DD/MM/YYYY")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "end_Date",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Kết thúc</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {dayjs(row.getValue("end_Date")).format("HH:mm DD/MM/YYYY")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "created_At",
     header: ({ column }) => {
       return (
         <div
@@ -1049,7 +1054,9 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("createdAt")}</p>
+        <p className="text-center font-medium">
+          {dayjs(row.getValue("created_At")).format("HH:mm DD/MM/YYYY")}
+        </p>
       );
     },
   },
@@ -1067,11 +1074,11 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return row.getValue("status") === "1" ? (
+      return row.getValue("status") === "Handling" ? (
         <p className="text-center font-medium flex items-center justify-center text-yellow-500">
           <span>Chờ xử lý</span>
         </p>
-      ) : row.getValue("status") === "2" ? (
+      ) : row.getValue("status") === "Success" ? (
         <p className="text-center font-medium flex items-center justify-center text-green-500">
           <span>Thành công</span>
         </p>
@@ -1087,7 +1094,7 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
     cell: ({ row }) => {
       const booking = row.original;
 
-      return <BookingDropdown bookingId={booking.id} />;
+      return <BookingDropdown booking={booking} />;
     },
   },
 ];

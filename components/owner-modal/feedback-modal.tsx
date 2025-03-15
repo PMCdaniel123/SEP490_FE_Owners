@@ -1,24 +1,32 @@
 /* eslint-disable @next/next/no-img-element */
-import {
-  customerList,
-  feedbackList,
-  workspaceList,
-} from "@/constants/constant";
+import { customerList, feedbackList } from "@/constants/constant";
 import {
   CustomerProps,
   FeedbackProps,
   formatCurrency,
-  WorkspaceProps,
+  Price,
+  Workspace,
 } from "@/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Ruler, Sofa, Users } from "lucide-react";
+import { toast } from "react-toastify";
+import Loader from "../loader/Loader";
+
+interface FeedbackWorkspaceProps {
+  workspace: Workspace | null;
+  address: string;
+  googleMapUrl: string;
+}
 
 function FeedbackModal({ feedbackId }: { feedbackId: string }) {
   const [feedback, setFeedback] = useState<FeedbackProps | null>(null);
   const [customer, setCustomer] = useState<CustomerProps | null>(null);
-  const [workspace, setWorkspace] = useState<WorkspaceProps | null>(null);
+  const [workspace, setWorkspace] = useState<FeedbackWorkspaceProps | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!feedbackId) {
@@ -28,10 +36,59 @@ function FeedbackModal({ feedbackId }: { feedbackId: string }) {
     setCustomer(
       customerList[Number(feedbackList[Number(feedbackId) - 1].id) - 1]
     );
-    setWorkspace(
-      workspaceList[Number(feedbackList[Number(feedbackId) - 1].id) - 1]
-    );
+    const getWorkspaceDetail = async () => {
+      try {
+        const response = await fetch(
+          `https://localhost:5050/workspaces/${Number(
+            feedbackList[Number(feedbackId) - 1].id
+          )}`
+        );
+        if (!response.ok) {
+          throw new Error("Có lỗi xảy ra khi tải không gian.");
+        }
+
+        const data = await response.json();
+        const formattedWorkspace = {
+          workspace: {
+            ...data.getWorkSpaceByIdResult,
+            shortTermPrice:
+              data.getWorkSpaceByIdResult.prices.find(
+                (price: Price) => price.category === "Giờ"
+              )?.price + "" || "",
+            longTermPrice:
+              data.getWorkSpaceByIdResult.prices.find(
+                (price: Price) => price.category === "Ngày"
+              )?.price + "" || "",
+          },
+          address: data.getWorkSpaceByIdResult.address,
+          googleMapUrl: data.getWorkSpaceByIdResult.googleMapUrl,
+        };
+        setWorkspace(formattedWorkspace);
+        setLoading(false);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        setWorkspace(null);
+        setLoading(false);
+      }
+    };
+
+    getWorkspaceDetail();
   }, [feedbackId]);
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="mt-8">
@@ -64,34 +121,38 @@ function FeedbackModal({ feedbackId }: { feedbackId: string }) {
         <Card className="rounded-md shadow-md py-0 gap-2">
           <div className="relative">
             <img
-              src={workspace?.images[0] || "/logo.png"}
-              alt={workspace?.name || ""}
+              src={workspace?.workspace?.images[0].imgUrl || "/logo.png"}
+              alt={workspace?.workspace?.name || ""}
               className="w-full h-48 object-cover rounded-t-md"
             />
             <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm">
-              {formatCurrency(Number(workspace?.shortTermPrice))} -{" "}
-              {formatCurrency(Number(workspace?.longTermPrice))}
+              {formatCurrency(Number(workspace?.workspace?.shortTermPrice))} -{" "}
+              {formatCurrency(Number(workspace?.workspace?.longTermPrice))}
             </div>
           </div>
           <CardContent className="mb-4">
-            <h3 className="text-lg font-semibold">{workspace?.name}</h3>
+            <h3 className="text-lg font-semibold">
+              {workspace?.workspace?.name}
+            </h3>
             <p className="text-gray-600 text-sm truncate whitespace-nowrap">
               {workspace?.address}
             </p>
             <div className="flex items-center text-gray-600 text-sm mt-2 justify-between">
               <span className="flex items-center">
-                <Users className="mr-1" size={16} /> {workspace?.capacity} người
+                <Users className="mr-1" size={16} />{" "}
+                {workspace?.workspace?.capacity} người
               </span>
               <span className="flex items-center">
-                <Ruler className="mr-1" size={16} /> {workspace?.area} m2
+                <Ruler className="mr-1" size={16} />{" "}
+                {workspace?.workspace?.area} m2
               </span>
               <span className="flex items-center">
                 <Sofa className="mr-1" size={16} />{" "}
-                {Number(workspace?.category) === 2
+                {workspace?.workspace?.category === "Văn phòng"
                   ? "Văn phòng"
-                  : Number(workspace?.category) === 3
+                  : workspace?.workspace?.category === "Phòng họp"
                   ? "Phòng họp"
-                  : Number(workspace?.category) === 4
+                  : workspace?.workspace?.category === "Phòng hội thảo"
                   ? "Phòng hội thảo"
                   : "Bàn cá nhân"}
               </span>

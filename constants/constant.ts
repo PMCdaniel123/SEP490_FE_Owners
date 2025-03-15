@@ -410,7 +410,8 @@ export const feedbackList: FeedbackProps[] = [
     id: "1",
     customerId: "1",
     workspaceId: "1",
-    content: "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 1",
+    content:
+      "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 1",
     image: "/trasua.png",
     createdAt: "04/03/2025",
   },
@@ -418,7 +419,8 @@ export const feedbackList: FeedbackProps[] = [
     id: "2",
     customerId: "2",
     workspaceId: "2",
-    content: "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 2",
+    content:
+      "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 2",
     image: "/trasua.png",
     createdAt: "04/03/2025",
   },
@@ -426,7 +428,8 @@ export const feedbackList: FeedbackProps[] = [
     id: "3",
     customerId: "3",
     workspaceId: "3",
-    content: "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 3",
+    content:
+      "Contenttttttttttttttt ttttttttttttttttttttttttttt tttttttttttttttttttttttttttttttttttttttttt tttttttttttttttttt 3",
     image: "/trasua.png",
     createdAt: "04/03/2025",
   },
