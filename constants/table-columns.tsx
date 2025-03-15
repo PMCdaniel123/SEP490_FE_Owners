@@ -39,6 +39,9 @@ const formatDate = (dateStr: string): string => {
   const [year, month, day] = dateStr.split("-");
   return `${day}-${month}-${year}`;
 };
+const formatDateTime = (dateStr: string): string => {
+  return dayjs(dateStr).format("HH:mm DD/MM/YYYY");
+};
 
 export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
   {
@@ -754,7 +757,7 @@ export const PromotionTableColumns: ColumnDef<PromotionProps>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {formatDate(row.getValue("startDate"))}
+          {formatDateTime(row.getValue("startDate"))}
         </p>
       );
     },
@@ -775,7 +778,7 @@ export const PromotionTableColumns: ColumnDef<PromotionProps>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {formatDate(row.getValue("endDate"))}
+          {formatDateTime(row.getValue("endDate"))}
         </p>
       );
     },

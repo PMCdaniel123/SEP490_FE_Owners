@@ -114,11 +114,11 @@ export const beverageSchema = z.object({
 export const promotionSchema = z
   .object({
     code: z.string().min(3, "Mã code phải có ít nhất 3 ký tự"),
-    description: z.string().min(3, "Mô tả món phải có ít nhất 3 ký tự"),
+    description: z.string().min(3, "Mô tả phải có ít nhất 3 ký tự"),
     discount: z
       .string()
-      .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-        message: "Giảm giá phải lớn hơn 0",
+      .refine((val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) < 100, {
+        message: "% phải lớn hơn 0 và nhỏ hơn 100",
       }),
     startDate: z.string().nonempty("Vui lòng chọn ngày bắt đầu"),
     endDate: z.string().nonempty("Vui lòng chọn ngày kết thúc"),
@@ -130,7 +130,6 @@ export const promotionSchema = z
     message: "Ngày kết thúc phải lớn hơn ngày bắt đầu",
     path: ["endDate"],
   });
-
 export const withdrawalSchema = z.object({
   number: z.string().nonempty("Vui lòng nhập số tài khoản ngân hàng"),
   bank: z.string().nonempty("Vui lòng tên ngân hàng"),

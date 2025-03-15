@@ -182,7 +182,7 @@ export interface BeverageProps {
 export interface PromotionProps {
   id: number;
   code: string;
-  discount: number;
+  discount: string;
   startDate: string;
   endDate: string;
   status: string;
