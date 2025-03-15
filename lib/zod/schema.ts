@@ -61,15 +61,16 @@ export const workspaceSchema = z.object({
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: "Giá theo ngày phải lớn hơn 0",
     }),
-  facilities: z.array(z.string(), {
+  facilitiesStr: z.array(z.string(), {
     required_error: "Vui lòng nhập ít nhất một tiện ích",
   }),
-  policies: z.array(z.string(), {
+  policiesStr: z.array(z.string(), {
     required_error: "Vui lòng nhập ít nhất một chính sách",
   }),
-  images: z.array(z.string(), {
+  imagesStr: z.array(z.string(), {
     required_error: "Vui lòng tải lên ít nhất một hình ảnh",
   }),
+  newImages: z.array(z.instanceof(File)).optional(),
   status: z.string({
     required_error: "Vui lòng chọn trạng thái hợp lệ",
   }),
