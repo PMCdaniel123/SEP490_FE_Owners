@@ -793,7 +793,7 @@ export const PromotionTableColumns: ColumnDef<PromotionProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return row.getValue("status") === "1" ? (
+      return row.getValue("status") === "Active" ? (
         <p className="text-center font-medium flex items-center justify-center text-green-500">
           <span>Hoạt động</span>
         </p>

@@ -4,7 +4,6 @@ import {
   FeedbackProps,
   MenuItemProps,
   NewCustomerItemProps,
-  PromotionProps,
   ReviewItemProps,
   TimeItemProps,
   TopWorkspace,
@@ -249,41 +248,6 @@ export const customerList: CustomerProps[] = [
   },
 ];
 
-export const promotionList: PromotionProps[] = [
-  {
-    id: "1",
-    code: "AAAAAA",
-    description: "Giảm giá Tết",
-    discount: "10",
-    status: "1",
-    startDate: "2023-01-01",
-    endDate: "2023-01-31",
-    createdAt: "01/01/2023",
-    updatedAt: "01/01/2023",
-  },
-  {
-    id: "2",
-    code: "BBBBBB",
-    description: "Giảm giá Valentine",
-    discount: "20",
-    status: "1",
-    startDate: "2023-01-01",
-    endDate: "2023-01-31",
-    createdAt: "01/01/2023",
-    updatedAt: "01/01/2023",
-  },
-  {
-    id: "3",
-    code: "CCCCCC",
-    description: "Giảm giá giỗ tổ Hùng Vương",
-    discount: "30",
-    status: "1",
-    startDate: "2023-01-01",
-    endDate: "2023-01-31",
-    createdAt: "01/01/2023",
-    updatedAt: "01/01/2023",
-  },
-];
 
 export const withdrawalList: WithdrawalProps[] = [
   {
