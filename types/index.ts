@@ -28,17 +28,6 @@ export interface TopWorkspace {
   roomType: string;
 }
 
-// export interface Workspace {
-//   title: string;
-//   address: string;
-//   price: string;
-//   image: string;
-//   roomCapacity: number;
-//   roomType: string;
-//   roomSize: number;
-//   rating: number;
-// }
-
 export interface WorkspaceNotRating {
   title: string;
   address: string;
@@ -132,29 +121,6 @@ export interface Workspace {
   createdAt: string;
   updatedAt: string;
 }
-
-// export interface WorkspaceProps {
-//   id: string;
-//   name: string;
-//   capacity: string;
-//   category: string;
-//   area: string;
-//   cleanTime: string;
-//   description: string;
-//   shortTermPrice: string;
-//   longTermPrice: string;
-//   prices: string[];
-//   facilities: string[];
-//   policies: string[];
-//   images: string[];
-//   openTime: string;
-//   closeTime: string;
-//   is24h: number;
-//   status: string;
-//   createdAt: string;
-//   updatedAt: string;
-//   ownerId: string;
-// }
 
 export interface AmenityProps {
   id: string;
