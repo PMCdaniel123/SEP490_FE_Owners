@@ -180,17 +180,14 @@ export interface BeverageProps {
 }
 
 export interface PromotionProps {
-  id: string;
+  id: number;
   code: string;
-  description: string;
   discount: string;
-  status: string;
   startDate: string;
   endDate: string;
-  createdAt: string;
-  updatedAt: string;
+  status: string;
+  workspaceId: number; 
 }
-
 export interface WithdrawalProps {
   id: string;
   number: string;
