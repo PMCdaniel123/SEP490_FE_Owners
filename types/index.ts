@@ -28,17 +28,6 @@ export interface TopWorkspace {
   roomType: string;
 }
 
-export interface Workspace {
-  title: string;
-  address: string;
-  price: string;
-  image: string;
-  roomCapacity: number;
-  roomType: string;
-  roomSize: number;
-  rating: number;
-}
-
 export interface WorkspaceNotRating {
   title: string;
   address: string;
@@ -68,12 +57,6 @@ export interface LabelIconProps {
   label: string;
 }
 
-export interface DetailsListProps {
-  roomCapacity: number;
-  roomSize: number;
-  roomType: string;
-}
-
 export interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -91,23 +74,50 @@ export interface CustomerProps {
   dateOfBirth: string;
 }
 
-export interface WorkspaceProps {
+export interface Image {
+  id: string;
+  imgUrl: string;
+}
+
+export interface Price {
+  id: string;
+  category: string;
+  price: number;
+}
+
+export interface Facilities {
+  id: string;
+  facilityName: string;
+}
+
+export interface Policies {
+  id: string;
+  policyName: string;
+}
+
+export interface Workspace {
   id: string;
   name: string;
-  address: string;
-  googleMapUrl: string;
+  description: string;
   capacity: string;
   category: string;
-  area: string;
+  status: string;
   cleanTime: string;
-  description: string;
+  area: string;
+  ownerId: string;
+  openTime: string;
+  closeTime: string;
+  is24h: number;
   shortTermPrice: string;
   longTermPrice: string;
-  facilities: string[];
-  policies: string[];
-  images: string[];
-  rating: number;
-  status: string;
+  prices: Price[];
+  facilities: Facilities[];
+  policies: Policies[];
+  images: Image[];
+  pricesStr: string[];
+  facilitiesStr: string[];
+  policiesStr: string[];
+  imagesStr: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -117,12 +127,11 @@ export interface AmenityProps {
   name: string;
   description: string;
   price: string;
-  image: string;
+  imgUrl: string;
   quantity: string;
   category: string;
   status: string;
-  createdAt: string;
-  updatedAt: string;
+  ownerId: string;
 }
 
 export interface BeverageProps {
@@ -130,25 +139,21 @@ export interface BeverageProps {
   name: string;
   description: string;
   price: string;
-  image: string;
+  imgUrl: string;
   category: string;
   status: string;
-  createdAt: string;
-  updatedAt: string;
+  ownerId: string;
 }
 
 export interface PromotionProps {
-  id: string;
+  id: number;
   code: string;
-  description: string;
   discount: string;
-  status: string;
   startDate: string;
   endDate: string;
-  createdAt: string;
-  updatedAt: string;
+  status: string;
+  workspaceId: number; 
 }
-
 export interface WithdrawalProps {
   id: string;
   number: string;
@@ -214,14 +219,30 @@ export interface OwnerPhoneSignInProps {
 }
 
 export interface BookingProps {
-  id: string;
+  bookingId: string;
+  start_Date: string;
+  end_Date: string;
   price: string;
-  startDate: string;
-  endDate: string;
-  customerId: string;
-  workspaceId: string;
   status: string;
-  createdAt: string;
+  created_At: string;
+  payment_Method: string;
+  userId: string;
+  workspaceId: string;
+  promotionId: string;
+  amenities: {
+    amenityId: string;
+    quantity: string;
+    amenityName: string;
+    image: string;
+    unitPrice: string;
+  }[];
+  beverages: {
+    beverageId: string;
+    quantity: string;
+    beverageName: string;
+    image: string;
+    unitPrice: string;
+  }[];
 }
 
 export interface FeedbackProps {

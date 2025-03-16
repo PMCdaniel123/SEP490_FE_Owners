@@ -26,12 +26,18 @@ import {
   FormMessage,
 } from "../ui/form";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import { useRouter } from "next/navigation";
 
 interface AmenityFormProps {
   initialData?: AmenityProps | null;
 }
 
 function AmenityForm({ initialData }: AmenityFormProps) {
+  const { owner } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
   const form = useForm<z.infer<typeof amenitySchema>>({
     resolver: zodResolver(amenitySchema),
     defaultValues: initialData
@@ -40,10 +46,10 @@ function AmenityForm({ initialData }: AmenityFormProps) {
           name: "",
           description: "",
           price: "",
-          image: "",
+          imgUrl: "",
           quantity: "",
           category: "",
-          status: "1",
+          status: "Active",
         },
   });
 
@@ -53,8 +59,164 @@ function AmenityForm({ initialData }: AmenityFormProps) {
     }
   }, [initialData, form]);
 
-  const onCreate = (values: z.infer<typeof amenitySchema>) => {
-    alert(JSON.stringify(values));
+  const uploadImage = async (image: File) => {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    try {
+      const response = await fetch("https://localhost:5050/images/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+      }
+
+      const result = await response.json();
+      return result.data[0];
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onCreate = async (values: z.infer<typeof amenitySchema>) => {
+    // console.log(amenitySchema.parse(values));
+    let imgUrl = values.imgUrl;
+
+    if (typeof imgUrl !== "string") {
+      try {
+        const uploadedUrl = await uploadImage(imgUrl);
+        if (!uploadedUrl) {
+          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+        }
+        imgUrl = uploadedUrl;
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        return;
+      }
+    }
+
+    const data = {
+      ...amenitySchema.parse(values),
+      imgUrl,
+      ownerId: owner?.id,
+    };
+
+    try {
+      const response = await fetch("https://localhost:5050/amenities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tạo tiện ích.");
+      }
+
+      toast.success("Tạo tiện ích thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/amenities");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onUpdate = async (values: z.infer<typeof amenitySchema>) => {
+    // console.log(amenitySchema.parse(values));
+    let imgUrl = values.imgUrl;
+
+    if (typeof imgUrl !== "string") {
+      try {
+        const uploadedUrl = await uploadImage(imgUrl);
+        if (!uploadedUrl) {
+          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+        }
+        imgUrl = uploadedUrl;
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        return;
+      }
+    }
+
+    const data = {
+      // ...amenitySchema.parse(values),
+      imgUrl,
+      name: values.name,
+      description: values.description,
+      price: Number(values.price),
+      quantity: Number(values.quantity),
+      category: values.category,
+      status: values.status,
+    };
+
+    try {
+      const response = await fetch(
+        "https://localhost:5050/amenities/" + initialData?.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi cập nhật tiện ích.");
+      }
+
+      toast.success("Cập nhật tiện ích thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/amenities");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -71,7 +233,11 @@ function AmenityForm({ initialData }: AmenityFormProps) {
       <Form {...form}>
         <form
           className="grid sm:grid-cols-3 gap-6"
-          onSubmit={form.handleSubmit(onCreate)}
+          onSubmit={
+            initialData
+              ? form.handleSubmit(onUpdate)
+              : form.handleSubmit(onCreate)
+          }
         >
           <div className="sm:col-span-3 items-start justify-between gap-6 grid sm:grid-cols-3">
             <div className="sm:col-span-2 flex flex-col gap-6">
@@ -155,6 +321,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
                     <Input
                       className="py-6 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập số lượng..."
+                      type="number"
                       {...field}
                     />
                   </FormControl>
@@ -176,6 +343,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
                     <Input
                       className="py-6 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập giá tiền..."
+                      type="number"
                       {...field}
                     />
                   </FormControl>
@@ -187,22 +355,30 @@ function AmenityForm({ initialData }: AmenityFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
-                    Hình ảnh
-                  </FormLabel>
-                  <FormControl>
-                    <ImageUpload
-                      value={field.value}
-                      handleChange={(image) => field.onChange(image)}
-                      handleRemove={() => field.onChange("")}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500 text-xs" />
-                </FormItem>
-              )}
+              name="imgUrl"
+              render={({ field }) => {
+                const imageUrl =
+                  typeof field.value === "string"
+                    ? field.value
+                    : field.value instanceof File
+                    ? URL.createObjectURL(field.value)
+                    : "";
+                return (
+                  <FormItem>
+                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                      Hình ảnh
+                    </FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        value={imageUrl}
+                        handleChange={(image) => field.onChange(image)}
+                        handleRemove={() => field.onChange("")}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500 text-xs" />
+                  </FormItem>
+                );
+              }}
             />
           </div>
           <div className="sm:col-span-1 flex flex-col gap-2 w-full">
@@ -216,7 +392,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Select
-                      value={field.value || "2"}
+                      value={field.value || "Inactive"}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -225,13 +401,13 @@ function AmenityForm({ initialData }: AmenityFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Active"
                         >
                           Hoạt động
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Inactive"
                         >
                           Ngừng hoạt động
                         </SelectItem>

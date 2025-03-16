@@ -3,7 +3,7 @@
 import { Save, SquarePen } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
-import { PromotionProps } from "@/types";
+import { PromotionProps, Workspace } from "@/types";
 import { Textarea } from "../ui/textarea";
 import {
   Select,
@@ -24,35 +24,136 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
 
 interface PromotionFormProps {
   initialData?: PromotionProps | null;
 }
 
 function PromotionForm({ initialData }: PromotionFormProps) {
+  const router = useRouter();
+  const { owner } = useSelector((state: RootState) => state.auth);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const form = useForm<z.infer<typeof promotionSchema>>({
     resolver: zodResolver(promotionSchema),
     defaultValues: initialData
-      ? { ...initialData }
+      ? {
+        ...initialData,
+        startDate: dayjs(initialData.startDate).format("YYYY-MM-DDTHH:mm"),
+        endDate: dayjs(initialData.endDate).format("YYYY-MM-DDTHH:mm"),
+      }
       : {
-          code: "",
-          description: "",
-          discount: "",
-          startDate: "",
-          endDate: "1",
-          status: "1",
-        },
+        code: "",
+        description: "",
+        discount: "",
+        startDate: "",
+        endDate: "",
+        status: "Active",
+        workspaceId: 0,
+      },
   });
 
   useEffect(() => {
     if (initialData) {
-      form.reset(initialData);
+      form.reset({
+        ...initialData,
+        startDate: dayjs(initialData.startDate).format("YYYY-MM-DDTHH:mm"),
+        endDate: dayjs(initialData.endDate).format("YYYY-MM-DDTHH:mm"),
+      });
     }
   }, [initialData, form]);
 
-  const onCreate = (values: z.infer<typeof promotionSchema>) => {
-    alert(JSON.stringify(values));
+  useEffect(() => {
+    if (!owner) return;
+
+    const getWorkspaces = async () => {
+      try {
+        const response = await fetch(
+          `https://localhost:5050/workspaces/owner/${owner.id}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Có lỗi xảy ra khi tải danh sách không gian.");
+        }
+
+        const data = await response.json();
+        setWorkspaces(data.workspaces);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+      }
+    };
+
+    getWorkspaces();
+  }, [owner]);
+
+  const onSubmit = async (values: z.infer<typeof promotionSchema>) => {
+    const data = {
+      ...values,
+      startDate: new Date(values.startDate).toISOString(),
+      endDate: new Date(values.endDate).toISOString(),
+      discount: Number(values.discount),
+    };
+
+    if (!initialData) {
+      data.workspaceId = values.workspaceId;
+    }
+
+    try {
+      const response = await fetch(
+        initialData
+          ? `https://localhost:5050/promotions/${initialData.id}`
+          : "https://localhost:5050/promotions",
+        {
+          method: initialData ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          initialData
+            ? "Có lỗi xảy ra khi cập nhật mã khuyến mãi."
+            : "Có lỗi xảy ra khi tạo mã khuyến mãi."
+        );
+      }
+
+      toast.success(
+        initialData
+          ? "Cập nhật mã khuyến mãi thành công!"
+          : "Tạo mã khuyến mãi thành công!",
+        {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        }
+      );
+      router.push("/promotions");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -69,7 +170,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
       <Form {...form}>
         <form
           className="grid sm:grid-cols-3 gap-6"
-          onSubmit={form.handleSubmit(onCreate)}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="sm:col-span-3 items-start justify-between gap-6 grid sm:grid-cols-3">
             <div className="sm:col-span-2 flex flex-col gap-6">
@@ -131,7 +232,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                     <Input
                       className="py-6 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập ngày bắt đầu..."
-                      type="date"
+                      type="datetime-local"
                       {...field}
                     />
                   </FormControl>
@@ -153,7 +254,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                     <Input
                       className="py-6 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập ngày kết thúc..."
-                      type="date"
+                      type="datetime-local"
                       {...field}
                     />
                   </FormControl>
@@ -195,7 +296,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                     </FormLabel>
                     <FormControl>
                       <Select
-                        value={field.value || "2"}
+                        value={field.value || "Active"}
                         onValueChange={(value) => field.onChange(value)}
                       >
                         <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -204,13 +305,13 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                         <SelectContent>
                           <SelectItem
                             className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                            value="1"
+                            value="Active"
                           >
                             Hoạt động
                           </SelectItem>
                           <SelectItem
                             className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                            value="2"
+                            value="Inactive"
                           >
                             Ngừng hoạt động
                           </SelectItem>
@@ -222,6 +323,44 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                 )}
               />
             </div>
+            {!initialData && (
+              <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="workspaceId"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Áp dụng cho Workspace
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          value={field.value ? field.value.toString() : ""}
+                          onValueChange={(value) => field.onChange(Number(value))}
+                        >
+                          <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                            <SelectValue placeholder="Chọn không gian" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {workspaces.map((workspace) => (
+                              <SelectItem
+                                key={workspace.id}
+                                value={workspace.id.toString()}
+                              >
+                                {workspace.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs">
+                        {fieldState.error?.message}
+                      </FormMessage>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
           </div>
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <button

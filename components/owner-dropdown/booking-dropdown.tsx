@@ -8,8 +8,9 @@ import {
 import { useState } from "react";
 import { Modal } from "antd";
 import BookingModal from "../owner-modal/booking-modal";
+import { BookingProps } from "@/types";
 
-function BookingDropdown({ bookingId }: { bookingId: string }) {
+function BookingDropdown({ booking }: { booking: BookingProps }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -30,13 +31,13 @@ function BookingDropdown({ bookingId }: { bookingId: string }) {
       </DropdownMenu>
       <Modal
         title={
-          <p className="text-xl font-bold text-primary">Thông tin đặt chỗ</p>
+          <p className="text-xl font-bold text-primary">Thông tin chi tiết</p>
         }
         open={isOpen}
         onCancel={() => setIsOpen(!isOpen)}
         footer={null}
       >
-        <BookingModal bookingId={bookingId} />
+        <BookingModal booking={booking} />
       </Modal>
     </>
   );

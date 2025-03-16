@@ -4,7 +4,6 @@ import { Info, Save, SquarePen } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { WorkspaceProps } from "@/types";
 import { Textarea } from "../ui/textarea";
 import {
   Select,
@@ -27,19 +26,32 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { Checkbox } from "../ui/checkbox";
+import { Workspace } from "@/types";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import { useRouter } from "next/navigation";
 
 interface WorkspaceFormProps {
-  initialData?: WorkspaceProps | null;
+  initialData?: Workspace | null;
 }
 
 function WorkspaceForm({ initialData }: WorkspaceFormProps) {
+  const { owner } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>(
+    initialData ? initialData.imagesStr : []
+  );
+
   const form = useForm<z.infer<typeof workspaceSchema>>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: initialData
@@ -47,20 +59,23 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       : {
           name: "",
           description: "",
-          address: "",
-          googleMapUrl: "",
+          openTime: "",
+          closeTime: "",
+          is24h: 0,
           area: "",
           cleanTime: "",
           shortTermPrice: "",
           longTermPrice: "",
-          images: [],
-          facilities: [],
-          policies: [],
+          imagesStr: existingImages,
+          newImages: [],
+          facilitiesStr: [],
+          policiesStr: [],
           capacity: "",
-          category: "1",
-          status: "1",
+          category: "Bàn cá nhân",
+          status: "Active",
         },
   });
+  const is24h = form.watch("is24h");
 
   useEffect(() => {
     if (initialData) {
@@ -68,8 +83,186 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
     }
   }, [initialData, form]);
 
-  const onCreate = (values: z.infer<typeof workspaceSchema>) => {
-    alert(JSON.stringify(values));
+  const uploadImage = async (image: File) => {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    try {
+      const response = await fetch("https://localhost:5050/images/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+      }
+
+      const result = await response.json();
+      return result.data[0];
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onCreate = async (values: z.infer<typeof workspaceSchema>) => {
+    const uploadedUrls: string[] = [...existingImages];
+
+    for (const file of selectedFiles) {
+      const url = await uploadImage(file);
+      if (url) uploadedUrls.push(url);
+    }
+
+    if (uploadedUrls.length === 0) {
+      toast.error("Bạn phải tải lên ít nhất một ảnh hợp lệ.");
+      return;
+    }
+
+    const data = {
+      name: values.name,
+      description: values.description,
+      openTime: values.openTime,
+      closeTime: values.closeTime,
+      is24h: values.is24h,
+      area: Number(values.area),
+      cleanTime: Number(values.cleanTime),
+      prices: [
+        {
+          price: Number(values.shortTermPrice),
+          category: "Giờ",
+        },
+        {
+          price: Number(values.longTermPrice),
+          category: "Ngày",
+        },
+      ],
+      images: uploadedUrls.map((url) => ({ imgUrl: url })),
+      facilities: values.facilitiesStr.map((facility) => ({
+        facilityName: facility,
+      })),
+      policies: values.policiesStr.map((policy) => ({
+        policyName: policy,
+      })),
+      capacity: Number(values.capacity),
+      category: values.category,
+      status: values.status,
+      ownerId: Number(owner?.id),
+    };
+
+    try {
+      const response = await fetch("https://localhost:5050/workspaces", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tạo không gian.");
+      }
+
+      toast.success("Tạo không gian thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/workspaces");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
+
+  const onUpdate = async (values: z.infer<typeof workspaceSchema>) => {
+    const uploadedUrls: string[] = [...existingImages];
+
+    for (const file of selectedFiles) {
+      const url = await uploadImage(file);
+      if (url) uploadedUrls.push(url);
+    }
+
+    if (uploadedUrls.length === 0) {
+      toast.error("Bạn phải tải lên ít nhất một ảnh hợp lệ.");
+      return;
+    }
+
+    const data = {
+      name: values.name,
+      description: values.description,
+      openTime: values.openTime,
+      closeTime: values.closeTime,
+      is24h: values.is24h,
+      area: Number(values.area),
+      cleanTime: Number(values.cleanTime),
+      prices: [
+        {
+          price: Number(values.shortTermPrice),
+          category: "Giờ",
+        },
+        {
+          price: Number(values.longTermPrice),
+          category: "Ngày",
+        },
+      ],
+      images: uploadedUrls.map((url) => ({ imgUrl: url })),
+      facilities: values.facilitiesStr.map((facility) => ({
+        facilityName: facility,
+      })),
+      policies: values.policiesStr.map((policy) => ({
+        policyName: policy,
+      })),
+      capacity: Number(values.capacity),
+      category: values.category,
+      status: values.status,
+    };
+
+    try {
+      const response = await fetch(
+        "https://localhost:5050/workspaces/" + initialData?.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi cập nhật không gian.");
+      }
+
+      toast.success("Cập nhật không gian thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/workspaces");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -86,67 +279,111 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       <Form {...form}>
         <form
           className="grid sm:grid-cols-3 gap-6"
-          onSubmit={form.handleSubmit(onCreate)}
+          onSubmit={
+            initialData
+              ? form.handleSubmit(onUpdate)
+              : form.handleSubmit(onCreate)
+          }
         >
           <div className="sm:col-span-3 items-start justify-between gap-6 grid sm:grid-cols-3">
-            <div className="sm:col-span-2 flex flex-col gap-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
-                      Tên không gian
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
-                        placeholder="Nhập tên không gian..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-xs" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
-                      Địa chỉ
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
-                        placeholder="Nhập địa chỉ..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-xs" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="googleMapUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
-                      Link Google Map
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
-                        placeholder="Nhập link Google Map..."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-xs" />
-                  </FormItem>
-                )}
-              />
+            <div className="sm:col-span-2 grid sm:grid-cols-2 gap-6">
+              <div className="sm:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Tên không gian
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          placeholder="Nhập tên không gian..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-2 my-1">
+                <FormField
+                  control={form.control}
+                  name="is24h"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-6">
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Mở cửa 24h
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          {...field}
+                          checked={field.value === 1}
+                          onCheckedChange={(value) => {
+                            field.onChange(value ? 1 : 0);
+                            if (value) {
+                              form.setValue("openTime", "00:00:00");
+                              form.setValue("closeTime", "23:59:00");
+                            } else {
+                              form.setValue("openTime", "");
+                              form.setValue("closeTime", "");
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-2 gap-6 grid sm:grid-cols-2">
+                <div className="sm:col-span-1">
+                  <FormField
+                    control={form.control}
+                    name="openTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-fourth font-bold text-base ml-6">
+                          Thời gian mở cửa
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="py-6 px-4 rounded-md file:bg-seventh"
+                            placeholder="Nhập thời gian mở cửa..."
+                            disabled={is24h === 1}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500 text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="sm:col-span-1">
+                  <FormField
+                    control={form.control}
+                    name="closeTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-fourth font-bold text-base ml-6">
+                          Thời gian đóng cửa
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="py-6 px-4 rounded-md file:bg-seventh"
+                            placeholder="Nhập thời gian đóng cửa..."
+                            disabled={is24h === 1}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500 text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="sm:col-span-1 flex flex-col gap-6 h-full justify-center w-full p-4 bg-primary rounded-md">
@@ -205,7 +442,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Select
-                      value={field.value || "2"}
+                      value={field.value || "Văn phòng"}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -214,25 +451,25 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Bàn cá nhân"
                         >
                           Bàn cá nhân
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Văn phòng"
                         >
                           Văn phòng
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="3"
+                          value="Phòng họp"
                         >
                           Phòng họp
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="4"
+                          value="Phòng hội thảo"
                         >
                           Phòng hội thảo
                         </SelectItem>
@@ -331,7 +568,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="facilities"
+              name="facilitiesStr"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
@@ -379,7 +616,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <Select
-                      value={field.value || "2"}
+                      value={field.value || "Inactive"}
                       onValueChange={(value) => field.onChange(value)}
                     >
                       <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -388,13 +625,13 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       <SelectContent>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="1"
+                          value="Active"
                         >
                           Hoạt động
                         </SelectItem>
                         <SelectItem
                           className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                          value="2"
+                          value="Inactive"
                         >
                           Ngừng hoạt động
                         </SelectItem>
@@ -409,7 +646,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="policies"
+              name="policiesStr"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
@@ -449,8 +686,8 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
-              name="images"
-              render={({ field }) => (
+              name="imagesStr"
+              render={() => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
                     <span>Hình ảnh</span>
@@ -469,15 +706,9 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <MultiImageUpload
-                      value={field.value}
-                      handleChange={(tag) =>
-                        field.onChange([...field.value, tag])
-                      }
-                      handleRemove={(tag) =>
-                        field.onChange([
-                          ...field.value.filter((item) => item !== tag),
-                        ])
-                      }
+                      existingImages={existingImages}
+                      onExistingImagesChange={setExistingImages}
+                      onNewImagesChange={setSelectedFiles}
                     />
                   </FormControl>
                   <FormMessage className="text-red-500 text-xs" />
