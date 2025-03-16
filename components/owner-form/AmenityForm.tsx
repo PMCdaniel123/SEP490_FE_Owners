@@ -178,8 +178,8 @@ function AmenityForm({ initialData }: AmenityFormProps) {
       imgUrl,
       name: values.name,
       description: values.description,
-      // price: values.price,
-      // quantity: values.quantity,
+      price: Number(values.price),
+      quantity: Number(values.quantity),
       category: values.category,
       status: values.status,
     };
