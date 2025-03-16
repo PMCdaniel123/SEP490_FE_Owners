@@ -128,8 +128,12 @@ const MultiImageUpload = ({
     }));
 
     setImages((prevImages) => [...prevImages, ...newImages]);
-    onNewImagesChange(validImages);
+    setNewImages((prev) => [...prev, ...validImages]);
   };
+
+  useEffect(() => {
+    onNewImagesChange(newImages);
+  }, [newImages, onNewImagesChange]);
 
   const removeImage = (id: string) => {
     const isUrl = existingImages.includes(id);
@@ -145,8 +149,6 @@ const MultiImageUpload = ({
       URL.revokeObjectURL(id);
     }
   };
-
-  console.log(newImages);
 
   return (
     <div className="flex flex-col gap-2">

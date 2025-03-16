@@ -268,11 +268,17 @@ export interface BookingProps {
   promotionId: string;
   amenities: {
     amenityId: string;
-    quanity: string;
+    quantity: string;
+    amenityName: string;
+    image: string;
+    unitPrice: string;
   }[];
   beverages: {
     beverageId: string;
     quantity: string;
+    beverageName: string;
+    image: string;
+    unitPrice: string;
   }[];
 }
 

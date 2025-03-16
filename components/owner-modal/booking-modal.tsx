@@ -12,7 +12,17 @@ import Loader from "../loader/Loader";
 import dayjs from "dayjs";
 import { fetchCustomerDetail, fetchWorkspaceDetail } from "@/features";
 import { Card, CardContent } from "../ui/card";
-import { Eye, EyeOff, History, Ruler, Sofa, User, Users } from "lucide-react";
+import {
+  Boxes,
+  Eye,
+  EyeOff,
+  History,
+  Ruler,
+  Sofa,
+  User,
+  Users,
+  UtensilsCrossed,
+} from "lucide-react";
 
 export interface BookingWorkspaceProps {
   workspace: Workspace;
@@ -66,7 +76,22 @@ function BookingModal({ booking }: { booking: BookingProps }) {
         <p>
           Kết thúc lúc: {dayjs(booking?.end_Date).format("HH:mm DD/MM/YYYY")}
         </p>
-        <div>
+        {booking?.status === "Handling" ? (
+          <p className="flex items-center justify-start gap-1">
+            Trạng thái: <span className="text-yellow-500">Chờ xử lý</span>
+          </p>
+        ) : booking?.status === "Success" ? (
+          <p className="flex items-center justify-start gap-1">
+            Trạng thái: <span className="text-green-500">Thành công</span>
+          </p>
+        ) : (
+          <p className="flex items-center justify-start gap-1">
+            Trạng thái: <span className="text-red-500">Thất bại</span>
+          </p>
+        )}
+        {booking?.promotionId && <p>Mã giảm giá: {booking?.promotionId}</p>}
+        <p>Phương thức thanh toán: {booking?.payment_Method}</p>
+        <div className="my-2">
           <Card className="rounded-md shadow-md py-0 gap-2">
             <div className="relative">
               <img
@@ -123,6 +148,55 @@ function BookingModal({ booking }: { booking: BookingProps }) {
             </span>
           )}
         </p>
+        {isOpen &&
+          (booking.amenities.length + booking.beverages.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {booking.amenities.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <p className="font-semibold text-primary flex gap-2 text-sm">
+                    <Boxes size={16} /> Tiện ích
+                  </p>
+                  <ul className="list-disc pl-6 ">
+                    {booking.amenities.map((item, index) => (
+                      <li key={index}>
+                        <img
+                          src={item.image}
+                          alt={item.amenityName}
+                          className="inline-block w-10 h-10 mr-2 mb-2 "
+                        />
+                        {item.amenityName} -{" "}
+                        {formatCurrency(Number(item.unitPrice))} (x
+                        {item.quantity})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {booking.beverages.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <p className="font-semibold text-primary flex gap-2 text-sm">
+                    <UtensilsCrossed size={16} /> Thực đơn
+                  </p>
+                  <ul className="list-disc pl-6 ">
+                    {booking.beverages.map((item, index) => (
+                      <li key={index}>
+                        <img
+                          src={item.image}
+                          alt={item.beverageName}
+                          className="inline-block w-10 h-10 mr-2 mb-2 "
+                        />
+                        {item.beverageName} -{" "}
+                        {formatCurrency(Number(item.unitPrice))} (x
+                        {item.quantity})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-sixth italic flex items-center">Trống</p>
+          ))}
       </div>
       <p className="mt-4 text-primary text-lg font-bold flex justify-end">
         Tổng tiền: {formatCurrency(Number(booking?.price))}

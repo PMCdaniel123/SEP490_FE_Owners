@@ -38,7 +38,7 @@ import { Workspace } from "@/types";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface WorkspaceFormProps {
   initialData?: Workspace | null;
@@ -46,7 +46,7 @@ interface WorkspaceFormProps {
 
 function WorkspaceForm({ initialData }: WorkspaceFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
-  // const router = useRouter();
+  const router = useRouter();
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(
     initialData ? initialData.imagesStr : []
@@ -142,7 +142,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           category: "Ngày",
         },
       ],
-      images: uploadedUrls,
+      images: uploadedUrls.map((url) => ({ imgUrl: url })),
       facilities: values.facilitiesStr.map((facility) => ({
         facilityName: facility,
       })),
@@ -155,38 +155,114 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       ownerId: Number(owner?.id),
     };
 
-    console.log(data);
+    try {
+      const response = await fetch("https://localhost:5050/workspaces", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    // try {
-    //   const response = await fetch("https://localhost:5050/amenities", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tạo không gian.");
+      }
 
-    //   if (!response.ok) {
-    //     throw new Error("Có lỗi xảy ra khi tạo tiện ích.");
-    //   }
+      toast.success("Tạo không gian thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/workspaces");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
+  };
 
-    //   toast.success("Tạo tiện ích thành công!", {
-    //     position: "top-right",
-    //     autoClose: 2000,
-    //     hideProgressBar: false,
-    //     theme: "light",
-    //   });
-    //   router.push("/amenities");
-    // } catch (error) {
-    //   const errorMessage =
-    //     error instanceof Error ? error.message : "Đã xảy ra lỗi!";
-    //   toast.error(errorMessage, {
-    //     position: "top-right",
-    //     autoClose: 2000,
-    //     hideProgressBar: false,
-    //     theme: "light",
-    //   });
-    // }
+  const onUpdate = async (values: z.infer<typeof workspaceSchema>) => {
+    const uploadedUrls: string[] = [...existingImages];
+
+    for (const file of selectedFiles) {
+      const url = await uploadImage(file);
+      if (url) uploadedUrls.push(url);
+    }
+
+    if (uploadedUrls.length === 0) {
+      toast.error("Bạn phải tải lên ít nhất một ảnh hợp lệ.");
+      return;
+    }
+
+    const data = {
+      name: values.name,
+      description: values.description,
+      openTime: values.openTime,
+      closeTime: values.closeTime,
+      is24h: values.is24h,
+      area: Number(values.area),
+      cleanTime: Number(values.cleanTime),
+      prices: [
+        {
+          price: Number(values.shortTermPrice),
+          category: "Giờ",
+        },
+        {
+          price: Number(values.longTermPrice),
+          category: "Ngày",
+        },
+      ],
+      images: uploadedUrls.map((url) => ({ imgUrl: url })),
+      facilities: values.facilitiesStr.map((facility) => ({
+        facilityName: facility,
+      })),
+      policies: values.policiesStr.map((policy) => ({
+        policyName: policy,
+      })),
+      capacity: Number(values.capacity),
+      category: values.category,
+      status: values.status,
+    };
+
+    try {
+      const response = await fetch(
+        "https://localhost:5050/workspaces/" + initialData?.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi cập nhật không gian.");
+      }
+
+      toast.success("Cập nhật không gian thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      router.push("/workspaces");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -203,7 +279,11 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       <Form {...form}>
         <form
           className="grid sm:grid-cols-3 gap-6"
-          onSubmit={form.handleSubmit(onCreate)}
+          onSubmit={
+            initialData
+              ? form.handleSubmit(onUpdate)
+              : form.handleSubmit(onCreate)
+          }
         >
           <div className="sm:col-span-3 items-start justify-between gap-6 grid sm:grid-cols-3">
             <div className="sm:col-span-2 grid sm:grid-cols-2 gap-6">
@@ -626,15 +706,6 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   </FormLabel>
                   <FormControl>
                     <MultiImageUpload
-                      // value={field.value}
-                      // handleChange={(tag) =>
-                      //   field.onChange([...field.value, tag])
-                      // }
-                      // handleRemove={(tag) =>
-                      //   field.onChange([
-                      //     ...field.value.filter((item) => item !== tag),
-                      //   ])
-                      // }
                       existingImages={existingImages}
                       onExistingImagesChange={setExistingImages}
                       onNewImagesChange={setSelectedFiles}

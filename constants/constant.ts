@@ -1,5 +1,4 @@
 import {
-  BookingProps,
   CustomerProps,
   FeedbackProps,
   MenuItemProps,
@@ -405,39 +404,6 @@ export const timeList: TimeItemProps[] = [
     startDate: "08:00 04/03/2025",
     endDate: "09:00 04/03/2025",
     status: "1",
-  },
-];
-
-export const bookingList: BookingProps[] = [
-  {
-    id: "1",
-    price: "100000",
-    startDate: "08:00 04/03/2025",
-    endDate: "09:00 04/03/2025",
-    customerId: "1",
-    workspaceId: "1",
-    status: "1",
-    createdAt: "04/03/2025",
-  },
-  {
-    id: "2",
-    price: "200000",
-    startDate: "18:00 04/03/2025",
-    endDate: "19:00 04/03/2025",
-    customerId: "2",
-    workspaceId: "2",
-    status: "2",
-    createdAt: "04/03/2025",
-  },
-  {
-    id: "3",
-    price: "300000",
-    startDate: "21:00 04/03/2025",
-    endDate: "23:00 04/03/2025",
-    customerId: "3",
-    workspaceId: "3",
-    status: "3",
-    createdAt: "04/03/2025",
   },
 ];
 
