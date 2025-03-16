@@ -1,3 +1,7 @@
 {
-  "conventionalCommits.scopes": ["login-form for owner", "update owner page"]
+  "conventionalCommits.scopes": [
+    "login-form for owner",
+    "update owner page",
+    "promotion integrationApi"
+  ]
 }

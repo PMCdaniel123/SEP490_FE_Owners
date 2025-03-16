@@ -1,10 +1,8 @@
 import {
-  BookingProps,
   CustomerProps,
   FeedbackProps,
   MenuItemProps,
   NewCustomerItemProps,
-  PromotionProps,
   ReviewItemProps,
   TimeItemProps,
   TopWorkspace,
@@ -249,41 +247,6 @@ export const customerList: CustomerProps[] = [
   },
 ];
 
-export const promotionList: PromotionProps[] = [
-  {
-    id: "1",
-    code: "AAAAAA",
-    description: "Giảm giá Tết",
-    discount: "10",
-    status: "1",
-    startDate: "2023-01-01",
-    endDate: "2023-01-31",
-    createdAt: "01/01/2023",
-    updatedAt: "01/01/2023",
-  },
-  {
-    id: "2",
-    code: "BBBBBB",
-    description: "Giảm giá Valentine",
-    discount: "20",
-    status: "1",
-    startDate: "2023-01-01",
-    endDate: "2023-01-31",
-    createdAt: "01/01/2023",
-    updatedAt: "01/01/2023",
-  },
-  {
-    id: "3",
-    code: "CCCCCC",
-    description: "Giảm giá giỗ tổ Hùng Vương",
-    discount: "30",
-    status: "1",
-    startDate: "2023-01-01",
-    endDate: "2023-01-31",
-    createdAt: "01/01/2023",
-    updatedAt: "01/01/2023",
-  },
-];
 
 export const withdrawalList: WithdrawalProps[] = [
   {
@@ -408,38 +371,7 @@ export const timeList: TimeItemProps[] = [
   },
 ];
 
-export const bookingList: BookingProps[] = [
-  {
-    id: "1",
-    price: "100000",
-    startDate: "08:00 04/03/2025",
-    endDate: "09:00 04/03/2025",
-    customerId: "1",
-    workspaceId: "1",
-    status: "1",
-    createdAt: "04/03/2025",
-  },
-  {
-    id: "2",
-    price: "200000",
-    startDate: "18:00 04/03/2025",
-    endDate: "19:00 04/03/2025",
-    customerId: "2",
-    workspaceId: "2",
-    status: "2",
-    createdAt: "04/03/2025",
-  },
-  {
-    id: "3",
-    price: "300000",
-    startDate: "21:00 04/03/2025",
-    endDate: "23:00 04/03/2025",
-    customerId: "3",
-    workspaceId: "3",
-    status: "3",
-    createdAt: "04/03/2025",
-  },
-];
+
 
 export const feedbackList: FeedbackProps[] = [
   {
