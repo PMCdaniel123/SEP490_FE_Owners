@@ -8,8 +8,9 @@ import {
 import { useState } from "react";
 import { Modal } from "antd";
 import CustomerModal from "../owner-modal/customer-modal";
+import { CustomerProps } from "@/types";
 
-function CustomerDropdown({ customerId }: { customerId: string }) {
+function CustomerDropdown({ customer }: { customer: CustomerProps }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -41,7 +42,7 @@ function CustomerDropdown({ customerId }: { customerId: string }) {
         onCancel={() => setIsOpen(!isOpen)}
         footer={null}
       >
-        <CustomerModal customerId={customerId} />
+        <CustomerModal customer={customer} />
       </Modal>
     </>
   );

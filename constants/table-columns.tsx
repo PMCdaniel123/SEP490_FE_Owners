@@ -147,20 +147,7 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center justify-center gap-2">
-          <Image
-            src={row.original.avatar}
-            alt=""
-            width={46}
-            height={46}
-            className="border rounded-full"
-          />
-          <div>
-            <p className="font-medium text-base">{row.original.name}</p>
-          </div>
-        </div>
-      );
+      return <p className="text-center font-medium">{row.getValue("name")}</p>;
     },
   },
   {
@@ -212,12 +199,14 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("dateOfBirth")}</p>
+        <p className="text-center font-medium">
+          {dayjs(row.getValue("dateOfBirth")).format("DD/MM/YYYY")}
+        </p>
       );
     },
   },
   {
-    accessorKey: "gender",
+    accessorKey: "sex",
     header: ({ column }) => {
       return (
         <div
@@ -230,9 +219,7 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">{row.getValue("gender")}</p>
-      );
+      return <p className="text-center font-medium">{row.getValue("sex")}</p>;
     },
   },
   {
@@ -240,7 +227,7 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
     cell: ({ row }) => {
       const customer = row.original;
 
-      return <CustomerDropdown customerId={customer.id} />;
+      return <CustomerDropdown customer={customer} />;
     },
   },
 ];

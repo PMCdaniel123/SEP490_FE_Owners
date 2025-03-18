@@ -69,8 +69,7 @@ export interface CustomerProps {
   name: string;
   phone: string;
   email: string;
-  location: string;
-  gender: string;
+  sex: string;
   dateOfBirth: string;
 }
 
@@ -152,7 +151,7 @@ export interface PromotionProps {
   startDate: string;
   endDate: string;
   status: string;
-  workspaceId: number; 
+  workspaceId: number;
 }
 export interface WithdrawalProps {
   id: string;
@@ -252,4 +251,24 @@ export interface FeedbackProps {
   content: string;
   image: string;
   createdAt: string;
+}
+
+export interface BookingAmenityProps {
+  amenityId: number;
+  amenityName: string;
+  unitPrice: number;
+  img_Url: string;
+  description: string;
+  category: string;
+  numberOfBooking: number;
+}
+
+export interface BookingBeverageProps {
+  beverageId: number;
+  beverageName: string;
+  unitPrice: number;
+  img_Url: string;
+  description: string;
+  category: string;
+  numberOfBooking: number;
 }
