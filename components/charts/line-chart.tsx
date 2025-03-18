@@ -9,27 +9,43 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "T1", desktop: 186 },
-  { month: "T2", desktop: 305 },
-  { month: "T3", desktop: 237 },
-  { month: "T4", desktop: 73 },
-  { month: "T5", desktop: 209 },
-  { month: "T6", desktop: 214 },
-];
+import { BookingProps } from "@/types";
+import dayjs from "dayjs";
 
 const chartConfig = {
-  desktop: {
+  revenue: {
     label: "Doanh thu",
     color: "#27D095",
   },
+  other: {
+    label: "Doanh thu",
+    color: "#F54F5F",
+  },
 } satisfies ChartConfig;
 
-export default function DashboardLineChart() {
+export default function DashboardLineChart({
+  bookingList,
+}: {
+  bookingList: BookingProps[];
+}) {
+  const totalPriceByMonth = bookingList.reduce(
+    (acc: { [key: string]: number }, booking) => {
+      const month = dayjs(booking.created_At).format("MM/YYYY");
+      acc[month] = (acc[month] || 0) + Number(booking.price);
+      return acc;
+    },
+    {}
+  );
+
+  const chartData = Object.keys(totalPriceByMonth).map((month) => ({
+    month,
+    revenue: totalPriceByMonth[month],
+  }));
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="mt-4 font-bold">Doanh thu</CardTitle>
+        <CardTitle className="mt-4 font-bold">Doanh thu năm 2025</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -38,8 +54,8 @@ export default function DashboardLineChart() {
             data={chartData}
             margin={{
               top: 20,
-              left: 12,
-              right: 12,
+              left: 40,
+              right: 40,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -47,20 +63,20 @@ export default function DashboardLineChart() {
               dataKey="month"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickMargin={0}
+              tickFormatter={(value) => value.slice(0, 7)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="revenue"
               type="natural"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-revenue)"
               strokeWidth={2}
               dot={{
-                fill: "var(--color-desktop)",
+                fill: "var(--color-revenue)",
               }}
               activeDot={{
                 r: 6,

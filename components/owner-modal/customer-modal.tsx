@@ -1,18 +1,14 @@
-import { customerList } from "@/constants/constant";
 import { CustomerProps } from "@/types";
 import { Ban } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-function CustomerModal({ customerId }: { customerId: string }) {
-  const [customer, setCustomer] = useState<CustomerProps | null>(null);
-
+function CustomerModal({ customer }: { customer: CustomerProps }) {
   useEffect(() => {
-    if (!customerId) {
+    if (!customer) {
       return;
     }
-    setCustomer(customerList[Number(customerId) - 1]);
-  }, [customerId]);
+  }, [customer]);
 
   return (
     <div className="mt-8">
@@ -30,7 +26,7 @@ function CustomerModal({ customerId }: { customerId: string }) {
           </p>
         </div>
       </div>
-      <div className="flex flex-col mt-4 gap-3 border bg-primary text-white p-4 rounded-md">
+      <div className="flex flex-col mt-4 gap-3 border border-primary bg-white text-black p-4 rounded-md">
         <p>
           <span className="font-semibold">Email: </span>
           {customer?.email}
@@ -45,7 +41,7 @@ function CustomerModal({ customerId }: { customerId: string }) {
         </p>
         <p>
           <span className="font-semibold">Giới tính: </span>
-          {customer?.gender}
+          {customer?.sex}
         </p>
       </div>
       <div className="mt-4 flex justify-end">
