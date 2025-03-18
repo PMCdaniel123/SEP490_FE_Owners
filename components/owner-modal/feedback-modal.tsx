@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { customerList, feedbackList } from "@/constants/constant";
+import { feedbackList } from "@/constants/constant";
 import {
   CustomerProps,
   FeedbackProps,
@@ -13,6 +13,7 @@ import { Card, CardContent } from "../ui/card";
 import { Ruler, Sofa, Users } from "lucide-react";
 import { toast } from "react-toastify";
 import Loader from "../loader/Loader";
+import { fetchCustomerDetail } from "@/features";
 
 interface FeedbackWorkspaceProps {
   workspace: Workspace | null;
@@ -33,9 +34,7 @@ function FeedbackModal({ feedbackId }: { feedbackId: string }) {
       return;
     }
     setFeedback(feedbackList[Number(feedbackId) - 1]);
-    setCustomer(
-      customerList[Number(feedbackList[Number(feedbackId) - 1].id) - 1]
-    );
+    fetchCustomerDetail("1", setCustomer, setLoading);
     const getWorkspaceDetail = async () => {
       try {
         const response = await fetch(
