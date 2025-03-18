@@ -95,7 +95,7 @@ function TopNav() {
 
   const handleLogOut = () => {
     dispatch(logout());
-    window.location.reload();
+    router.push("/");
   };
 
   return (

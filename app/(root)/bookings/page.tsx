@@ -27,8 +27,8 @@ function BookingManagement() {
           throw new Error("Có lỗi xảy ra khi tải danh sách đặt chỗ.");
         }
         const data = await response.json();
-        const formattedAmenities = data.bookingByOwnerIdDTOs;
-        setBookingList(formattedAmenities);
+        const formattedBooking = data.bookingByOwnerIdDTOs;
+        setBookingList(formattedBooking);
         setLoading(false);
       } catch (error) {
         const errorMessage =

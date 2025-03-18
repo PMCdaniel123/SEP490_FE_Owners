@@ -12,49 +12,58 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "p1", visitors: 275, fill: "var(--color-p1)" },
-  { browser: "p2", visitors: 200, fill: "var(--color-p2)" },
-  { browser: "p3", visitors: 287, fill: "var(--color-p3)" },
-  { browser: "p4", visitors: 173, fill: "var(--color-p4)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
+import { BookingBeverageProps } from "@/types";
 
-const chartConfig = {
-  visitors: {
-    label: "Lượt mua",
-  },
-  p1: {
-    label: "Trà sữa chân châu đường đen",
-    color: "#67CADF",
-  },
-  p2: {
-    label: "Matcha Latte",
-    color: "#27D095",
-  },
-  p3: {
-    label: "Cà phê muối",
-    color: "#FF8E29",
-  },
-  p4: {
-    label: "Coco Matcha",
-    color: "#F54F5F",
-  },
-  other: {
-    label: "Khác",
-    color: "#fcba03",
-  },
-} satisfies ChartConfig;
+export default function HotBeverageChart({
+  bookingBeverageList,
+}: {
+  bookingBeverageList: BookingBeverageProps[];
+}) {
+  const chartData = React.useMemo(() => {
+    if (!bookingBeverageList || bookingBeverageList.length === 0) return [];
 
-export default function HotItemsPieChart() {
+    const colors = ["#67CADF", "#27D095", "#FF8E29", "#F54F5F"];
+
+    const data = bookingBeverageList.slice(0, 4).map((item, index) => ({
+      browser: item.beverageName,
+      visitors: item.numberOfBooking,
+      fill: colors[index] || "#ccc",
+    }));
+
+    if (bookingBeverageList.length > 4) {
+      const otherVisitors = bookingBeverageList
+        .slice(4)
+        .reduce((sum, item) => sum + item.numberOfBooking, 0);
+      data.push({
+        browser: "Khác",
+        visitors: otherVisitors,
+        fill: "#fcba03",
+      });
+    }
+
+    return data;
+  }, [bookingBeverageList]);
+
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+  }, [chartData]);
+
+  const chartConfig: ChartConfig = React.useMemo(() => {
+    const config: ChartConfig = {
+      visitors: { label: "Lượt mua" },
+    };
+
+    chartData.forEach((item) => {
+      config[item.browser] = { label: item.browser, color: item.fill };
+    });
+
+    return config;
+  }, [chartData]);
 
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center mt-4">
-        <CardTitle>Các sản phẩm nổi bật</CardTitle>
+        <CardTitle>Các món nổi bật</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square">
