@@ -39,6 +39,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface WorkspaceFormProps {
   initialData?: Workspace | null;
@@ -47,6 +48,7 @@ interface WorkspaceFormProps {
 function WorkspaceForm({ initialData }: WorkspaceFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(
     initialData ? initialData.imagesStr : []
@@ -86,7 +88,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
   const uploadImage = async (image: File) => {
     const formData = new FormData();
     formData.append("image", image);
-
+    setLoading(true);
     try {
       const response = await fetch("https://localhost:5050/images/upload", {
         method: "POST",
@@ -98,6 +100,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       }
 
       const result = await response.json();
+      setLoading(false);
       return result.data[0];
     } catch (error) {
       const errorMessage =
@@ -108,12 +111,14 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
   const onCreate = async (values: z.infer<typeof workspaceSchema>) => {
     const uploadedUrls: string[] = [...existingImages];
 
+    setLoading(true);
     for (const file of selectedFiles) {
       const url = await uploadImage(file);
       if (url) uploadedUrls.push(url);
@@ -121,6 +126,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
 
     if (uploadedUrls.length === 0) {
       toast.error("Bạn phải tải lên ít nhất một ảnh hợp lệ.");
+      setLoading(false);
       return;
     }
 
@@ -155,6 +161,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       ownerId: Number(owner?.id),
     };
 
+    setLoading(true);
     try {
       const response = await fetch("https://localhost:5050/workspaces", {
         method: "POST",
@@ -174,6 +181,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
       router.push("/workspaces");
     } catch (error) {
       const errorMessage =
@@ -184,12 +192,14 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
   const onUpdate = async (values: z.infer<typeof workspaceSchema>) => {
     const uploadedUrls: string[] = [...existingImages];
 
+    setLoading(true);
     for (const file of selectedFiles) {
       const url = await uploadImage(file);
       if (url) uploadedUrls.push(url);
@@ -197,6 +207,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
 
     if (uploadedUrls.length === 0) {
       toast.error("Bạn phải tải lên ít nhất một ảnh hợp lệ.");
+      setLoading(false);
       return;
     }
 
@@ -230,6 +241,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       status: values.status,
     };
 
+    setLoading(true);
     try {
       const response = await fetch(
         "https://localhost:5050/workspaces/" + initialData?.id,
@@ -252,6 +264,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
       router.push("/workspaces");
     } catch (error) {
       const errorMessage =
@@ -262,6 +275,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
@@ -488,7 +502,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6">
-                    Diện tích (m2)
+                    Diện tích (m²)
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -721,7 +735,13 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
               type="submit"
             >
-              <Save size={18} /> <span className="font-bold">Xác nhận</span>
+              {loading ? (
+                <LoadingOutlined style={{ color: "white" }} />
+              ) : (
+                <span className="font-bold flex items-center gap-2">
+                  <Save size={18} /> Xác nhận
+                </span>
+              )}
             </button>
           </div>
         </form>

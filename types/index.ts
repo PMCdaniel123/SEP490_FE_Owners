@@ -272,3 +272,25 @@ export interface BookingBeverageProps {
   category: string;
   numberOfBooking: number;
 }
+
+export interface OwnerProps {
+  identityName: string;
+  identityNumber: string;
+  dateOfBirth: string;
+  sex: string;
+  nationality: string;
+  placeOfOrigin: string;
+  placeOfResidence: string;
+  identityExpiredDate: string;
+  identityCreatedDate: string;
+  identityFile: string;
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  licenseName: string;
+  licenseNumber: string;
+  licenseAddress: string;
+  googleMapUrl: string;
+  charterCapital: string;
+  licenseFile: string;
+}

@@ -48,8 +48,12 @@ export default function OwnerPage() {
   const [beverageList, setBeverageList] = useState<BeverageProps[]>([]);
   const [bookingList, setBookingList] = useState<BookingProps[]>([]);
   const [workspaceList, setWorkspaceList] = useState<Workspace[]>([]);
-  const [bookingAmenityList, setBookingAmenityList] = useState<BookingAmenityProps[]>([]);
-  const [bookingBeverageList, setBookingBeverageList] = useState<BookingBeverageProps[]>([]);
+  const [bookingAmenityList, setBookingAmenityList] = useState<
+    BookingAmenityProps[]
+  >([]);
+  const [bookingBeverageList, setBookingBeverageList] = useState<
+    BookingBeverageProps[]
+  >([]);
   const { owner } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -145,7 +149,9 @@ export default function OwnerPage() {
             {percentRevenue >= 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">
                 <TrendingUp />{" "}
-                <span>{percentRevenue?.toFixed(2) ?? "Trống"}% tháng trước</span>
+                <span>
+                  {percentRevenue?.toFixed(2) ?? "Trống"}% tháng trước
+                </span>
               </div>
             ) : (
               <div className="flex gap-1 items-center justify-start text-red-500 text-sm">
@@ -165,7 +171,9 @@ export default function OwnerPage() {
           </div>
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
             <p className="font-bold">Khách hàng</p>
-            <p className="text-[#6F757E] text-xl">{customerList?.length ?? "Trống"}</p>
+            <p className="text-[#6F757E] text-xl">
+              {customerList?.length ?? "Trống"}
+            </p>
             {percentCustomer >= 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">
                 <TrendingUp />{" "}
@@ -190,7 +198,10 @@ export default function OwnerPage() {
             </div>
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
               <p className="font-bold">Số lượng không gian</p>
-              <p className="text-[#6F757E] text-xl">{workspaceList?.length ?? "Trống"}</p>            </div>
+              <p className="text-[#6F757E] text-xl">
+                {workspaceList?.length ?? "Trống"}
+              </p>{" "}
+            </div>
           </div>
           <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
             <div className="col-span-1 flex items-center justify-center bg-[#fcba03] rounded-xl text-white">
@@ -198,7 +209,10 @@ export default function OwnerPage() {
             </div>
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
               <p className="font-bold">Số lượng tiện ích</p>
-              <p className="text-[#6F757E] text-xl">{amenityList?.length ?? "Trống"}</p>            </div>
+              <p className="text-[#6F757E] text-xl">
+                {amenityList?.length ?? "Trống"}
+              </p>{" "}
+            </div>
           </div>
           <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
             <div className="col-span-1 flex items-center justify-center bg-[#FF8E29] rounded-xl text-white">
@@ -206,20 +220,23 @@ export default function OwnerPage() {
             </div>
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
               <p className="font-bold">Số lượng món</p>
-              <p className="text-[#6F757E] text-xl">{beverageList?.length ?? "Trống"}</p>            </div>
+              <p className="text-[#6F757E] text-xl">
+                {beverageList?.length ?? "Trống"}
+              </p>{" "}
+            </div>
           </div>
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="col-span-2">
+        <div className="col-span-2 sticky top-0 h-fit overflow-auto">
           <DashboardLineChart bookingList={bookingList} />
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 sticky top-0 h-fit overflow-auto">
           <CustomerAnalysisChart customerList={customerList} />
         </div>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="col-span-2 bg-white p-4 rounded-xl">
+      <div className="grid gap-4 md:grid-cols-3 relative">
+        <div className="col-span-2 bg-white p-4 rounded-xl sticky top-0 h-fit overflow-auto">
           <TopWorkspaceTable
             columns={topWorkspaceTableColumns}
             data={topWorkspace}

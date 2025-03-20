@@ -38,7 +38,7 @@ export const workspaceSchema = z.object({
     required_error: "Vui lòng loại không gian hợp lệ",
   }),
   area: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "Diện tích phải lớn hơn 0 m2",
+    message: "Diện tích phải lớn hơn 0 m²",
   }),
   capacity: z
     .string()
@@ -117,10 +117,16 @@ export const promotionSchema = z
     description: z.string().min(3, "Mô tả phải có ít nhất 3 ký tự"),
     discount: z
       .string()
-      .refine((val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) < 100, {
-        message: "% phải lớn hơn 0 và nhỏ hơn 100",
-      }),
-      startDate: z.string().nonempty("Vui lòng chọn ngày bắt đầu").refine((val) => new Date(val) > new Date(), {
+      .refine(
+        (val) => !isNaN(Number(val)) && Number(val) > 0 && Number(val) < 100,
+        {
+          message: "% phải lớn hơn 0 và nhỏ hơn 100",
+        }
+      ),
+    startDate: z
+      .string()
+      .nonempty("Vui lòng chọn ngày bắt đầu")
+      .refine((val) => new Date(val) > new Date(), {
         message: "Ngày bắt đầu không thể là ngày trong quá khứ",
       }),
     endDate: z.string().nonempty("Vui lòng chọn ngày kết thúc"),
@@ -142,8 +148,8 @@ export const withdrawalSchema = z.object({
 });
 
 export const identifySchema = z.object({
-  name: z.string().min(3, "Họ và tên phải có ít nhất 3 ký tự"),
-  number: z
+  identityName: z.string().min(3, "Họ và tên phải có ít nhất 3 ký tự"),
+  identityNumber: z
     .string()
     .min(12, "Số căn cước công dân phải có 12 chữ số")
     .max(12, "Số căn cước công dân phải có 12 chữ số")
@@ -151,35 +157,42 @@ export const identifySchema = z.object({
       message: "Số căn cước công dân phải có 12 chữ số",
     }),
   dateOfBirth: z.string().nonempty("Vui lòng chọn ngày sinh"),
-  gender: z.string({
+  sex: z.string({
     required_error: "Vui lòng chọn giới tính hợp lệ",
   }),
   nationality: z.string().nonempty("Vui lòng nhập quốc tịch"),
   placeOfOrigin: z.string().nonempty("Vui lòng nhập quê quán"),
   placeOfResidence: z.string().nonempty("Vui lòng nhập nơi thường trú"),
-  dateOfExpiry: z.string().nonempty("Vui lòng chọn ngày hết hạn"),
-  dateOfCreation: z.string().nonempty("Vui lòng chọn ngày tạo cccd"),
-  file: z.string().url("Vui lòng tải lên một file hợp lệ"),
-});
-
-export const socialSchema = z.object({
+  identityExpiredDate: z.string().nonempty("Vui lòng chọn ngày hết hạn"),
+  identityCreatedDate: z.string().nonempty("Vui lòng chọn ngày tạo cccd"),
+  identityFile: z
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Vui lòng tải lên một file hợp lệ",
+    })
+    .refine((file) => file && file.size < 5 * 1024 * 1024, {
+      message: "File phải nhỏ hơn 5MB",
+    }),
   facebook: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
   instagram: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
-  twitter: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
-  youtube: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
-  other: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
-});
-
-export const licenseSchema = z.object({
-  name: z.string().nonempty("Vui lòng nhập tên doanh nghiệp"),
-  number: z.string().nonempty("Vui lòng nhập mã số doanh nghiệp"),
-  address: z
+  tiktok: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
+  licenseName: z.string().nonempty("Vui lòng nhập tên doanh nghiệp"),
+  licenseNumber: z.string().nonempty("Vui lòng nhập mã số doanh nghiệp"),
+  licenseAddress: z
     .string()
     .nonempty("Vui lòng nhập địa chỉ trụ sở chính của doanh nghiệp"),
+  googleMapUrl: z.string().nonempty("Vui lòng nhập đường dẫn hợp lệ"),
   charterCapital: z
     .string()
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: "Vốn tiền lệ phải lớn hơn 0",
     }),
-  file: z.string().url("Vui lòng tải lên một file hợp lệ"),
+  licenseFile: z
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Vui lòng tải lên một file hợp lệ",
+    })
+    .refine((file) => file && file.size < 5 * 1024 * 1024, {
+      message: "File phải nhỏ hơn 5MB",
+    }),
 });

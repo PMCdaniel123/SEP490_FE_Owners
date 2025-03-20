@@ -25,11 +25,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface BeverageFormProps {
   initialData?: BeverageProps | null;
@@ -38,6 +39,7 @@ interface BeverageFormProps {
 function BeverageForm({ initialData }: BeverageFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof beverageSchema>>({
     resolver: zodResolver(beverageSchema),
     defaultValues: initialData
@@ -61,7 +63,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
   const uploadImage = async (image: File) => {
     const formData = new FormData();
     formData.append("image", image);
-
+    setLoading(true);
     try {
       const response = await fetch("https://localhost:5050/images/upload", {
         method: "POST",
@@ -73,6 +75,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
       }
 
       const result = await response.json();
+      setLoading(false);
       return result.data[0];
     } catch (error) {
       const errorMessage =
@@ -83,12 +86,13 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
   const onCreate = async (values: z.infer<typeof beverageSchema>) => {
     let imgUrl = values.imgUrl;
-
+    setLoading(true);
     if (typeof imgUrl !== "string") {
       try {
         const uploadedUrl = await uploadImage(imgUrl);
@@ -105,6 +109,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
           hideProgressBar: false,
           theme: "light",
         });
+        setLoading(false);
         return;
       }
     }
@@ -115,6 +120,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
       ownerId: owner?.id,
     };
 
+    setLoading(true);
     try {
       const response = await fetch("https://localhost:5050/beverages", {
         method: "POST",
@@ -134,6 +140,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
       router.push("/beverages");
     } catch (error) {
       const errorMessage =
@@ -144,12 +151,14 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
   const onUpdate = async (values: z.infer<typeof beverageSchema>) => {
     let imgUrl = values.imgUrl;
 
+    setLoading(true);
     if (typeof imgUrl !== "string") {
       try {
         const uploadedUrl = await uploadImage(imgUrl);
@@ -166,6 +175,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
           hideProgressBar: false,
           theme: "light",
         });
+        setLoading(false);
         return;
       }
     }
@@ -175,6 +185,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
       imgUrl,
     };
 
+    setLoading(true);
     try {
       const response = await fetch(
         "https://localhost:5050/beverages/" + initialData?.id,
@@ -197,6 +208,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
       router.push("/beverages");
     } catch (error) {
       const errorMessage =
@@ -207,6 +219,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
@@ -405,7 +418,13 @@ function BeverageForm({ initialData }: BeverageFormProps) {
               className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
               type="submit"
             >
-              <Save size={18} /> <span className="font-bold">Xác nhận</span>
+              {loading ? (
+                <LoadingOutlined style={{ color: "white" }} />
+              ) : (
+                <span className="font-bold flex items-center gap-2">
+                  <Save size={18} /> Xác nhận
+                </span>
+              )}
             </button>
           </div>
         </form>
