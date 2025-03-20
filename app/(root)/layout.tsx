@@ -24,8 +24,10 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <Providers>
           <div className="flex bg-third p-4 gap-4 min-h-screen w-full">
-            <Sidebar />
-            <main className="flex-1">
+            <div className="h-fit sticky top-4">
+              <Sidebar />
+            </div>
+            <main className="flex-1 sticky top-4 h-fit">
               <TopNav />
               {children}
             </main>

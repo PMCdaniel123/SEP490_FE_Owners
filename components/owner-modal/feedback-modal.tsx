@@ -143,7 +143,7 @@ function FeedbackModal({ feedbackId }: { feedbackId: string }) {
               </span>
               <span className="flex items-center">
                 <Ruler className="mr-1" size={16} />{" "}
-                {workspace?.workspace?.area} m2
+                {workspace?.workspace?.area} m²
               </span>
               <span className="flex items-center">
                 <Sofa className="mr-1" size={16} />{" "}
