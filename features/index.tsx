@@ -7,6 +7,7 @@ import {
   BookingProps,
   CustomerProps,
   Price,
+  TopRevenueWorkspace,
   Workspace,
 } from "@/types";
 import { toast } from "react-toastify";
@@ -175,6 +176,7 @@ export const fetchBookingList = async (
   setBookingList: React.Dispatch<React.SetStateAction<BookingProps[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+  setLoading(true);
   try {
     const response = await fetch(
       "https://localhost:5050/getallbookingbyownerid/" + Number(id)
@@ -184,7 +186,9 @@ export const fetchBookingList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách đặt chỗ.");
     }
     const data = await response.json();
-    const formattedBooking = data.bookingByOwnerIdDTOs;
+    const formattedBooking = data.bookingByOwnerIdDTOs.filter(
+      (booking: BookingProps) => booking.status === "Success"
+    );
     setBookingList(formattedBooking);
     setLoading(false);
   } catch (error) {
@@ -206,6 +210,7 @@ export const fetchWorkspaceList = async (
   setWorkspaceList: React.Dispatch<React.SetStateAction<Workspace[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+  setLoading(true);
   try {
     const response = await fetch(
       "https://localhost:5050/workspaces/owner/" + Number(id)
@@ -300,6 +305,48 @@ export const fetchBookingBeverageList = async (
       theme: "light",
     });
     setBookingBeverageList([]);
+    setLoading(false);
+  }
+};
+
+export const fetchTopWorkspaceList = async (
+  id: string | null,
+  setTopWorkspaceList: React.Dispatch<
+    React.SetStateAction<TopRevenueWorkspace[]>
+  >,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await fetch(
+      "https://localhost:5050/owners/" + Number(id) + "/workspaces"
+    );
+
+    if (!response.ok) {
+      throw new Error("Có lỗi xảy ra khi tải danh sách không gian.");
+    }
+    const data = await response.json();
+    const formatted = data.workspaces.map((workspace: TopRevenueWorkspace) => ({
+      ...workspace,
+      shortTermPrice:
+        workspace.prices.find((price) => price.category === "Giờ")
+          ?.averagePrice || 0,
+      longTermPrice:
+        workspace.prices.find((price) => price.category === "Ngày")
+          ?.averagePrice || 0,
+    }));
+    setTopWorkspaceList(formatted);
+    setLoading(false);
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+    toast.error(errorMessage, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      theme: "light",
+    });
+    setTopWorkspaceList([]);
     setLoading(false);
   }
 };

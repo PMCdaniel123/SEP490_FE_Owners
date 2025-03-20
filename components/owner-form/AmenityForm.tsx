@@ -49,7 +49,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
           description: "",
           price: "",
           imgUrl: "",
-          quantity: "",
+          quantity: "Vật dụng",
           category: "",
           status: "Active",
         },
@@ -309,11 +309,28 @@ function AmenityForm({ initialData }: AmenityFormProps) {
                     Loại tiện ích
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
-                      placeholder="Nhập loại tiện ích..."
-                      {...field}
-                    />
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                        <SelectValue placeholder="Chọn phân loại" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem
+                          className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
+                          value="Vật dụng"
+                        >
+                          Vật dụng
+                        </SelectItem>
+                        <SelectItem
+                          className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
+                          value="Dịch vụ"
+                        >
+                          Dịch vụ
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage className="text-red-500 text-xs" />
                 </FormItem>
