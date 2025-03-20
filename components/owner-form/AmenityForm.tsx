@@ -25,11 +25,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface AmenityFormProps {
   initialData?: AmenityProps | null;
@@ -37,6 +38,7 @@ interface AmenityFormProps {
 
 function AmenityForm({ initialData }: AmenityFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof amenitySchema>>({
     resolver: zodResolver(amenitySchema),
@@ -62,7 +64,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
   const uploadImage = async (image: File) => {
     const formData = new FormData();
     formData.append("image", image);
-
+    setLoading(true);
     try {
       const response = await fetch("https://localhost:5050/images/upload", {
         method: "POST",
@@ -74,6 +76,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
       }
 
       const result = await response.json();
+      setLoading(false);
       return result.data[0];
     } catch (error) {
       const errorMessage =
@@ -84,13 +87,14 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
   const onCreate = async (values: z.infer<typeof amenitySchema>) => {
     // console.log(amenitySchema.parse(values));
     let imgUrl = values.imgUrl;
-
+    setLoading(true);
     if (typeof imgUrl !== "string") {
       try {
         const uploadedUrl = await uploadImage(imgUrl);
@@ -107,6 +111,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
           hideProgressBar: false,
           theme: "light",
         });
+        setLoading(false);
         return;
       }
     }
@@ -116,7 +121,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
       imgUrl,
       ownerId: owner?.id,
     };
-
+    setLoading(true);
     try {
       const response = await fetch("https://localhost:5050/amenities", {
         method: "POST",
@@ -136,6 +141,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
       router.push("/amenities");
     } catch (error) {
       const errorMessage =
@@ -146,6 +152,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
@@ -153,6 +160,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
     // console.log(amenitySchema.parse(values));
     let imgUrl = values.imgUrl;
 
+    setLoading(true);
     if (typeof imgUrl !== "string") {
       try {
         const uploadedUrl = await uploadImage(imgUrl);
@@ -169,6 +177,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
           hideProgressBar: false,
           theme: "light",
         });
+        setLoading(false);
         return;
       }
     }
@@ -184,6 +193,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
       status: values.status,
     };
 
+    setLoading(true);
     try {
       const response = await fetch(
         "https://localhost:5050/amenities/" + initialData?.id,
@@ -206,6 +216,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
       router.push("/amenities");
     } catch (error) {
       const errorMessage =
@@ -216,6 +227,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
@@ -424,7 +436,13 @@ function AmenityForm({ initialData }: AmenityFormProps) {
               className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
               type="submit"
             >
-              <Save size={18} /> <span className="font-bold">Xác nhận</span>
+              {loading ? (
+                <LoadingOutlined style={{ color: "white" }} />
+              ) : (
+                <span className="font-bold flex items-center gap-2">
+                  <Save size={18} /> Xác nhận
+                </span>
+              )}
             </button>
           </div>
         </form>

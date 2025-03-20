@@ -75,7 +75,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
       const token = result.token;
 
       localStorage.setItem("token", token);
-      router.push("/dashboard");
+      router.push("/authentication");
 
       try {
         const decodeResponse = await fetch(

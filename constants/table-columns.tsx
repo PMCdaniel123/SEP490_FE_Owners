@@ -359,7 +359,7 @@ export const WorkspaceTableColumns: ColumnDef<Workspace>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("area")} m2</p>
+        <p className="text-center font-medium">{row.getValue("area")} m²</p>
       );
     },
   },

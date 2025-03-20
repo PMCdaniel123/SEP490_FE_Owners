@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface PromotionFormProps {
   initialData?: PromotionProps | null;
@@ -38,24 +39,25 @@ interface PromotionFormProps {
 function PromotionForm({ initialData }: PromotionFormProps) {
   const router = useRouter();
   const { owner } = useSelector((state: RootState) => state.auth);
+  const [loading, setLoading] = useState(false);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const form = useForm<z.infer<typeof promotionSchema>>({
     resolver: zodResolver(promotionSchema),
     defaultValues: initialData
       ? {
-        ...initialData,
-        startDate: dayjs(initialData.startDate).format("YYYY-MM-DDTHH:mm"),
-        endDate: dayjs(initialData.endDate).format("YYYY-MM-DDTHH:mm"),
-      }
+          ...initialData,
+          startDate: dayjs(initialData.startDate).format("YYYY-MM-DDTHH:mm"),
+          endDate: dayjs(initialData.endDate).format("YYYY-MM-DDTHH:mm"),
+        }
       : {
-        code: "",
-        description: "",
-        discount: "",
-        startDate: "",
-        endDate: "",
-        status: "Active",
-        workspaceId: 0,
-      },
+          code: "",
+          description: "",
+          discount: "",
+          startDate: "",
+          endDate: "",
+          status: "Active",
+          workspaceId: 0,
+        },
   });
 
   useEffect(() => {
@@ -110,6 +112,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
       data.workspaceId = values.workspaceId;
     }
 
+    setLoading(true);
     try {
       const response = await fetch(
         initialData
@@ -143,6 +146,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
           theme: "light",
         }
       );
+      setLoading(false);
       router.push("/promotions");
     } catch (error) {
       const errorMessage =
@@ -153,6 +157,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      setLoading(false);
     }
   };
 
@@ -336,7 +341,9 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                       <FormControl>
                         <Select
                           value={field.value ? field.value.toString() : ""}
-                          onValueChange={(value) => field.onChange(Number(value))}
+                          onValueChange={(value) =>
+                            field.onChange(Number(value))
+                          }
                         >
                           <SelectTrigger className="py-6 px-4 rounded-md w-full">
                             <SelectValue placeholder="Chọn không gian" />
@@ -367,7 +374,13 @@ function PromotionForm({ initialData }: PromotionFormProps) {
               className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
               type="submit"
             >
-              <Save size={18} /> <span className="font-bold">Xác nhận</span>
+              {loading ? (
+                <LoadingOutlined style={{ color: "white" }} />
+              ) : (
+                <span className="font-bold flex items-center gap-2">
+                  <Save size={18} /> Xác nhận
+                </span>
+              )}
             </button>
           </div>
         </form>
