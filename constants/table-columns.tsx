@@ -8,7 +8,7 @@ import {
   FeedbackProps,
   formatCurrency,
   PromotionProps,
-  TopWorkspace,
+  TopRevenueWorkspace,
   WithdrawalProps,
   Workspace,
 } from "@/types";
@@ -43,9 +43,9 @@ const formatDateTime = (dateStr: string): string => {
   return dayjs(dateStr).format("HH:mm DD/MM/YYYY");
 };
 
-export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
+export const topWorkspaceTableColumns: ColumnDef<TopRevenueWorkspace>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "workspaceName",
     header: () => (
       <div className="text-black font-semibold text-base text-center">
         Tên không gian
@@ -53,24 +53,14 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center gap-2">
-          <Image
-            src={row.original.image}
-            alt=""
-            width={48}
-            height={48}
-            className="border rounded-full"
-          />
-          <div className="flex flex-col gap-1">
-            <p className="font-semibold text-base">{row.original.title}</p>
-            <p className="text-sm text-gray-600">{row.original.roomType}</p>
-          </div>
-        </div>
+        <p className="text-left font-medium">
+          {row.getValue("workspaceName")}
+        </p>
       );
     },
   },
   {
-    accessorKey: "booking",
+    accessorKey: "totalBookings",
     header: ({ column }) => {
       return (
         <div
@@ -84,12 +74,15 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("booking")}</p>
+        <p className="text-center font-medium">
+          {row.getValue("totalBookings")}
+        </p>
       );
     },
   },
+  { accessorKey: "longTermPrice", header: () => <p></p>, cell: () => <p></p> },
   {
-    accessorKey: "price",
+    accessorKey: "shortTermPrice",
     header: ({ column }) => {
       return (
         <div
@@ -104,13 +97,14 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {formatCurrency(Number(row.getValue("price")))}
+          {formatCurrency(Number(row.getValue("shortTermPrice")))} -{" "}
+          {formatCurrency(Number(row.getValue("longTermPrice")))}
         </p>
       );
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "revenue",
     header: ({ column }) => {
       return (
         <div
@@ -125,7 +119,7 @@ export const topWorkspaceTableColumns: ColumnDef<TopWorkspace>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {formatCurrency(row.getValue("amount"))}
+          {formatCurrency(row.getValue("revenue"))}
         </p>
       );
     },

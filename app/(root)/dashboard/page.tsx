@@ -3,7 +3,6 @@
 import DashboardLineChart from "@/components/charts/line-chart";
 import NewCustomers from "@/components/new-customers-table/new-customers";
 import TopWorkspaceTable from "@/components/table/top-workspace-table";
-import { topWorkspace } from "@/constants/constant";
 import { topWorkspaceTableColumns } from "@/constants/table-columns";
 import {
   Boxes,
@@ -23,6 +22,7 @@ import {
   BookingProps,
   CustomerProps,
   formatCurrency,
+  TopRevenueWorkspace,
   Workspace,
 } from "@/types";
 import Loader from "@/components/loader/Loader";
@@ -34,6 +34,7 @@ import {
   fetchBookingBeverageList,
   fetchBookingList,
   fetchCustomerList,
+  fetchTopWorkspaceList,
   fetchWorkspaceList,
 } from "@/features";
 import { useSelector } from "react-redux";
@@ -54,6 +55,9 @@ export default function OwnerPage() {
   const [bookingBeverageList, setBookingBeverageList] = useState<
     BookingBeverageProps[]
   >([]);
+  const [topWorkspaceList, setTopWorkspaceList] = useState<
+    TopRevenueWorkspace[]
+  >([]);
   const { owner } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -65,6 +69,7 @@ export default function OwnerPage() {
     fetchWorkspaceList(owner.id, setWorkspaceList, setLoading);
     fetchBookingAmenityList(owner.id, setBookingAmenityList, setLoading);
     fetchBookingBeverageList(owner.id, setBookingBeverageList, setLoading);
+    fetchTopWorkspaceList(owner.id, setTopWorkspaceList, setLoading);
   }, [owner]);
 
   if (loading) {
@@ -122,9 +127,10 @@ export default function OwnerPage() {
   );
 
   const percentRevenue =
-    ((currentRevenue - previousRevenue) /
-      (previousRevenue === 0 ? 1 : previousRevenue)) *
-    100;
+    (previousRevenue > 0
+      ? (currentRevenue - previousRevenue) /
+        (previousRevenue === 0 ? 1 : previousRevenue)
+      : 1) * 100;
 
   const percentCustomer =
     ((numberCurrentCustomer - numberPreviousCustomer) /
@@ -236,10 +242,10 @@ export default function OwnerPage() {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3 relative">
-        <div className="col-span-2 bg-white p-4 rounded-xl sticky top-0 h-fit overflow-auto">
+        <div className="col-span-2 bg-white p-4 rounded-xl sticky top-4 h-fit overflow-auto">
           <TopWorkspaceTable
             columns={topWorkspaceTableColumns}
-            data={topWorkspace}
+            data={topWorkspaceList}
           />
         </div>
         <div className="col-span-1 flex flex-col gap-4">

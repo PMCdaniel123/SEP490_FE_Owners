@@ -121,6 +121,21 @@ export interface Workspace {
   updatedAt: string;
 }
 
+export interface TopRevenueWorkspace {
+  workspaceId: string;
+  workspaceName: string;
+  revenue: number;
+  totalBookings: number;
+  shortTermPrice: number;
+  longTermPrice: number;
+  prices: {
+    id: number;
+    averagePrice: number;
+    category: string;
+    workspacePrices: string[];
+  }[];
+}
+
 export interface AmenityProps {
   id: string;
   name: string;
