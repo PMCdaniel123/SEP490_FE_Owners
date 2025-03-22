@@ -14,15 +14,18 @@ import { fetchCustomerDetail, fetchWorkspaceDetail } from "@/features";
 import { Card, CardContent } from "../ui/card";
 import {
   Boxes,
+  Calendar,
+  Clock,
   Eye,
   EyeOff,
   History,
+  MapPin,
   Ruler,
-  Sofa,
   User,
   Users,
   UtensilsCrossed,
 } from "lucide-react";
+import { Badge } from "../ui/badge";
 
 export interface BookingWorkspaceProps {
   workspace: Workspace;
@@ -92,44 +95,76 @@ function BookingModal({ booking }: { booking: BookingProps }) {
         {booking?.promotionId && <p>Mã giảm giá: {booking?.promotionId}</p>}
         <p>Phương thức thanh toán: {booking?.payment_Method}</p>
         <div className="my-2">
-          <Card className="rounded-md shadow-md py-0 gap-2">
-            <div className="relative">
-              <img
-                src={workspace?.workspace?.images[0].imgUrl || "/logo.png"}
-                alt={workspace?.workspace?.name || ""}
-                className="w-full h-48 object-cover rounded-t-md"
-              />
-              <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white px-3 py-1 rounded-md text-sm">
-                {formatCurrency(Number(workspace?.workspace?.shortTermPrice))} -{" "}
-                {formatCurrency(Number(workspace?.workspace?.longTermPrice))}
+          <Card className="relative overflow-hidden rounded-lg shadow-lg border border-gray-100">
+            <div className="relative group">
+              <div className="overflow-hidden h-56">
+                <img
+                  src={
+                    workspace?.workspace?.images[0].imgUrl || "/placeholder.png"
+                  }
+                  alt={workspace?.workspace?.name || ""}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                <div className="flex justify-between items-end">
+                  <Badge className="bg-primary hover:bg-secondary text-white">
+                    {workspace?.workspace?.category}
+                  </Badge>
+                </div>
               </div>
             </div>
-            <CardContent className="mb-4">
-              <h3 className="text-lg font-semibold">
+
+            <CardContent className="p-5">
+              <h3 className="text-xl font-bold text-gray-800 mb-1 line-clamp-1">
                 {workspace?.workspace?.name}
               </h3>
-              <p className="text-gray-600 text-sm truncate whitespace-nowrap">
-                {workspace?.address}
+              <p className="text-gray-600 text-sm mb-3 flex items-center">
+                <MapPin className="mr-1 text-gray-400" size={14} />
+                <span className="truncate">{workspace?.address}</span>
               </p>
-              <div className="flex items-center text-gray-600 text-sm mt-2 justify-between">
-                <span className="flex items-center">
-                  <Users className="mr-1" size={16} />{" "}
-                  {workspace?.workspace?.capacity} người
-                </span>
-                <span className="flex items-center">
-                  <Ruler className="mr-1" size={16} />{" "}
-                  {workspace?.workspace?.area} m²
-                </span>
-                <span className="flex items-center">
-                  <Sofa className="mr-1" size={16} />{" "}
-                  {workspace?.workspace?.category === "Văn phòng"
-                    ? "Văn phòng"
-                    : workspace?.workspace?.category === "Phòng họp"
-                    ? "Phòng họp"
-                    : workspace?.workspace?.category === "Phòng hội thảo"
-                    ? "Phòng hội thảo"
-                    : "Bàn cá nhân"}
-                </span>
+
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="flex items-center text-gray-700 text-sm">
+                  <Users className="mr-1 text-blue-500" size={16} />
+                  <span>{workspace?.workspace?.capacity} người</span>
+                </div>
+                <div className="flex items-center text-gray-700 text-sm justify-end">
+                  <Ruler className="mr-1 text-green-500" size={16} />
+                  <span>{workspace?.workspace?.area} m²</span>
+                </div>
+              </div>
+
+              <div className="border-t border-gray-100 pt-3">
+                <div className="flex flex-col gap-1">
+                  {Number(workspace?.workspace?.shortTermPrice) > 0 && (
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center text-gray-700 text-sm">
+                        <Clock className="mr-1 text-orange-500" size={16} />
+                        <span>Theo giờ</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        {formatCurrency(
+                          Number(workspace?.workspace?.shortTermPrice)
+                        )}
+                      </span>
+                    </div>
+                  )}
+
+                  {Number(workspace?.workspace?.longTermPrice) > 0 && (
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center text-gray-700 text-sm">
+                        <Calendar className="mr-1 text-purple-500" size={16} />
+                        <span>Theo ngày</span>
+                      </div>
+                      <span className="font-semibold text-gray-900">
+                        {formatCurrency(
+                          Number(workspace?.workspace?.longTermPrice)
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

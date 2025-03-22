@@ -85,12 +85,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
     }
   }, [initialData, form]);
 
-  const uploadImage = async (image: File) => {
+  const uploadImage = async (file: File) => {
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("files", file);
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/images/upload", {
+      const response = await fetch("https://localhost:5050/files/upload", {
         method: "POST",
         body: formData,
       });

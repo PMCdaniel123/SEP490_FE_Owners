@@ -61,7 +61,7 @@ export default function HotBeverageChart({
   }, [chartData]);
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col h-full py-6">
       <CardHeader className="items-center mt-4">
         <CardTitle>Các món nổi bật</CardTitle>
       </CardHeader>

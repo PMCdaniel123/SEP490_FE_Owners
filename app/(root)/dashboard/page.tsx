@@ -44,6 +44,7 @@ import HotBeverageChart from "@/components/charts/hot-beverage-chart";
 
 export default function OwnerPage() {
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [customerList, setCustomerList] = useState<CustomerProps[]>([]);
   const [amenityList, setAmenityList] = useState<AmenityProps[]>([]);
   const [beverageList, setBeverageList] = useState<BeverageProps[]>([]);
@@ -70,9 +71,10 @@ export default function OwnerPage() {
     fetchBookingAmenityList(owner.id, setBookingAmenityList, setLoading);
     fetchBookingBeverageList(owner.id, setBookingBeverageList, setLoading);
     fetchTopWorkspaceList(owner.id, setTopWorkspaceList, setLoading);
+    setIsLoading(false);
   }, [owner]);
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="text-center">
         <Loader />
@@ -133,9 +135,10 @@ export default function OwnerPage() {
       : 1) * 100;
 
   const percentCustomer =
-    ((numberCurrentCustomer - numberPreviousCustomer) /
-      (numberPreviousCustomer === 0 ? 1 : numberPreviousCustomer)) *
-    100;
+    (numberPreviousCustomer > 0
+      ? (numberCurrentCustomer - numberPreviousCustomer) /
+        (numberPreviousCustomer === 0 ? 1 : numberPreviousCustomer)
+      : 1) * 100;
 
   const date = new Date();
   const dateString = `Tháng ${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -237,7 +240,7 @@ export default function OwnerPage() {
         <div className="col-span-2 sticky top-0 h-fit overflow-auto">
           <DashboardLineChart bookingList={bookingList} />
         </div>
-        <div className="col-span-1 sticky top-0 h-fit overflow-auto">
+        <div className="col-span-1 h-full">
           <CustomerAnalysisChart customerList={customerList} />
         </div>
       </div>

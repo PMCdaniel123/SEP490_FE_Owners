@@ -27,6 +27,8 @@ function TopNav() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { owner } = useSelector((state: RootState) => state.auth);
+  const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (token !== null && token !== undefined && token !== "") {
@@ -56,6 +58,24 @@ function TopNav() {
             phone: decoded.claims.Phone,
           };
           dispatch(login(ownerData));
+
+          const balanceResponse = await fetch(
+            "https://localhost:5050/owner-wallets/" + ownerData.id,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!balanceResponse.ok) {
+            throw new Error("Có lỗi xảy ra khi tải số tiền.");
+          }
+
+          const balanceData = await balanceResponse.json();
+          setBalance(balanceData.balance);
+          setIsLoading(false);
         } catch (error) {
           const errorMessage =
             error instanceof Error ? error.message : "Đã xảy ra lỗi!";
@@ -67,7 +87,7 @@ function TopNav() {
           });
           localStorage.removeItem("token");
           router.push("/");
-          return;
+          setIsLoading(false);
         }
       };
       getCustomerData();
@@ -98,13 +118,17 @@ function TopNav() {
     router.push("/");
   };
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
         <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
         <p className="bg-primary text-white text-sm px-3 py-1 rounded-lg flex items-center gap-2">
           <Banknote />
-          {formatCurrency(1000000)}
+          {formatCurrency(balance)}
         </p>
       </div>
       <div className="flex items-center justify-end w-full mb-4 gap-4">

@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 function Sidebar() {
   const { owner } = useSelector((state: RootState) => state.auth);
   const [isValidate, setIsValidate] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!owner) {
@@ -39,6 +40,7 @@ function Sidebar() {
 
         const data = await response.json();
         setIsValidate(data.owner.status === "Success");
+        setIsLoading(false);
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : "Đã xảy ra lỗi!";
@@ -53,6 +55,10 @@ function Sidebar() {
 
     fetchOwner();
   }, [owner]);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <aside className="w-72 bg-white p-4 rounded-xl">
