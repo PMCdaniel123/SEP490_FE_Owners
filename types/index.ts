@@ -289,6 +289,9 @@ export interface BookingBeverageProps {
 }
 
 export interface OwnerProps {
+  id: number;
+  email: string;
+  phone: string;
   identityName: string;
   identityNumber: string;
   dateOfBirth: string;
@@ -308,4 +311,5 @@ export interface OwnerProps {
   googleMapUrl: string;
   charterCapital: string;
   licenseFile: string;
+  status: string;
 }

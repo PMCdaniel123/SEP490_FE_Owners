@@ -137,7 +137,7 @@ function LicenseForm({
           render={({ field: { onChange, ref } }) => (
             <FormItem>
               <FormLabel className="text-fourth font-bold text-base ml-6">
-                File
+                File (Vui lòng tải file PDF)
               </FormLabel>
               <FormControl>
                 <Input

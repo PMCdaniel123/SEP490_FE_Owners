@@ -74,7 +74,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
       const result = await response.json();
       const token = result.token;
 
-      localStorage.setItem("token", token);
+      localStorage.setItem("owner_token", token);
       router.push("/authentication");
 
       try {

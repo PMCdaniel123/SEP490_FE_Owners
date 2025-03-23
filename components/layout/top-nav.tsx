@@ -18,15 +18,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "@/stores/slices/authSlice";
 import { toast } from "react-toastify";
 import { RootState } from "@/stores";
+import Link from "next/link";
 
 function TopNav() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    typeof window !== "undefined" ? localStorage.getItem("owner_token") : null;
   const router = useRouter();
   const dispatch = useDispatch();
   const { owner } = useSelector((state: RootState) => state.auth);
+  const [balance, setBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (token !== null && token !== undefined && token !== "") {
@@ -56,6 +59,30 @@ function TopNav() {
             phone: decoded.claims.Phone,
           };
           dispatch(login(ownerData));
+
+          const balanceResponse = await fetch(
+            "https://localhost:5050/owner-wallets/" + ownerData.id,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!balanceResponse.ok) {
+            throw new Error("Có lỗi xảy ra khi tải số tiền.");
+          }
+
+          const balanceData = await balanceResponse.json();
+          if (
+            balanceData.balance === null ||
+            balanceData.balance === undefined
+          ) {
+            balanceData.balance = 0;
+          }
+          setBalance(balanceData.balance);
+          setIsLoading(false);
         } catch (error) {
           const errorMessage =
             error instanceof Error ? error.message : "Đã xảy ra lỗi!";
@@ -65,9 +92,9 @@ function TopNav() {
             hideProgressBar: false,
             theme: "light",
           });
-          localStorage.removeItem("token");
+          localStorage.removeItem("owner_token");
           router.push("/");
-          return;
+          setIsLoading(false);
         }
       };
       getCustomerData();
@@ -98,13 +125,17 @@ function TopNav() {
     router.push("/");
   };
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
         <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
         <p className="bg-primary text-white text-sm px-3 py-1 rounded-lg flex items-center gap-2">
           <Banknote />
-          {formatCurrency(1000000)}
+          {formatCurrency(balance)}
         </p>
       </div>
       <div className="flex items-center justify-end w-full mb-4 gap-4">
@@ -152,9 +183,12 @@ function TopNav() {
                 </div>
               </div>
               <Separator className="mb-2" />
-              <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer">
+              <Link
+                href="/authentication"
+                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
+              >
                 <Settings size={16} /> <span>Sửa thông tin</span>
-              </li>
+              </Link>
               <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer">
                 <LockKeyhole size={16} /> <span>Đổi mật khẩu</span>
               </li>
