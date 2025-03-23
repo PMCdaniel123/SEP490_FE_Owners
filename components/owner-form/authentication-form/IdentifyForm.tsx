@@ -107,7 +107,7 @@ function IdentifyForm({
               </FormLabel>
               <FormControl>
                 <Select
-                  value={field.value || "Female"}
+                  value={field.value || "Nữ"}
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger className="py-6 px-4 rounded-md w-full">
@@ -116,19 +116,19 @@ function IdentifyForm({
                   <SelectContent>
                     <SelectItem
                       className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                      value="Male"
+                      value="Nam"
                     >
                       Nam
                     </SelectItem>
                     <SelectItem
                       className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                      value="Female"
+                      value="Nữ"
                     >
                       Nữ
                     </SelectItem>
                     <SelectItem
                       className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
-                      value="Others"
+                      value="Khác"
                     >
                       Khác
                     </SelectItem>

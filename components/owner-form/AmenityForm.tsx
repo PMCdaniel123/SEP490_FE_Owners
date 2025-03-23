@@ -63,10 +63,10 @@ function AmenityForm({ initialData }: AmenityFormProps) {
 
   const uploadImage = async (file: File) => {
     const formData = new FormData();
-    formData.append("files", file);
+    formData.append("images", file);
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/files/upload", {
+      const response = await fetch("https://localhost:5050/images/upload", {
         method: "POST",
         body: formData,
       });
