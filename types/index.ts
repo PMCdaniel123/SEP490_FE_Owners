@@ -121,6 +121,21 @@ export interface Workspace {
   updatedAt: string;
 }
 
+export interface TopRevenueWorkspace {
+  workspaceId: string;
+  workspaceName: string;
+  revenue: number;
+  totalBookings: number;
+  shortTermPrice: number;
+  longTermPrice: number;
+  prices: {
+    id: number;
+    averagePrice: number;
+    category: string;
+    workspacePrices: string[];
+  }[];
+}
+
 export interface AmenityProps {
   id: string;
   name: string;
@@ -274,6 +289,9 @@ export interface BookingBeverageProps {
 }
 
 export interface OwnerProps {
+  id: number;
+  email: string;
+  phone: string;
   identityName: string;
   identityNumber: string;
   dateOfBirth: string;
@@ -293,4 +311,5 @@ export interface OwnerProps {
   googleMapUrl: string;
   charterCapital: string;
   licenseFile: string;
+  status: string;
 }

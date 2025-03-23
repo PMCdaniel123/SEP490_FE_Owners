@@ -12,7 +12,7 @@ interface AuthItemProps {
 function AuthItem({ icon: Icon, title, form }: AuthItemProps) {
   return (
     <div
-      className={`flex flex-col gap-4 rounded-xl mb-4 cursor-pointer bg-third p-8`}
+      className={`flex flex-col gap-4 rounded-xl cursor-pointer bg-third p-8`}
     >
       <div className={`flex items-center justify-between`}>
         <div className="flex items-center gap-3">
@@ -21,7 +21,7 @@ function AuthItem({ icon: Icon, title, form }: AuthItemProps) {
         </div>
       </div>
       <div
-        className="p-4 bg-white rounded-xl border mt-4"
+        className="p-4 bg-white rounded-xl border"
         onClick={(e) => e.stopPropagation()}
       >
         {React.cloneElement(form)}

@@ -3,7 +3,6 @@
 import DashboardLineChart from "@/components/charts/line-chart";
 import NewCustomers from "@/components/new-customers-table/new-customers";
 import TopWorkspaceTable from "@/components/table/top-workspace-table";
-import { topWorkspace } from "@/constants/constant";
 import { topWorkspaceTableColumns } from "@/constants/table-columns";
 import {
   Boxes,
@@ -23,6 +22,7 @@ import {
   BookingProps,
   CustomerProps,
   formatCurrency,
+  TopRevenueWorkspace,
   Workspace,
 } from "@/types";
 import Loader from "@/components/loader/Loader";
@@ -34,6 +34,7 @@ import {
   fetchBookingBeverageList,
   fetchBookingList,
   fetchCustomerList,
+  fetchTopWorkspaceList,
   fetchWorkspaceList,
 } from "@/features";
 import { useSelector } from "react-redux";
@@ -43,6 +44,7 @@ import HotBeverageChart from "@/components/charts/hot-beverage-chart";
 
 export default function OwnerPage() {
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [customerList, setCustomerList] = useState<CustomerProps[]>([]);
   const [amenityList, setAmenityList] = useState<AmenityProps[]>([]);
   const [beverageList, setBeverageList] = useState<BeverageProps[]>([]);
@@ -53,6 +55,9 @@ export default function OwnerPage() {
   >([]);
   const [bookingBeverageList, setBookingBeverageList] = useState<
     BookingBeverageProps[]
+  >([]);
+  const [topWorkspaceList, setTopWorkspaceList] = useState<
+    TopRevenueWorkspace[]
   >([]);
   const { owner } = useSelector((state: RootState) => state.auth);
 
@@ -65,9 +70,11 @@ export default function OwnerPage() {
     fetchWorkspaceList(owner.id, setWorkspaceList, setLoading);
     fetchBookingAmenityList(owner.id, setBookingAmenityList, setLoading);
     fetchBookingBeverageList(owner.id, setBookingBeverageList, setLoading);
+    fetchTopWorkspaceList(owner.id, setTopWorkspaceList, setLoading);
+    setIsLoading(false);
   }, [owner]);
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="text-center">
         <Loader />
@@ -122,14 +129,16 @@ export default function OwnerPage() {
   );
 
   const percentRevenue =
-    ((currentRevenue - previousRevenue) /
-      (previousRevenue === 0 ? 1 : previousRevenue)) *
-    100;
+    (previousRevenue > 0
+      ? (currentRevenue - previousRevenue) /
+        (previousRevenue === 0 ? 1 : previousRevenue)
+      : 1) * 100;
 
   const percentCustomer =
-    ((numberCurrentCustomer - numberPreviousCustomer) /
-      (numberPreviousCustomer === 0 ? 1 : numberPreviousCustomer)) *
-    100;
+    (numberPreviousCustomer > 0
+      ? (numberCurrentCustomer - numberPreviousCustomer) /
+        (numberPreviousCustomer === 0 ? 1 : numberPreviousCustomer)
+      : 1) * 100;
 
   const date = new Date();
   const dateString = `Tháng ${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -231,15 +240,15 @@ export default function OwnerPage() {
         <div className="col-span-2 sticky top-0 h-fit overflow-auto">
           <DashboardLineChart bookingList={bookingList} />
         </div>
-        <div className="col-span-1 sticky top-0 h-fit overflow-auto">
+        <div className="col-span-1 h-full">
           <CustomerAnalysisChart customerList={customerList} />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3 relative">
-        <div className="col-span-2 bg-white p-4 rounded-xl sticky top-0 h-fit overflow-auto">
+        <div className="col-span-2 bg-white p-4 rounded-xl sticky top-4 h-fit overflow-auto">
           <TopWorkspaceTable
             columns={topWorkspaceTableColumns}
-            data={topWorkspace}
+            data={topWorkspaceList}
           />
         </div>
         <div className="col-span-1 flex flex-col gap-4">

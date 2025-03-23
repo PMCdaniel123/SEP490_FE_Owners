@@ -75,7 +75,7 @@ export default function CustomerAnalysisChart({
   }, [chartData]);
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col h-full py-6">
       <CardHeader className="items-center mt-4">
         <CardTitle>Số lượng khách hàng</CardTitle>
       </CardHeader>
@@ -85,7 +85,10 @@ export default function CustomerAnalysisChart({
             Trống
           </div>
         ) : (
-          <ChartContainer config={chartConfig} className="mx-auto aspect-square">
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square"
+          >
             <PieChart>
               <ChartTooltip
                 cursor={false}

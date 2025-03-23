@@ -6,13 +6,15 @@ import IdentifyForm from "@/components/owner-form/authentication-form/IdentifyFo
 import LicenseForm from "@/components/owner-form/authentication-form/LicenseForm";
 // import PhoneForm from "@/components/owner-form/authentication-form/PhoneForm";
 import SocialForm from "@/components/owner-form/authentication-form/SocialForm";
+import OwnerInfo from "@/components/owner-info/owner-info";
+import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { identifySchema } from "@/lib/zod/schema";
 import { RootState } from "@/stores";
+import { OwnerProps } from "@/types";
 import { LoadingOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IdCard, FileText, Waypoints, Save } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { IdCard, FileText, Save, Globe, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -23,7 +25,8 @@ function AuthenticationManagement() {
   const { owner } = useSelector((state: RootState) => state.auth);
   const [loading, setLoading] = useState(true);
   const [newLoading, setNewLoading] = useState(false);
-  const router = useRouter();
+  const [ownerInfo, setOwnerInfo] = useState<OwnerProps | null>(null);
+  const [isEditing, setIsEditing] = useState(true);
   const form = useForm<z.infer<typeof identifySchema>>({
     resolver: zodResolver(identifySchema),
     defaultValues: {
@@ -62,7 +65,8 @@ function AuthenticationManagement() {
           }
 
           const data = await response.json();
-          if (data.owner.status !== "Fail") {
+          if (data.owner.status !== "Success") {
+            setIsEditing(true);
             form.setValue("identityName", data.owner.identityName);
             form.setValue("identityNumber", data.owner.identityNumber);
             form.setValue("dateOfBirth", data.owner.dateOfBirth);
@@ -88,6 +92,9 @@ function AuthenticationManagement() {
             form.setValue("googleMapUrl", data.owner.googleMapUrl);
             form.setValue("charterCapital", data.owner.charterCapital + "");
             form.setValue("licenseFile", data.owner.licenseFile);
+          } else {
+            setIsEditing(false);
+            setOwnerInfo(data.owner);
           }
           setLoading(false);
         } catch (error) {
@@ -115,11 +122,110 @@ function AuthenticationManagement() {
     );
   }
 
+  const handleEdit = () => {
+    setIsEditing(true);
+    form.reset();
+    form.setValue("identityName", "" + ownerInfo?.identityName);
+    form.setValue("identityNumber", "" + ownerInfo?.identityNumber);
+    form.setValue("dateOfBirth", "" + ownerInfo?.dateOfBirth);
+    form.setValue("sex", "" + ownerInfo?.sex);
+    form.setValue("nationality", "" + ownerInfo?.nationality);
+    form.setValue("placeOfOrigin", "" + ownerInfo?.placeOfOrigin);
+    form.setValue("placeOfResidence", "" + ownerInfo?.placeOfResidence);
+    form.setValue("identityExpiredDate", "" + ownerInfo?.identityExpiredDate);
+    form.setValue("identityCreatedDate", "" + ownerInfo?.identityCreatedDate);
+    form.setValue("identityFile", new File([], ""));
+    form.setValue("facebook", "" + ownerInfo?.facebook);
+    form.setValue("instagram", "" + ownerInfo?.instagram);
+    form.setValue("tiktok", "" + ownerInfo?.tiktok);
+    form.setValue("licenseName", "" + ownerInfo?.licenseName);
+    form.setValue("licenseNumber", "" + ownerInfo?.licenseNumber);
+    form.setValue("licenseAddress", "" + ownerInfo?.licenseAddress);
+    form.setValue("googleMapUrl", "" + ownerInfo?.googleMapUrl);
+    form.setValue("charterCapital", "" + ownerInfo?.charterCapital + "");
+    form.setValue("licenseFile", new File([], ""));
+  };
+
+  const uploadFile = async (file: File) => {
+    const formData = new FormData();
+    formData.append("files", file);
+    setLoading(true);
+    try {
+      const response = await fetch("https://localhost:5050/files/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi tải file PDF.");
+      }
+
+      const result = await response.json();
+      setLoading(false);
+      return result.data[0];
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      setLoading(false);
+    }
+  };
+
   const onCreate = async (values: z.infer<typeof identifySchema>) => {
+    let identityFile = values.identityFile;
+    let licenseFile = values.licenseFile;
+
+    if (typeof identityFile !== "string") {
+      try {
+        const uploadedUrl = await uploadFile(identityFile);
+        if (!uploadedUrl) {
+          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+        }
+        identityFile = uploadedUrl;
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        setLoading(false);
+        return;
+      }
+    }
+
+    if (typeof licenseFile !== "string") {
+      try {
+        const uploadedUrl = await uploadFile(licenseFile);
+        if (!uploadedUrl) {
+          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
+        }
+        licenseFile = uploadedUrl;
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        setLoading(false);
+        return;
+      }
+    }
+
     const data = {
       ...values,
-      identityFile: "",
-      licenseFile: "",
+      identityFile,
+      licenseFile,
     };
 
     setNewLoading(true);
@@ -149,7 +255,7 @@ function AuthenticationManagement() {
         }
       );
       setNewLoading(false);
-      router.push("/authentication");
+      window.location.reload();
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Đã xảy ra lỗi!";
@@ -174,44 +280,60 @@ function AuthenticationManagement() {
       </p>
 
       <div className="mt-10">
-        <div className="flex flex-col w-full">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onCreate)}
-              className="flex flex-col gap-4"
-            >
-              <AuthItem
-                icon={IdCard}
-                title="Căn cước công dân"
-                form={<IdentifyForm form={form} />}
-              />
-              <AuthItem
-                icon={Waypoints}
-                title="Tài khoản mạng xã hội"
-                form={<SocialForm form={form} />}
-              />
-              <AuthItem
-                icon={FileText}
-                title="Giấy phép kinh doanh"
-                form={<LicenseForm form={form} />}
-              />
-              <div className="flex flex-col gap-2 w-full">
-                <button
-                  className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
-                  type="submit"
+        {isEditing ? (
+          <div className="flex flex-col w-full gap-6">
+            {ownerInfo?.status === "Success" && (
+              <div className="flex items-center justify-end">
+                <Button
+                  onClick={() => setIsEditing(false)}
+                  className="flex gap-2 items-center justify-center bg-red-500 text-white py-3 rounded-md hover:bg-red-300 cursor-pointer"
                 >
-                  {newLoading ? (
-                    <LoadingOutlined style={{ color: "white" }} />
-                  ) : (
-                    <span className="font-bold flex items-center gap-2">
-                      <Save size={18} /> Xác nhận
-                    </span>
-                  )}
-                </button>
+                  <span className="font-medium flex items-center gap-2">
+                    <X size={18} /> Hủy
+                  </span>
+                </Button>
               </div>
-            </form>
-          </Form>
-        </div>
+            )}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onCreate)}
+                className="flex flex-col gap-4"
+              >
+                <AuthItem
+                  icon={IdCard}
+                  title="Căn cước công dân"
+                  form={<IdentifyForm form={form} />}
+                />
+                <AuthItem
+                  icon={Globe}
+                  title="Tài khoản mạng xã hội"
+                  form={<SocialForm form={form} />}
+                />
+                <AuthItem
+                  icon={FileText}
+                  title="Giấy phép kinh doanh"
+                  form={<LicenseForm form={form} />}
+                />
+                <div className="flex flex-col gap-2 w-full">
+                  <button
+                    className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
+                    type="submit"
+                  >
+                    {newLoading ? (
+                      <LoadingOutlined style={{ color: "white" }} />
+                    ) : (
+                      <span className="font-bold flex items-center gap-2">
+                        <Save size={18} /> Xác nhận
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </Form>
+          </div>
+        ) : (
+          <OwnerInfo ownerInfo={ownerInfo} handleEdit={handleEdit} />
+        )}
 
         {/* <AuthItem
           icon={Phone}
