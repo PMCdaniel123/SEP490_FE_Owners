@@ -1,4 +1,5 @@
 import { CustomerProps } from "@/types";
+import dayjs from "dayjs";
 import { Ban } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -37,7 +38,7 @@ function CustomerModal({ customer }: { customer: CustomerProps }) {
         </p>
         <p>
           <span className="font-semibold">Ngày sinh: </span>
-          {customer?.dateOfBirth}
+          {dayjs(customer?.dateOfBirth).format("DD/MM/YYYY")}
         </p>
         <p>
           <span className="font-semibold">Giới tính: </span>
