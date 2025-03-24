@@ -40,6 +40,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
+import { TimePicker } from "antd";
+import dayjs from "dayjs";
 
 interface WorkspaceFormProps {
   initialData?: Workspace | null;
@@ -363,11 +365,24 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                           Thời gian mở cửa
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            className="py-6 px-4 rounded-md file:bg-seventh"
+                          <TimePicker
                             placeholder="Nhập thời gian mở cửa..."
                             disabled={is24h === 1}
-                            {...field}
+                            format="HH:mm"
+                            value={
+                              field.value ? dayjs(field.value, "HH:mm") : null
+                            }
+                            onChange={(time, timeString) => {
+                              console.log(time);
+                              field.onChange(timeString);
+                            }}
+                            style={{
+                              width: "100%",
+                              height: "49.6px",
+                              borderRadius: "10px",
+                              border: "1px solid var(--input)",
+                              boxShadow: "1px",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-red-500 text-xs" />
@@ -385,11 +400,24 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                           Thời gian đóng cửa
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            className="py-6 px-4 rounded-md file:bg-seventh"
+                          <TimePicker
                             placeholder="Nhập thời gian đóng cửa..."
                             disabled={is24h === 1}
-                            {...field}
+                            format="HH:mm"
+                            value={
+                              field.value ? dayjs(field.value, "HH:mm") : null
+                            }
+                            onChange={(time, timeString) => {
+                              console.log(time);
+                              field.onChange(timeString);
+                            }}
+                            style={{
+                              width: "100%",
+                              height: "49.6px",
+                              borderRadius: "10px",
+                              border: "1px solid var(--input)",
+                              boxShadow: "1px",
+                            }}
                           />
                         </FormControl>
                         <FormMessage className="text-red-500 text-xs" />

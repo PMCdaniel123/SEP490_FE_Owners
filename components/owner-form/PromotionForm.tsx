@@ -336,7 +336,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                   render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel className="text-fourth font-bold text-base ml-6">
-                        Áp dụng cho Workspace
+                        Áp dụng cho không gian
                       </FormLabel>
                       <FormControl>
                         <Select
@@ -353,6 +353,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                               <SelectItem
                                 key={workspace.id}
                                 value={workspace.id.toString()}
+                                className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
                               >
                                 {workspace.name}
                               </SelectItem>
