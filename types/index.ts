@@ -312,4 +312,5 @@ export interface OwnerProps {
   charterCapital: string;
   licenseFile: string;
   status: string;
+  updatedAt: string;
 }

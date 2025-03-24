@@ -181,7 +181,7 @@ export default function OwnerPage() {
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
             <p className="font-bold">Khách hàng</p>
             <p className="text-[#6F757E] text-xl">
-              {customerList?.length ?? "Trống"}
+              {customerList?.length ?? "0"}
             </p>
             {percentCustomer >= 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">
@@ -208,8 +208,8 @@ export default function OwnerPage() {
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
               <p className="font-bold">Số lượng không gian</p>
               <p className="text-[#6F757E] text-xl">
-                {workspaceList?.length ?? "Trống"}
-              </p>{" "}
+                {workspaceList?.length ?? "0"}
+              </p>
             </div>
           </div>
           <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
@@ -219,8 +219,8 @@ export default function OwnerPage() {
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
               <p className="font-bold">Số lượng tiện ích</p>
               <p className="text-[#6F757E] text-xl">
-                {amenityList?.length ?? "Trống"}
-              </p>{" "}
+                {amenityList?.length ?? "0"}
+              </p>
             </div>
           </div>
           <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
@@ -230,8 +230,8 @@ export default function OwnerPage() {
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
               <p className="font-bold">Số lượng món</p>
               <p className="text-[#6F757E] text-xl">
-                {beverageList?.length ?? "Trống"}
-              </p>{" "}
+                {beverageList?.length ?? "0"}
+              </p>
             </div>
           </div>
         </div>

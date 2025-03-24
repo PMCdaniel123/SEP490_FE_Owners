@@ -43,54 +43,60 @@ export default function DashboardLineChart({
   }));
 
   return (
-    <Card>
+    <Card className="flex flex-col h-full py-6">
       <CardHeader>
         <CardTitle className="mt-4 font-bold">Doanh thu năm 2025</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              top: 20,
-              left: 40,
-              right: 40,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={0}
-              tickFormatter={(value) => value.slice(0, 7)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Line
-              dataKey="revenue"
-              type="natural"
-              stroke="var(--color-revenue)"
-              strokeWidth={2}
-              dot={{
-                fill: "var(--color-revenue)",
-              }}
-              activeDot={{
-                r: 6,
+        {bookingList.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Trống
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                top: 20,
+                left: 40,
+                right: 40,
               }}
             >
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={0}
+                tickFormatter={(value) => value.slice(0, 7)}
               />
-            </Line>
-          </LineChart>
-        </ChartContainer>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
+              <Line
+                dataKey="revenue"
+                type="natural"
+                stroke="var(--color-revenue)"
+                strokeWidth={2}
+                dot={{
+                  fill: "var(--color-revenue)",
+                }}
+                activeDot={{
+                  r: 6,
+                }}
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Line>
+            </LineChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
