@@ -283,7 +283,10 @@ function AuthenticationManagement() {
         {isEditing ? (
           <div className="flex flex-col w-full gap-6">
             {ownerInfo?.status === "Success" && (
-              <div className="flex items-center justify-end">
+              <div className="flex items-center justify-between">
+                <span className="text-green-500 border rounded-xl border-green-500 px-4 py-2">
+                  Xác thực thành công
+                </span>
                 <Button
                   onClick={() => setIsEditing(false)}
                   className="flex gap-2 items-center justify-center bg-red-500 text-white py-3 rounded-md hover:bg-red-300 cursor-pointer"
@@ -292,6 +295,20 @@ function AuthenticationManagement() {
                     <X size={18} /> Hủy
                   </span>
                 </Button>
+              </div>
+            )}
+            {ownerInfo?.status === "Handling" && (
+              <div className="flex items-center justify-start">
+                <span className="text-yellow-500 border rounded-xl border-yellow-500 px-4 py-2">
+                  Chờ xác thực! Vui lòng chờ đợi!
+                </span>
+              </div>
+            )}
+            {ownerInfo?.status === "Failed" && (
+              <div className="flex items-center justify-start">
+                <span className="text-red-500 border rounded-xl border-red-500 px-4 py-2">
+                  Xác thực thất bại! Vui lòng xác thực lại!
+                </span>
               </div>
             )}
             <Form {...form}>
