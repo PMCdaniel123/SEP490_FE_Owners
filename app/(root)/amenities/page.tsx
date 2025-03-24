@@ -27,7 +27,10 @@ function AmenitiesManagement() {
           throw new Error("Có lỗi xảy ra khi tải danh sách tiện ích.");
         }
         const data = await response.json();
-        const formattedAmenities = data.amenities;
+        const formattedAmenities =
+          data.amenities === null || data.amenities === undefined
+            ? []
+            : data.amenities;
         setAmenityList(formattedAmenities);
         setLoading(false);
       } catch (error) {
@@ -54,7 +57,7 @@ function AmenitiesManagement() {
       </div>
     );
   }
-  
+
   return (
     <div className="p-4 bg-white rounded-xl">
       <AmenityTable columns={AmenityTableColumns} data={amenityList} />

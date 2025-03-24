@@ -3,24 +3,34 @@
 import Loader from "@/components/loader/Loader";
 import PromotionTable from "@/components/table/promotion-table";
 import { PromotionTableColumns } from "@/constants/table-columns";
+import { RootState } from "@/stores";
 import { PromotionProps } from "@/types";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function PromotionManagement() {
   const [promotionList, setPromotionList] = useState<PromotionProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const { owner } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
+    if (!owner) return;
     const fetchPromotions = async () => {
       try {
-        const response = await fetch("https://localhost:5050/promotions");
+        const response = await fetch(
+          `https://localhost:5050/workspaces/${owner?.id}/promotions`
+        );
 
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải danh sách khuyến mãi.");
         }
         const data = await response.json();
-        setPromotionList(data.promotions);
+        const formatted =
+          data.promotions === null || data.promotions === undefined
+            ? []
+            : data.promotions;
+        setPromotionList(formatted);
         setLoading(false);
       } catch (error) {
         const errorMessage =
@@ -37,7 +47,7 @@ function PromotionManagement() {
     };
 
     fetchPromotions();
-  }, []);
+  }, [owner]);
 
   if (loading) {
     return (

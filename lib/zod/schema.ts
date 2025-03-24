@@ -153,6 +153,7 @@ export const promotionSchema = z
     message: "Ngày kết thúc phải lớn hơn ngày bắt đầu",
     path: ["endDate"],
   });
+
 export const withdrawalSchema = z.object({
   number: z.string().nonempty("Vui lòng nhập số tài khoản ngân hàng"),
   bank: z.string().nonempty("Vui lòng tên ngân hàng"),

@@ -36,6 +36,20 @@ function OwnerInfo({ ownerInfo, handleEdit }: OwnerInfoProps) {
           <p>
             <strong>Số điện thoại:</strong> {ownerInfo?.phone}
           </p>
+          <p>
+            <strong>Trạng thái:</strong>{" "}
+            {ownerInfo?.status === "Success" ? (
+              <span className="text-green-500">Xác thực thành công</span>
+            ) : ownerInfo?.status === "Fail" ? (
+              <span className="text-red-500">Xác thực thất bại</span>
+            ) : (
+              <span className="text-yellow-500">Xác thực thành công</span>
+            )}
+          </p>
+          <p>
+            <strong>Ngày tạo:</strong>{" "}
+            {dayjs(ownerInfo?.updatedAt).format("HH:mm DD/MM/YYYY")}
+          </p>
         </div>
       </div>
       <Separator className="my-4 dark:border-gray-700" />

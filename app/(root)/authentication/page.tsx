@@ -27,6 +27,7 @@ function AuthenticationManagement() {
   const [newLoading, setNewLoading] = useState(false);
   const [ownerInfo, setOwnerInfo] = useState<OwnerProps | null>(null);
   const [isEditing, setIsEditing] = useState(true);
+  const [status, setStatus] = useState("");
   const form = useForm<z.infer<typeof identifySchema>>({
     resolver: zodResolver(identifySchema),
     defaultValues: {
@@ -67,6 +68,7 @@ function AuthenticationManagement() {
           const data = await response.json();
           if (data.owner.status !== "Success") {
             setIsEditing(true);
+            setStatus(data.owner.status);
             form.setValue("identityName", data.owner.identityName);
             form.setValue("identityNumber", data.owner.identityNumber);
             form.setValue("dateOfBirth", data.owner.dateOfBirth);
@@ -284,7 +286,7 @@ function AuthenticationManagement() {
           <div className="flex flex-col w-full gap-6">
             {ownerInfo?.status === "Success" && (
               <div className="flex items-center justify-between">
-                <span className="text-green-500 border rounded-xl border-green-500 px-4 py-2">
+                <span className="text-green-500 border rounded-lg border-green-500 px-4 py-2">
                   Xác thực thành công
                 </span>
                 <Button
@@ -297,16 +299,16 @@ function AuthenticationManagement() {
                 </Button>
               </div>
             )}
-            {ownerInfo?.status === "Handling" && (
+            {status === "Handling" && (
               <div className="flex items-center justify-start">
-                <span className="text-yellow-500 border rounded-xl border-yellow-500 px-4 py-2">
+                <span className="text-yellow-500 border rounded-lg border-yellow-500 px-4 py-2">
                   Chờ xác thực! Vui lòng chờ đợi!
                 </span>
               </div>
             )}
-            {ownerInfo?.status === "Failed" && (
+            {status === "Fail" && (
               <div className="flex items-center justify-start">
-                <span className="text-red-500 border rounded-xl border-red-500 px-4 py-2">
+                <span className="text-red-500 border rounded-lg border-red-500 px-4 py-2">
                   Xác thực thất bại! Vui lòng xác thực lại!
                 </span>
               </div>

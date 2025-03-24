@@ -27,7 +27,8 @@ function CustomerManagement() {
           throw new Error("Có lỗi xảy ra khi tải danh sách khách hàng.");
         }
         const data = await response.json();
-        const formattedCustomer = data.users;
+        const formattedCustomer =
+          data.users === null || data.users === undefined ? [] : data.users;
         setCustomerList(formattedCustomer);
         setLoading(false);
       } catch (error) {

@@ -220,13 +220,18 @@ export const fetchWorkspaceList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách không gian.");
     }
     const data = await response.json();
-    const formattedWorkspaces = data.workspaces.map((workspace: Workspace) => ({
-      ...workspace,
-      shortTermPrice:
-        workspace.prices.find((price) => price.category === "Giờ")?.price || 0,
-      longTermPrice:
-        workspace.prices.find((price) => price.category === "Ngày")?.price || 0,
-    }));
+    const formattedWorkspaces =
+      data.workspaces === null || data.workspaces === undefined
+        ? []
+        : data.workspaces.map((workspace: Workspace) => ({
+            ...workspace,
+            shortTermPrice:
+              workspace.prices.find((price) => price.category === "Giờ")
+                ?.price || 0,
+            longTermPrice:
+              workspace.prices.find((price) => price.category === "Ngày")
+                ?.price || 0,
+          }));
     setWorkspaceList(formattedWorkspaces);
     setLoading(false);
   } catch (error) {
@@ -326,15 +331,18 @@ export const fetchTopWorkspaceList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách không gian.");
     }
     const data = await response.json();
-    const formatted = data.workspaces.map((workspace: TopRevenueWorkspace) => ({
-      ...workspace,
-      shortTermPrice:
-        workspace.prices.find((price) => price.category === "Giờ")
-          ?.averagePrice || 0,
-      longTermPrice:
-        workspace.prices.find((price) => price.category === "Ngày")
-          ?.averagePrice || 0,
-    }));
+    const formatted =
+      data.workspaces === null || data.workspaces === undefined
+        ? []
+        : data.workspaces.map((workspace: TopRevenueWorkspace) => ({
+            ...workspace,
+            shortTermPrice:
+              workspace.prices.find((price) => price.category === "Giờ")
+                ?.averagePrice || 0,
+            longTermPrice:
+              workspace.prices.find((price) => price.category === "Ngày")
+                ?.averagePrice || 0,
+          }));
     setTopWorkspaceList(formatted);
     setLoading(false);
   } catch (error) {
