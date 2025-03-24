@@ -27,7 +27,10 @@ function BeverageManagement() {
           throw new Error("Có lỗi xảy ra khi tải danh sách thực đơn.");
         }
         const data = await response.json();
-        const formattedBeverages = data.beverages;
+        const formattedBeverages =
+          data.beverages === null || data.beverages === undefined
+            ? []
+            : data.beverages;
         setBeverageList(formattedBeverages);
         setLoading(false);
       } catch (error) {

@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-
 function BookingManagement() {
   const [bookingList, setBookingList] = useState<BookingProps[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +27,13 @@ function BookingManagement() {
           throw new Error("Có lỗi xảy ra khi tải danh sách đặt chỗ.");
         }
         const data = await response.json();
-        const formattedBooking = data.bookingByOwnerIdDTOs;
+        const formattedBooking =
+          data.bookingByOwnerIdDTOs === null ||
+          data.bookingByOwnerIdDTOs === undefined
+            ? []
+            : data.bookingByOwnerIdDTOs.filter(
+                (booking: BookingProps) => booking.status === "Success"
+              );
         setBookingList(formattedBooking);
         setLoading(false);
       } catch (error) {
