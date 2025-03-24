@@ -98,7 +98,7 @@ function LicenseForm({
               <FormControl>
                 <Input
                   className="py-6 px-4 rounded-md file:bg-seventh"
-                  placeholder="Nhập địa chỉ Google Map (nhập iframe)..."
+                  placeholder="Nhập địa chỉ Google Map URL..."
                   {...field}
                 />
               </FormControl>
