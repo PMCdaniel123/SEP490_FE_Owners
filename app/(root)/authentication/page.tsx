@@ -33,7 +33,7 @@ function AuthenticationManagement() {
       identityName: "",
       identityNumber: "",
       dateOfBirth: "",
-      sex: "",
+      sex: "Nam",
       nationality: "",
       placeOfOrigin: "",
       placeOfResidence: "",
@@ -47,7 +47,7 @@ function AuthenticationManagement() {
       licenseNumber: "",
       licenseAddress: "",
       googleMapUrl: "",
-      charterCapital: "",
+      charterCapital: "0",
       licenseFile: undefined,
     },
   });
