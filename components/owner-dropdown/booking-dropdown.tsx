@@ -25,7 +25,7 @@ function BookingDropdown({ booking }: { booking: BookingProps }) {
             className="px-4 rounded-sm flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <Eye size={16} /> <span>Xem thông tin</span>
+            <Eye size={16} /> <span>Xem thông tin chi tiết</span>
           </li>
         </DropdownMenuContent>
       </DropdownMenu>

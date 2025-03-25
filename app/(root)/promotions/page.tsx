@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import PromotionTable from "@/components/table/promotion-table";
+import { BASE_URL } from "@/constants/environments";
 import { PromotionTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { PromotionProps } from "@/types";
@@ -19,7 +20,7 @@ function PromotionManagement() {
     const fetchPromotions = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5050/workspaces/${owner?.id}/promotions`
+          `${BASE_URL}/workspaces/${owner?.id}/promotions`
         );
 
         if (!response.ok) {

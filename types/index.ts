@@ -166,7 +166,7 @@ export interface PromotionProps {
   startDate: string;
   endDate: string;
   status: string;
-  workspaceId: number;
+  workspaceID: number;
 }
 export interface WithdrawalProps {
   id: string;

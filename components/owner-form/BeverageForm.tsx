@@ -31,6 +31,7 @@ import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { LoadingOutlined } from "@ant-design/icons";
+import { BASE_URL } from "@/constants/environments";
 
 interface BeverageFormProps {
   initialData?: BeverageProps | null;
@@ -65,7 +66,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
     formData.append("images", file);
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/images/upload", {
+      const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
         body: formData,
       });
@@ -122,7 +123,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
 
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/beverages", {
+      const response = await fetch(`${BASE_URL}/beverages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -187,16 +188,13 @@ function BeverageForm({ initialData }: BeverageFormProps) {
 
     setLoading(true);
     try {
-      const response = await fetch(
-        "https://localhost:5050/beverages/" + initialData?.id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/beverages/` + initialData?.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         throw new Error("Có lỗi xảy ra khi cập nhật món.");

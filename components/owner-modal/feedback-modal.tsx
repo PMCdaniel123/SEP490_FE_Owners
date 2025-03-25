@@ -14,6 +14,7 @@ import { Ruler, Sofa, Users } from "lucide-react";
 import { toast } from "react-toastify";
 import Loader from "../loader/Loader";
 import { fetchCustomerDetail } from "@/features";
+import { BASE_URL } from "@/constants/environments";
 
 interface FeedbackWorkspaceProps {
   workspace: Workspace | null;
@@ -38,7 +39,7 @@ function FeedbackModal({ feedbackId }: { feedbackId: string }) {
     const getWorkspaceDetail = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5050/workspaces/${Number(
+          `${BASE_URL}/workspaces/${Number(
             feedbackList[Number(feedbackId) - 1].id
           )}`
         );

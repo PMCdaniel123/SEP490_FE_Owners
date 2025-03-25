@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import BeverageTable from "@/components/table/beverage-table";
+import { BASE_URL } from "@/constants/environments";
 import { BeverageTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { BeverageProps } from "@/types";
@@ -20,7 +21,7 @@ function BeverageManagement() {
     const getBeveragesByOwnerId = async () => {
       try {
         const response = await fetch(
-          "https://localhost:5050/beverages/Owner/" + owner?.id
+          `${BASE_URL}/beverages/Owner/` + owner?.id
         );
 
         if (!response.ok) {

@@ -1,4 +1,5 @@
 import { BookingWorkspaceProps } from "@/components/owner-modal/booking-modal";
+import { BASE_URL } from "@/constants/environments";
 import {
   AmenityProps,
   BeverageProps,
@@ -19,7 +20,7 @@ export const fetchCustomerDetail = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(`https://localhost:5050/users/${Number(id)}`);
+    const response = await fetch(`${BASE_URL}/users/${Number(id)}`);
     if (!response.ok)
       throw new Error("Có lỗi xảy ra khi tải thông tin khách hàng.");
 
@@ -47,9 +48,7 @@ export const fetchWorkspaceDetail = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
-      `https://localhost:5050/workspaces/${Number(id)}`
-    );
+    const response = await fetch(`${BASE_URL}/workspaces/${Number(id)}`);
     if (!response.ok) throw new Error("Có lỗi xảy ra khi tải không gian.");
 
     const data = await response.json();
@@ -88,9 +87,7 @@ export const fetchCustomerList = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
-      `https://localhost:5050/users/owner/${Number(id)}`
-    );
+    const response = await fetch(`${BASE_URL}/users/owner/${Number(id)}`);
     if (!response.ok)
       throw new Error("Có lỗi xảy ra khi tải danh sách khách hàng.");
 
@@ -116,9 +113,7 @@ export const fetchAmenityList = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
-      "https://localhost:5050/amenities/Owner/" + Number(id)
-    );
+    const response = await fetch(`${BASE_URL}/amenities/Owner/` + Number(id));
 
     if (!response.ok) {
       throw new Error("Có lỗi xảy ra khi tải danh sách tiện ích.");
@@ -147,9 +142,7 @@ export const fetchBeverageList = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
-      "https://localhost:5050/beverages/Owner/" + Number(id)
-    );
+    const response = await fetch(`${BASE_URL}/beverages/Owner/` + Number(id));
 
     if (!response.ok) {
       throw new Error("Có lỗi xảy ra khi tải danh sách tiện ích.");
@@ -179,7 +172,7 @@ export const fetchBookingList = async (
   setLoading(true);
   try {
     const response = await fetch(
-      "https://localhost:5050/getallbookingbyownerid/" + Number(id)
+      `${BASE_URL}/getallbookingbyownerid/` + Number(id)
     );
 
     if (!response.ok) {
@@ -212,9 +205,7 @@ export const fetchWorkspaceList = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
-      "https://localhost:5050/workspaces/owner/" + Number(id)
-    );
+    const response = await fetch(`${BASE_URL}/workspaces/owner/` + Number(id));
 
     if (!response.ok) {
       throw new Error("Có lỗi xảy ra khi tải danh sách không gian.");
@@ -257,7 +248,7 @@ export const fetchBookingAmenityList = async (
 ) => {
   try {
     const response = await fetch(
-      "https://localhost:5050/owners/bookings/amenities/" + Number(id)
+      `${BASE_URL}/owners/bookings/amenities/` + Number(id)
     );
 
     if (!response.ok) {
@@ -290,7 +281,7 @@ export const fetchBookingBeverageList = async (
 ) => {
   try {
     const response = await fetch(
-      "https://localhost:5050/owners/bookings/beverages/" + Number(id)
+      `${BASE_URL}/owners/bookings/beverages/` + Number(id)
     );
 
     if (!response.ok) {
@@ -324,7 +315,7 @@ export const fetchTopWorkspaceList = async (
   setLoading(true);
   try {
     const response = await fetch(
-      "https://localhost:5050/owners/" + Number(id) + "/workspaces"
+      `${BASE_URL}/owners/` + Number(id) + `/workspaces`
     );
 
     if (!response.ok) {

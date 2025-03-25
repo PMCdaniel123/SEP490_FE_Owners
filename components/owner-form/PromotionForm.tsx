@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { LoadingOutlined } from "@ant-design/icons";
+import { BASE_URL } from "@/constants/environments";
 
 interface PromotionFormProps {
   initialData?: PromotionProps | null;
@@ -76,7 +77,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
     const getWorkspaces = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5050/workspaces/owner/${owner.id}`
+          `${BASE_URL}/workspaces/owner/${owner.id}`
         );
 
         if (!response.ok) {
@@ -116,8 +117,8 @@ function PromotionForm({ initialData }: PromotionFormProps) {
     try {
       const response = await fetch(
         initialData
-          ? `https://localhost:5050/promotions/${initialData.id}`
-          : "https://localhost:5050/promotions",
+          ? `${BASE_URL}/promotions/${initialData.id}`
+          : `${BASE_URL}/promotions`,
         {
           method: initialData ? "PUT" : "POST",
           headers: {

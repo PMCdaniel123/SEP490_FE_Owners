@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import WorkspaceForm from "@/components/owner-form/WorkspaceForm";
+import { BASE_URL } from "@/constants/environments";
 import { Facilities, Image, Policies, Price, Workspace } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,9 +20,7 @@ function WorkspaceDetail() {
 
     const getAmenityDetail = async () => {
       try {
-        const response = await fetch(
-          `https://localhost:5050/workspaces/${workspaceId}`
-        );
+        const response = await fetch(`${BASE_URL}/workspaces/${workspaceId}`);
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải không gian.");
         }
