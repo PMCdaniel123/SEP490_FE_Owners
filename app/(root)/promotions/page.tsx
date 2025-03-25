@@ -20,7 +20,7 @@ function PromotionManagement() {
     const fetchPromotions = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/workspaces/${owner?.id}/promotions`
+          `${BASE_URL}/workspace-owners/${owner?.id}/promotions`
         );
 
         if (!response.ok) {
