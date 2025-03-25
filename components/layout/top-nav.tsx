@@ -169,7 +169,7 @@ function TopNav() {
             >
               <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
                 <Image
-                  src="/logo.png"
+                  src={owner?.avatar || "/logo.png"}
                   alt="Logo"
                   width={40}
                   height={40}
