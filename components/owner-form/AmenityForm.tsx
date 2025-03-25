@@ -31,6 +31,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
+import { BASE_URL } from "@/constants/environments";
 
 interface AmenityFormProps {
   initialData?: AmenityProps | null;
@@ -66,7 +67,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
     formData.append("images", file);
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/images/upload", {
+      const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
         body: formData,
       });
@@ -123,7 +124,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
     };
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/amenities", {
+      const response = await fetch(`${BASE_URL}/amenities`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -195,16 +196,13 @@ function AmenityForm({ initialData }: AmenityFormProps) {
 
     setLoading(true);
     try {
-      const response = await fetch(
-        "https://localhost:5050/amenities/" + initialData?.id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/amenities/` + initialData?.id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         throw new Error("Có lỗi xảy ra khi cập nhật tiện ích.");

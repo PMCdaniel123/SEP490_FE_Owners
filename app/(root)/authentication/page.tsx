@@ -9,6 +9,7 @@ import SocialForm from "@/components/owner-form/authentication-form/SocialForm";
 import OwnerInfo from "@/components/owner-info/owner-info";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { BASE_URL } from "@/constants/environments";
 import { identifySchema } from "@/lib/zod/schema";
 import { RootState } from "@/stores";
 import { OwnerProps } from "@/types";
@@ -58,7 +59,7 @@ function AuthenticationManagement() {
       const fetchOwnerData = async () => {
         try {
           const response = await fetch(
-            `https://localhost:5050/workspace-owners/${owner.id}`
+            `${BASE_URL}/workspace-owners/${owner.id}`
           );
 
           if (!response.ok) {
@@ -153,7 +154,7 @@ function AuthenticationManagement() {
     formData.append("files", file);
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/files/upload", {
+      const response = await fetch(`${BASE_URL}/files/upload`, {
         method: "POST",
         body: formData,
       });
@@ -232,16 +233,13 @@ function AuthenticationManagement() {
 
     setNewLoading(true);
     try {
-      const response = await fetch(
-        `https://localhost:5050/owners/${owner?.id}/verify`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/owners/${owner?.id}/verify`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         throw new Error("Có lỗi xảy ra khi tạo yêu cầu xác thực thông tin.");

@@ -53,9 +53,7 @@ export const topWorkspaceTableColumns: ColumnDef<TopRevenueWorkspace>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <p className="text-left font-medium">
-          {row.getValue("workspaceName")}
-        </p>
+        <p className="text-left font-medium">{row.getValue("workspaceName")}</p>
       );
     },
   },
@@ -127,6 +125,23 @@ export const topWorkspaceTableColumns: ColumnDef<TopRevenueWorkspace>[] = [
 ];
 
 export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
+  {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã khách hàng</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return <p className="text-center font-medium">{row.getValue("id")}</p>;
+    },
+  },
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -235,6 +250,23 @@ const workspaceCategory: Record<string, string> = {
 
 export const WorkspaceTableColumns: ColumnDef<Workspace>[] = [
   {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã không gian</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return <p className="text-center font-medium">{row.getValue("id")}</p>;
+    },
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -314,46 +346,6 @@ export const WorkspaceTableColumns: ColumnDef<Workspace>[] = [
           {workspaceCategory[String(row.getValue("category"))] ||
             "Không xác định"}
         </p>
-      );
-    },
-  },
-  {
-    accessorKey: "capacity",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Sức chứa</p>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">
-          {row.getValue("capacity")} người
-        </p>
-      );
-    },
-  },
-  {
-    accessorKey: "area",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Diện tích</p>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">{row.getValue("area")} m²</p>
       );
     },
   },
@@ -761,6 +753,25 @@ export const PromotionTableColumns: ColumnDef<PromotionProps>[] = [
         <p className="text-center font-medium">
           {formatDateTime(row.getValue("endDate"))}
         </p>
+      );
+    },
+  },
+  {
+    accessorKey: "workspaceID",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã không gian</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">{row.getValue("workspaceID")}</p>
       );
     },
   },

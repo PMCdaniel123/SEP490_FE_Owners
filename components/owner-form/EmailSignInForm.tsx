@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/stores";
 import { login } from "@/stores/slices/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
+import { BASE_URL } from "@/constants/environments";
 
 interface EmailSignInFormProps {
   initialData?: OwnerEmailSignInProps | null;
@@ -50,7 +51,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
   const onSignIn = async (values: z.infer<typeof ownerEmailSchema>) => {
     setIsLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/owners/login", {
+      const response = await fetch(`${BASE_URL}/owners/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,23 +79,21 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
       router.push("/authentication");
 
       try {
-        const decodeResponse = await fetch(
-          "https://localhost:5050/users/decodejwttoken",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              token: token,
-            }),
-          }
-        );
+        const decodeResponse = await fetch(`${BASE_URL}/users/decodejwttoken`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+          }),
+        });
         const decoded = await decodeResponse.json();
         const ownerData = {
           id: decoded.claims.sub,
           email: decoded.claims.email,
           phone: decoded.claims.Phone,
+          avatar: decoded.avatarUrl,
         };
         toast.success("Đăng nhập thành công!", {
           position: "bottom-right",

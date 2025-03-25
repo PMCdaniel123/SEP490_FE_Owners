@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import AmenityForm from "@/components/owner-form/AmenityForm";
+import { BASE_URL } from "@/constants/environments";
 import { AmenityProps } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,7 +19,7 @@ function AmenityDetail() {
     const getAmenityDetail = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5050/amenities/${amenityId}`
+          `${BASE_URL}/amenities/${amenityId}`
         );
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải tiện ích.");
