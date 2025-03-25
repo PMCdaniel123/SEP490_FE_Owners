@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import PromotionForm from "@/components/owner-form/PromotionForm";
+import { BASE_URL } from "@/constants/environments";
 import { PromotionProps } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,7 +10,9 @@ import { toast } from "react-toastify";
 
 function PromotionDetail() {
   const { promotionId } = useParams() as { promotionId: string };
-  const [promotionDetail, setPromotionDetail] = useState<PromotionProps | null>(null);
+  const [promotionDetail, setPromotionDetail] = useState<PromotionProps | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ function PromotionDetail() {
 
     const getPromotionDetail = async () => {
       try {
-        const response = await fetch(`https://localhost:5050/promotions/${promotionId}`);
+        const response = await fetch(`${BASE_URL}/promotions/${promotionId}`);
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải mã khuyến mãi.");
         }
@@ -30,7 +33,8 @@ function PromotionDetail() {
         setPromotionDetail(formattedPromotion);
         setLoading(false);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
         toast.error(errorMessage, {
           position: "top-right",
           autoClose: 2000,

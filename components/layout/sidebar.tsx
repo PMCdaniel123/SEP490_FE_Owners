@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { BASE_URL } from "@/constants/environments";
 
 function Sidebar() {
   const { owner } = useSelector((state: RootState) => state.auth);
@@ -31,7 +32,7 @@ function Sidebar() {
     const fetchOwner = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5050/workspace-owners/${owner.id}`
+          `${BASE_URL}/workspace-owners/${owner.id}`
         );
 
         if (!response.ok) {

@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import BookingTable from "@/components/table/booking-table";
+import { BASE_URL } from "@/constants/environments";
 import { BookingTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { BookingProps } from "@/types";
@@ -20,7 +21,7 @@ function BookingManagement() {
     const getBookingByOwnerId = async () => {
       try {
         const response = await fetch(
-          "https://localhost:5050/getallbookingbyownerid/" + owner?.id
+          `${BASE_URL}/getallbookingbyownerid/` + owner?.id
         );
 
         if (!response.ok) {

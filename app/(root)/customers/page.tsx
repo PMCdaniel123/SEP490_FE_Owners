@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import CustomerTable from "@/components/table/customer-table";
+import { BASE_URL } from "@/constants/environments";
 import { CustomerTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { CustomerProps } from "@/types";
@@ -17,10 +18,10 @@ function CustomerManagement() {
   useEffect(() => {
     if (!owner) return;
 
-    const getBookingByOwnerId = async () => {
+    const getCustomersByOwnerId = async () => {
       try {
         const response = await fetch(
-          "https://localhost:5050/users/owner/" + owner?.id
+          `${BASE_URL}/users/owner/` + owner?.id
         );
 
         if (!response.ok) {
@@ -45,7 +46,7 @@ function CustomerManagement() {
       }
     };
 
-    getBookingByOwnerId();
+    getCustomersByOwnerId();
   }, [owner]);
 
   if (loading) {

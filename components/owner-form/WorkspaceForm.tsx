@@ -42,6 +42,7 @@ import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { TimePicker } from "antd";
 import dayjs from "dayjs";
+import { BASE_URL } from "@/constants/environments";
 
 interface WorkspaceFormProps {
   initialData?: Workspace | null;
@@ -92,7 +93,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
     formData.append("images", file);
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/images/upload", {
+      const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
         body: formData,
       });
@@ -165,7 +166,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
 
     setLoading(true);
     try {
-      const response = await fetch("https://localhost:5050/workspaces", {
+      const response = await fetch(`${BASE_URL}/workspaces`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -246,7 +247,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://localhost:5050/workspaces/" + initialData?.id,
+        `${BASE_URL}/workspaces/` + initialData?.id,
         {
           method: "PUT",
           headers: {

@@ -19,6 +19,7 @@ import { login, logout } from "@/stores/slices/authSlice";
 import { toast } from "react-toastify";
 import { RootState } from "@/stores";
 import Link from "next/link";
+import { BASE_URL } from "@/constants/environments";
 
 function TopNav() {
   const [open, setOpen] = useState(false);
@@ -36,7 +37,7 @@ function TopNav() {
       const getCustomerData = async () => {
         try {
           const decodeResponse = await fetch(
-            "https://localhost:5050/users/decodejwttoken",
+            `${BASE_URL}/users/decodejwttoken`,
             {
               method: "POST",
               headers: {
@@ -57,11 +58,12 @@ function TopNav() {
             id: decoded.claims.sub,
             email: decoded.claims.email,
             phone: decoded.claims.Phone,
+            avatar: decoded.avatarUrl,
           };
           dispatch(login(ownerData));
 
           const balanceResponse = await fetch(
-            "https://localhost:5050/owner-wallets/" + ownerData.id,
+            `${BASE_URL}/owner-wallets/` + ownerData.id,
             {
               method: "GET",
               headers: {
@@ -146,7 +148,7 @@ function TopNav() {
             onClick={() => setOpen(!open)}
           >
             <Image
-              src="/logo.png"
+              src={owner?.avatar || "/logo.png"}
               alt="Logo"
               width={40}
               height={40}
@@ -167,7 +169,7 @@ function TopNav() {
             >
               <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
                 <Image
-                  src="/logo.png"
+                  src={owner?.avatar || "/logo.png"}
                   alt="Logo"
                   width={40}
                   height={40}

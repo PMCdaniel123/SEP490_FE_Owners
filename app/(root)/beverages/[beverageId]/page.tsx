@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import BeverageForm from "@/components/owner-form/BeverageForm";
+import { BASE_URL } from "@/constants/environments";
 import { BeverageProps } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ function BeverageDetail() {
     const getAmenityDetail = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5050/beverages/${beverageId}`
+          `${BASE_URL}/beverages/${beverageId}`
         );
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải món.");

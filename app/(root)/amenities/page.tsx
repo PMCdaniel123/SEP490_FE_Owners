@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import AmenityTable from "@/components/table/amenity-table";
+import { BASE_URL } from "@/constants/environments";
 import { AmenityTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { AmenityProps } from "@/types";
@@ -20,7 +21,7 @@ function AmenitiesManagement() {
     const getAmenitiesByOwnerId = async () => {
       try {
         const response = await fetch(
-          "https://localhost:5050/amenities/Owner/" + owner?.id
+          `${BASE_URL}/amenities/Owner/` + owner?.id
         );
 
         if (!response.ok) {

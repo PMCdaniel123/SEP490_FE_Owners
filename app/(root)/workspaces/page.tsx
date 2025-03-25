@@ -2,6 +2,7 @@
 
 import Loader from "@/components/loader/Loader";
 import WorkspaceTable from "@/components/table/workspace-table";
+import { BASE_URL } from "@/constants/environments";
 import { WorkspaceTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { Workspace } from "@/types";
@@ -20,7 +21,7 @@ function WorkspaceManagement() {
     const getWorkspaceByOwnerId = async () => {
       try {
         const response = await fetch(
-          "https://localhost:5050/workspaces/owner/" + owner?.id
+          `${BASE_URL}/workspaces/owner/` + owner?.id
         );
 
         if (!response.ok) {
