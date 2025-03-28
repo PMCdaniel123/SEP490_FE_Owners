@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowLeftRight,
   Boxes,
   DiamondPercent,
   History,
@@ -114,6 +115,13 @@ function Sidebar() {
         )}
         {isValidate && (
           <SidebarItem icon={Landmark} label="Rút tiền" href="/withdrawal" />
+        )}
+        {isValidate && (
+          <SidebarItem
+            icon={ArrowLeftRight}
+            label="Lịch sử giao dịch"
+            href="/transaction"
+          />
         )}
       </nav>
     </aside>

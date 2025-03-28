@@ -5,7 +5,6 @@ import {
   ReviewItemProps,
   TimeItemProps,
   TopWorkspace,
-  WithdrawalProps,
 } from "@/types";
 
 export const menuItems: MenuItemProps[] = [
@@ -181,36 +180,6 @@ export const policies = [
   "Không mang theo động vật",
   "Không gây ồn ào xung quanh",
   "Không khói thuốc",
-];
-
-export const withdrawalList: WithdrawalProps[] = [
-  {
-    id: "1",
-    number: "123456789",
-    bank: "Vietcombank",
-    money: "100000",
-    status: "1",
-    createdAt: "2023-01-01",
-    updatedAt: "2023-01-01",
-  },
-  {
-    id: "2",
-    number: "987654321",
-    bank: "Techcombank",
-    money: "200000",
-    status: "2",
-    createdAt: "2023-01-01",
-    updatedAt: "2023-01-01",
-  },
-  {
-    id: "3",
-    number: "555555555",
-    bank: "Vietinbank",
-    money: "150000",
-    status: "3",
-    createdAt: "2023-01-01",
-    updatedAt: "2023-01-01",
-  },
 ];
 
 export const timeList: TimeItemProps[] = [

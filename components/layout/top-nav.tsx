@@ -58,7 +58,6 @@ function TopNav() {
             id: decoded.claims.sub,
             email: decoded.claims.email,
             phone: decoded.claims.Phone,
-            avatar: decoded.avatarUrl,
           };
           dispatch(login(ownerData));
 
@@ -148,7 +147,7 @@ function TopNav() {
             onClick={() => setOpen(!open)}
           >
             <Image
-              src={owner?.avatar || "/logo.png"}
+              src={"/logo.png"}
               alt="Logo"
               width={40}
               height={40}
@@ -169,7 +168,7 @@ function TopNav() {
             >
               <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
                 <Image
-                  src={owner?.avatar || "/logo.png"}
+                  src={"/logo.png"}
                   alt="Logo"
                   width={40}
                   height={40}
