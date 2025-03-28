@@ -93,7 +93,6 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
           id: decoded.claims.sub,
           email: decoded.claims.email,
           phone: decoded.claims.Phone,
-          avatar: decoded.avatarUrl,
         };
         toast.success("Đăng nhập thành công!", {
           position: "bottom-right",
