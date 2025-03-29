@@ -79,15 +79,18 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
       router.push("/authentication");
 
       try {
-        const decodeResponse = await fetch(`${BASE_URL}/users/decodejwttoken`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: token,
-          }),
-        });
+        const decodeResponse = await fetch(
+          `${BASE_URL}/owners/decodejwttoken`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: token,
+            }),
+          }
+        );
         const decoded = await decodeResponse.json();
         const ownerData = {
           id: decoded.claims.sub,
