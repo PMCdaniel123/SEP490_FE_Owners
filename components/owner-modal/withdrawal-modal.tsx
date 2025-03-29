@@ -53,7 +53,7 @@ function WithdrawalModal({ request }: { request: WithdrawalProps }) {
         {request?.status !== "Handling" && (
           <p>
             <span className="font-semibold">Tin nhắn: </span>
-            {request?.message}
+            {request?.managerResponse}
           </p>
         )}
       </div>

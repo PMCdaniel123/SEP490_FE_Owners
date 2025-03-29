@@ -1,7 +1,6 @@
 "use client";
 
-import { Edit, Save, Wallet2, X } from "lucide-react";
-import { Button } from "../ui/button";
+import { Save, Wallet2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BankProps, WalletData } from "@/types";
 import { BASE_URL } from "@/constants/environments";
@@ -138,9 +137,11 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
     }
   };
 
+  console.log(walletData);
+
   return (
     <div className="flex flex-col gap-6 py-6">
-      <div className="flex items-center justify-end">
+      {/* <div className="flex items-center justify-end">
         {!editMode && (
           <Button
             className="flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary cursor-pointer"
@@ -151,7 +152,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
             </span>
           </Button>
         )}
-        {walletData && editMode && (
+        {walletData?.bankAccountName !== null && editMode && (
           <Button
             className="flex gap-2 items-center justify-center bg-red-500 text-white py-3 rounded-md hover:bg-red-300 cursor-pointer"
             onClick={() => setEditMode(false)}
@@ -161,7 +162,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
             </span>
           </Button>
         )}
-      </div>
+      </div> */}
       <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <Wallet2 className="h-5 w-5 text-primary dark:text-primary-dark" />
