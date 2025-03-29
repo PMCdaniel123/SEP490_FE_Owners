@@ -1,7 +1,6 @@
 "use client";
 
 import DashboardLineChart from "@/components/charts/line-chart";
-import NewCustomers from "@/components/new-customers-table/new-customers";
 import TopWorkspaceTable from "@/components/table/top-workspace-table";
 import { topWorkspaceTableColumns } from "@/constants/table-columns";
 import {
@@ -252,7 +251,6 @@ export default function OwnerPage() {
           />
         </div>
         <div className="col-span-1 flex flex-col gap-4">
-          <NewCustomers />
           <HotAmenityChart bookingAmenityList={bookingAmenityList} />
           <HotBeverageChart bookingBeverageList={bookingBeverageList} />
         </div>

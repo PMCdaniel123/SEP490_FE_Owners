@@ -17,7 +17,7 @@ export default function SidebarItem({
       href={href}
       className={`flex text-base items-center gap-2 px-4 py-4 rounded-lg transition-colors duration-200 ${
         isActive
-          ? "bg-primary text-white"
+          ? "bg-gradient-to-r from-primary to-secondary text-white"
           : "text-fourth hover:bg-primary hover:text-white"
       }`}
     >
