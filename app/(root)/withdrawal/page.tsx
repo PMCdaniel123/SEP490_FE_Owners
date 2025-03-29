@@ -7,6 +7,7 @@ import { BASE_URL } from "@/constants/environments";
 import { WithdrawalTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
 import { WalletData, WithdrawalProps } from "@/types";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -41,7 +42,10 @@ function WithdrawalManagement() {
         const formatted =
           data.requests === null || data.requests === undefined
             ? []
-            : data.requests;
+            : data.requests.sort(
+                (a: WithdrawalProps, b: WithdrawalProps) =>
+                  dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix()
+              );
         setWithdrawalList(formatted);
         setLoading(false);
       } catch (error) {
@@ -122,14 +126,16 @@ function WithdrawalManagement() {
           setEditMode={setEditMode}
         />
       </div>
-      <div className="p-4 bg-white rounded-xl">
-        <WithdrawalTable
-          columns={WithdrawalTableColumns}
-          data={withdrawalList}
-          walletData={walletData}
-          editMode={editMode}
-        />
-      </div>
+      {!editMode && (
+        <div className="p-4 bg-white rounded-xl">
+          <WithdrawalTable
+            columns={WithdrawalTableColumns}
+            data={withdrawalList}
+            walletData={walletData}
+            editMode={editMode}
+          />
+        </div>
+      )}
     </div>
   );
 }

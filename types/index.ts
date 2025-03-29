@@ -181,7 +181,7 @@ export interface WithdrawalProps {
   bankNumber: string;
   bankAccountName: string;
   balance: string;
-  message: string | null;
+  managerResponse: string | null;
 }
 
 export interface WithdrawalRequest {
