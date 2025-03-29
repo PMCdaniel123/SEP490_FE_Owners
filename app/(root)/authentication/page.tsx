@@ -15,7 +15,16 @@ import { RootState } from "@/stores";
 import { OwnerProps } from "@/types";
 import { LoadingOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IdCard, FileText, Save, Globe, X } from "lucide-react";
+import {
+  IdCard,
+  FileText,
+  Save,
+  Globe,
+  X,
+  CircleCheck,
+  CircleEllipsis,
+  CircleX,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -273,22 +282,53 @@ function AuthenticationManagement() {
 
   return (
     <div className="p-4 bg-white rounded-xl">
-      <h1 className="text-xl font-bold text-center text-primary mt-10">
-        Xác thực tài khoản
-      </h1>
-      <p className="text-center text-fifth mt-2 text-sm max-w-xl mx-auto">
-        Để được xác minh, bạn phải gửi tất cả các thông tin bắt buộc sau. Nên
-        bắt đầu bằng cách xác minh danh tính hoặc Địa chỉ.
-      </p>
+      {isEditing ? (
+        <div className="w-5xl mx-auto bg-white border border-primary rounded-lg p-6 mt-4">
+          <h1 className="text-2xl font-bold text-center text-primary">
+            Xác thực tài khoản
+          </h1>
+          <p className="text-center text-gray-500 italic mb-8 text-sm">
+            Để hoàn tất quá trình xác minh, vui lòng cung cấp đầy đủ các thông
+            tin bắt buộc.
+          </p>
+          <ul className="mt-4 space-y-2 text-gray-600">
+            <li className="flex items-start">
+              ✅{" "}
+              <span className="ml-2">
+                Yêu cầu xác minh sẽ được xem xét trong vòng 24 giờ kể từ thời
+                điểm gửi.
+              </span>
+            </li>
+            <li className="flex items-start">
+              ✅{" "}
+              <span className="ml-2">
+                Nếu bạn có không gian làm việc đang hoạt động, mọi thông tin cập
+                nhật sẽ tạm thời vô hiệu hóa tất cả không gian làm việc của bạn.
+              </span>
+            </li>
+            <li className="flex items-start">
+              ✅{" "}
+              <span className="ml-2">
+                Quá trình xác minh yêu cầu cung cấp các tài liệu sau: căn cước
+                công dân, tài khoản mạng xã hội và giấy phép kinh doanh hợp lệ.
+              </span>
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <h1 className="text-2xl font-bold text-center text-primary mt-10">
+          Thông tin doanh nghiệp
+        </h1>
+      )}
 
       <div className="mt-10">
         {isEditing ? (
           <div className="flex flex-col w-full gap-6">
             {ownerInfo?.status === "Success" && (
               <div className="flex items-center justify-between">
-                <span className="text-green-500 border rounded-lg border-green-500 px-4 py-2">
-                  Xác thực thành công
-                </span>
+                <p className="text-green-500 border rounded-lg border-green-500 px-4 py-2 flex items-center gap-2">
+                  <CircleCheck size={18} /> Xác thực thành công
+                </p>
                 <Button
                   onClick={() => setIsEditing(false)}
                   className="flex gap-2 items-center justify-center bg-red-500 text-white py-3 rounded-md hover:bg-red-300 cursor-pointer"
@@ -301,16 +341,16 @@ function AuthenticationManagement() {
             )}
             {status === "Handling" && (
               <div className="flex items-center justify-start">
-                <span className="text-yellow-500 border rounded-lg border-yellow-500 px-4 py-2">
-                  Chờ xác thực!
-                </span>
+                <p className="text-yellow-500 border rounded-lg border-yellow-500 px-4 py-2 flex items-center gap-2">
+                  <CircleEllipsis size={18} /> Chờ xác thực!
+                </p>
               </div>
             )}
             {status === "Fail" && (
               <div className="flex items-center justify-start">
-                <span className="text-red-500 border rounded-lg border-red-500 px-4 py-2">
-                  Xác thực thất bại! Lí do: {message}
-                </span>
+                <p className="text-red-500 border rounded-lg border-red-500 px-4 py-2 flex items-center gap-2">
+                  <CircleX size={18} /> Xác thực thất bại! Lí do: {message}
+                </p>
               </div>
             )}
             <Form {...form}>

@@ -32,9 +32,13 @@ function BookingManagement() {
           data.bookingByOwnerIdDTOs === null ||
           data.bookingByOwnerIdDTOs === undefined
             ? []
-            : data.bookingByOwnerIdDTOs.filter(
-                (booking: BookingProps) => booking.status === "Success"
-              );
+            : data.bookingByOwnerIdDTOs
+                .filter((booking: BookingProps) => booking.status === "Success")
+                .sort(
+                  (a: BookingProps, b: BookingProps) =>
+                    new Date(b.created_At).getTime() -
+                    new Date(a.created_At).getTime()
+                );
         setBookingList(formattedBooking);
         setLoading(false);
       } catch (error) {
