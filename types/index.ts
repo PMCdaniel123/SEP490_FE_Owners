@@ -169,13 +169,25 @@ export interface PromotionProps {
   workspaceID: number;
 }
 export interface WithdrawalProps {
-  id: string;
-  number: string;
-  bank: string;
-  money: string;
+  id: number;
+  title: string;
+  description: string;
   status: string;
   createdAt: string;
-  updatedAt: string;
+  workspaceOwnerId: number;
+  userId: number;
+  walletId: number;
+  bankName: string;
+  bankNumber: string;
+  bankAccountName: string;
+  balance: string;
+  managerResponse: string | null;
+}
+
+export interface WithdrawalRequest {
+  title: string;
+  description: string;
+  workspaceOwnerId: number;
 }
 
 export interface IdentifyProps {
@@ -313,4 +325,43 @@ export interface OwnerProps {
   licenseFile: string;
   status: string;
   updatedAt: string;
+  message: string | null;
+}
+
+export interface WalletData {
+  id: number;
+  ownerWalletId: number;
+  balance: number;
+  status: string;
+  bankName: string;
+  bankAccountName: string;
+  bankNumber: string;
+  ownerId: number;
+  ownerName: string;
+  licenseName: string;
+}
+
+export interface WalletProps {
+  bankName: string;
+  bankAccountName: string;
+  bankNumber: string;
+}
+
+export interface BankProps {
+  id: number;
+  name: string;
+  code: string;
+  bin: string;
+  shortName: string;
+  logo: string;
+  transferSupported: number;
+  lookupSupported: number;
+}
+
+export interface TransactionProp {
+  transactionId: number;
+  amount: number;
+  status: string;
+  description: string;
+  createdAt: string;
 }

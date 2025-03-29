@@ -155,11 +155,8 @@ export const promotionSchema = z
   });
 
 export const withdrawalSchema = z.object({
-  number: z.string().nonempty("Vui lòng nhập số tài khoản ngân hàng"),
-  bank: z.string().nonempty("Vui lòng tên ngân hàng"),
-  money: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "Giá phải lớn hơn 0",
-  }),
+  title: z.string().nonempty("Vui lòng nhập tiêu đề yêu cầu"),
+  description: z.string().nonempty("Vui lòng nhập mô tả yêu cầu"),
 });
 
 export const identifySchema = z.object({
@@ -210,4 +207,16 @@ export const identifySchema = z.object({
     .refine((file) => file && file.size < 5 * 1024 * 1024, {
       message: "File phải nhỏ hơn 5MB",
     }),
+});
+
+export const walletSchema = z.object({
+  bankAccountName: z
+    .string()
+    .min(3, "Tên chủ tài khoản ngân hàng phải có ít nhất 3 ký tự"),
+  bankNumber: z
+    .string()
+    .min(3, "Số tài khoản ngân hàng phải có ít nhất 3 ký tự"),
+  bankName: z.string({
+    required_error: "Vui lòng chọn tên ngân hàng",
+  }),
 });

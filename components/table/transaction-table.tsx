@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -33,28 +32,21 @@ import {
 
 import { useState } from "react";
 import { Separator } from "../ui/separator";
-import { CirclePlus, Info } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { WalletData } from "@/types";
+import { Info } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  walletData: WalletData | null;
-  editMode: boolean;
 }
 
-export default function WithdrawalTable<TData, TValue>({
+export default function TransactionTable<TData, TValue>({
   columns,
-  data,
-  walletData,
-  editMode,
+  data = [],
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -75,40 +67,13 @@ export default function WithdrawalTable<TData, TValue>({
     },
   });
 
-  if (
-    !walletData ||
-    !walletData?.bankName ||
-    !walletData?.bankNumber ||
-    !walletData?.bankAccountName
-  )
-    return null;
-
   return (
     <div className="flex flex-col gap-4">
       <div className="mt-4 flex items-center justify-between">
-        <h1 className="font-bold text-primary text-xl">
-          Lịch sử yêu cầu rút tiền
-        </h1>
-        {!editMode && (
-          <Button
-            className="flex items-center gap-2 text-white font-semibold"
-            onClick={() => router.push("withdrawal/new")}
-          >
-            <CirclePlus />
-            <span>Tạo yêu cầu rút tiền mới</span>
-          </Button>
-        )}
+        <h1 className="font-bold text-primary text-xl">Lịch sử giao dịch</h1>
       </div>
       <Separator className="mb-4" />
       <div className="flex items-center">
-        <Input
-          placeholder="Số tài khoản ngân hàng..."
-          value={(table.getColumn("bankNumber")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("bankNumber")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

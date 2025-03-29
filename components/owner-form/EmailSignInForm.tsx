@@ -79,7 +79,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
       router.push("/authentication");
 
       try {
-        const decodeResponse = await fetch(`${BASE_URL}/users/decodejwttoken`, {
+        const decodeResponse = await fetch(`${BASE_URL}/owners/decodejwttoken`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +93,6 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
           id: decoded.claims.sub,
           email: decoded.claims.email,
           phone: decoded.claims.Phone,
-          avatar: decoded.avatarUrl,
         };
         toast.success("Đăng nhập thành công!", {
           position: "bottom-right",

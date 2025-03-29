@@ -9,6 +9,7 @@ import {
   formatCurrency,
   PromotionProps,
   TopRevenueWorkspace,
+  TransactionProp,
   WithdrawalProps,
   Workspace,
 } from "@/types";
@@ -34,11 +35,8 @@ import CustomerDropdown from "@/components/owner-dropdown/customer-dropdown";
 import BookingDropdown from "@/components/owner-dropdown/booking-dropdown";
 import FeedbackDropdown from "@/components/owner-dropdown/feedback-dropdown";
 import dayjs from "dayjs";
+import WithdrawalDropdown from "@/components/owner-dropdown/withdrawal-dropdown";
 
-const formatDate = (dateStr: string): string => {
-  const [year, month, day] = dateStr.split("-");
-  return `${day}-${month}-${year}`;
-};
 const formatDateTime = (dateStr: string): string => {
   return dayjs(dateStr).format("HH:mm DD/MM/YYYY");
 };
@@ -828,7 +826,7 @@ export const PromotionTableColumns: ColumnDef<PromotionProps>[] = [
 
 export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
   {
-    accessorKey: "number",
+    accessorKey: "bankNumber",
     header: () => {
       return (
         <div className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer">
@@ -838,12 +836,12 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("number")}</p>
+        <p className="text-center font-medium">{row.getValue("bankNumber")}</p>
       );
     },
   },
   {
-    accessorKey: "bank",
+    accessorKey: "bankName",
     header: ({ column }) => {
       return (
         <div
@@ -856,11 +854,13 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p className="text-center font-medium">{row.getValue("bank")}</p>;
+      return (
+        <p className="text-center font-medium">{row.getValue("bankName")}</p>
+      );
     },
   },
   {
-    accessorKey: "money",
+    accessorKey: "balance",
     header: ({ column }) => {
       return (
         <div
@@ -875,7 +875,7 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {formatCurrency(Number(row.getValue("money")))}
+          {formatCurrency(Number(row.getValue("balance")))}
         </p>
       );
     },
@@ -896,7 +896,7 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">
-          {formatDate(row.getValue("createdAt"))}
+          {dayjs(row.getValue("createdAt")).format("HH:mm:ss DD/MM/YYYY")}
         </p>
       );
     },
@@ -915,17 +915,114 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
       );
     },
     cell: ({ row }) => {
-      return row.getValue("status") === "1" ? (
+      return row.getValue("status") === "Handling" ? (
         <p className="text-center font-medium flex items-center justify-center text-yellow-500">
           <span>Chờ xử lý</span>
         </p>
-      ) : row.getValue("status") === "2" ? (
+      ) : row.getValue("status") === "Success" ? (
         <p className="text-center font-medium flex items-center justify-center text-green-500">
           <span>Thành công</span>
         </p>
       ) : (
         <p className="text-center font-medium flex items-center justify-center text-red-500">
           <span>Thất bại</span>
+        </p>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const request = row.original;
+
+      return <WithdrawalDropdown request={request} />;
+    },
+  },
+];
+
+export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
+  {
+    accessorKey: "amount",
+    header: () => {
+      return (
+        <div className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer">
+          <p>Số tiền</p>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(row.getValue("amount"))}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mô tả</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">{row.getValue("description")}</p>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Ngày tạo</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {dayjs(row.getValue("createdAt")).format("HH:mm:ss DD/MM/YYYY")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Trạng thái</p>
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return row.getValue("status") === "Withdraw Success" ? (
+        <p className="text-center font-medium flex items-center justify-center text-yellow-500">
+          <span>Rút tiền</span>
+        </p>
+      ) : row.getValue("status") === "PAID" ? (
+        <p className="text-center font-medium flex items-center justify-center text-green-500">
+          <span>Nhận tiền</span>
+        </p>
+      ) : (
+        <p className="text-center font-medium flex items-center justify-center text-red-500">
+          <span>Hoàn tiền</span>
         </p>
       );
     },
