@@ -1153,35 +1153,6 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
     },
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-black font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Trạng thái</p>
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return row.getValue("status") === "Handling" ? (
-        <p className="text-center font-medium flex items-center justify-center text-yellow-500">
-          <span>Chờ xử lý</span>
-        </p>
-      ) : row.getValue("status") === "Success" ? (
-        <p className="text-center font-medium flex items-center justify-center text-green-500">
-          <span>Thành công</span>
-        </p>
-      ) : (
-        <p className="text-center font-medium flex items-center justify-center text-red-500">
-          <span>Thất bại</span>
-        </p>
-      );
-    },
-  },
-  {
     id: "actions",
     cell: ({ row }) => {
       const booking = row.original;

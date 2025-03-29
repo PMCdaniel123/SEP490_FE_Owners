@@ -31,7 +31,14 @@ function TransactionPage() {
         const formatted =
           data.transactions === null || data.transactions === undefined
             ? []
-            : data.transactions;
+            : data.transactions.sort(
+                (a: TransactionProp, b: TransactionProp) => {
+                  return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                  );
+                }
+              );
         setTransactionList(formatted);
         setLoading(false);
       } catch (error) {
