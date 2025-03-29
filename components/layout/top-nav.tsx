@@ -37,7 +37,7 @@ function TopNav() {
       const getCustomerData = async () => {
         try {
           const decodeResponse = await fetch(
-            `${BASE_URL}/users/decodejwttoken`,
+            `${BASE_URL}/owners/decodejwttoken`,
             {
               method: "POST",
               headers: {

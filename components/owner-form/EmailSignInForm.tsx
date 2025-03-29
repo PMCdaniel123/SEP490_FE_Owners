@@ -79,7 +79,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
       router.push("/authentication");
 
       try {
-        const decodeResponse = await fetch(`${BASE_URL}/users/decodejwttoken`, {
+        const decodeResponse = await fetch(`${BASE_URL}/owners/decodejwttoken`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
