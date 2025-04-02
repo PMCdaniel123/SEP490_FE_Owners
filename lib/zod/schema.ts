@@ -45,12 +45,12 @@ export const workspaceSchema = z
     capacity: z
       .string()
       .refine((val) => !isNaN(Number(val)) && Number(val) >= 1, {
-        message: "Sức chứa tối đa phải >= 1 người",
+        message: "Sức chứa tối đa phải ≥ 1 người",
       }),
     cleanTime: z
       .string()
       .refine((val) => !isNaN(Number(val)) && Number(val) >= 1, {
-        message: "Thời gian dọn dẹp phải >= 1 phút",
+        message: "Thời gian dọn dẹp phải ≥ 1 phút",
       }),
     description: z.string().min(3, "Mô tả không gian phải có ít nhất 3 ký tự"),
     shortTermPrice: z
@@ -82,10 +82,10 @@ export const workspaceSchema = z
       const open = dayjs(data.openTime, "HH:mm");
       const close = dayjs(data.closeTime, "HH:mm");
 
-      return close.diff(open, "hour") >= 1;
+      return close.diff(open, "hour") >= 6;
     },
     {
-      message: "Thời gian đóng cửa phải sau thời gian mở cửa ít nhất 1 giờ",
+      message: "Thời gian đóng cửa phải sau thời gian mở cửa ít nhất 6 giờ",
       path: ["closeTime"],
     }
   );
