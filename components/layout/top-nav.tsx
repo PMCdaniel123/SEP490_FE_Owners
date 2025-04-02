@@ -186,15 +186,15 @@ function TopNav() {
               <Separator className="mb-2" />
               <Link
                 href="/authentication"
-                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
+                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
               >
                 <Settings size={16} /> <span>Sửa thông tin</span>
               </Link>
-              <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer">
+              <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer">
                 <LockKeyhole size={16} /> <span>Đổi mật khẩu</span>
               </li>
               <li
-                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
+                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
                 onClick={handleLogOut}
               >
                 <LogOut size={16} /> <span>Đăng xuất</span>
