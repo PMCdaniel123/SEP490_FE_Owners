@@ -3,14 +3,16 @@
 import { SidebarItemProps } from "@/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function SidebarItem({
   icon: Icon,
   label,
   href,
+  collapsed,
 }: SidebarItemProps) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname.includes(href);
 
   return (
     <Link
@@ -22,7 +24,17 @@ export default function SidebarItem({
       }`}
     >
       <Icon className="w-5 h-5" />
-      <span>{label}</span>
+      {/* {!collapsed && <span>{label}</span>} */}
+      <motion.span
+        initial={{ opacity: 1, x: 0 }}
+        animate={{ opacity: collapsed ? 0 : 1, x: collapsed ? -20 : 0 }}
+        transition={{ duration: 0.3 }}
+        className={`font-medium ${
+          collapsed ? "hidden" : "block"
+        }`}
+      >
+        {label}
+      </motion.span>
     </Link>
   );
 }

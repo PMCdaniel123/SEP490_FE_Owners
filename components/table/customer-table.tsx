@@ -34,6 +34,7 @@ import {
 import { useState } from "react";
 import { Separator } from "../ui/separator";
 import { Info } from "lucide-react";
+import getHeaderText from "@/constants/format-header";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -70,7 +71,9 @@ export default function CustomerTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-bold mt-4 text-primary text-xl">Danh sách khách hàng</h1>
+      <h1 className="font-bold mt-4 text-primary text-xl">
+        Danh sách khách hàng
+      </h1>
       <Separator className="mb-4" />
       <div className="flex items-center">
         <Input
@@ -101,7 +104,7 @@ export default function CustomerTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {getHeaderText<TData, unknown>(column.columnDef.header)}
                   </DropdownMenuCheckboxItem>
                 );
               })}

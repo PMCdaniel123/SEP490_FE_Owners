@@ -85,38 +85,11 @@ function WithdrawalForm() {
 
   return (
     <div className="flex flex-col">
-      <div className="w-2xl mx-auto bg-white border border-primary rounded-lg p-6 mt-4">
-        <h1 className="text-xl font-bold text-primary flex items-center justify-center gap-4 mt-4">
+      <div className="w-fit mx-auto bg-white border border-primary rounded-lg p-6 mt-4">
+        <h1 className="text-xl font-bold text-primary flex items-center justify-center gap-4">
           <SquarePen />
           <span>Tạo mới yêu cầu rút tiền</span>
         </h1>
-        <p className="text-center text-gray-500 italic mb-8 text-sm">
-          Để hoàn tất quá trình xác minh, vui lòng cung cấp đầy đủ các thông tin
-          bắt buộc.
-        </p>
-        <ul className="mt-4 space-y-2 text-gray-600">
-          <li className="flex items-start">
-            ✅{" "}
-            <span className="ml-2">
-              Yêu cầu xác minh sẽ được xem xét trong vòng 12 giờ kể từ thời điểm
-              gửi.
-            </span>
-          </li>
-          <li className="flex items-start">
-            ✅{" "}
-            <span className="ml-2">
-              Lần gửi yêu cầu rút tiền tiếp theo sẽ cách lần gửi yêu cầu rút
-              tiền mới nhất ít nhất 12 giờ.
-            </span>
-          </li>
-          <li className="flex items-start">
-            ✅{" "}
-            <span className="ml-2">
-              Mỗi lần rút tiền sẽ rút toàn bộ số tiền hiện đang có trên hệ
-              thống.
-            </span>
-          </li>
-        </ul>
       </div>
       <Separator className="my-8 bg-primary" />
       <Form {...form}>

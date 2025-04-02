@@ -316,7 +316,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       <FormControl>
                         <Input
                           className="py-6 px-4 rounded-md file:bg-seventh"
-                          placeholder="Nhập tên không gian..."
+                          placeholder="Tên công ty + Loại không gian + ..."
                           {...field}
                         />
                       </FormControl>

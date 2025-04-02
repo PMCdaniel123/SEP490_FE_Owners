@@ -16,6 +16,7 @@ export interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
   href: string;
+  collapsed?: boolean;
 }
 
 export interface TopWorkspace {

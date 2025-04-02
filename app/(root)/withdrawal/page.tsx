@@ -18,6 +18,7 @@ function WithdrawalManagement() {
   const [editMode, setEditMode] = useState(false);
   const { owner } = useSelector((state: RootState) => state.auth);
   const [withdrawalList, setWithdrawalList] = useState<WithdrawalProps[]>([]);
+  const [canWithdrawal, setCanWithdrawal] = useState(true);
 
   useEffect(() => {
     if (!owner) return;
@@ -39,13 +40,20 @@ function WithdrawalManagement() {
         }
 
         const data = await balanceResponse.json();
-        const formatted =
+        const formatted: WithdrawalProps[] =
           data.requests === null || data.requests === undefined
             ? []
             : data.requests.sort(
                 (a: WithdrawalProps, b: WithdrawalProps) =>
                   dayjs(b.createdAt).unix() - dayjs(a.createdAt).unix()
               );
+        if (formatted.length === 0) {
+          setCanWithdrawal(true);
+        } else {
+          setCanWithdrawal(
+            formatted[0].status === "Success" || formatted[0].status === "Fail"
+          );
+        }
         setWithdrawalList(formatted);
         setLoading(false);
       } catch (error) {
@@ -133,6 +141,7 @@ function WithdrawalManagement() {
             data={withdrawalList}
             walletData={walletData}
             editMode={editMode}
+            canWithdrawal={canWithdrawal}
           />
         </div>
       )}

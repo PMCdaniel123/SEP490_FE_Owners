@@ -1,29 +1,16 @@
-import { Edit, FileText, Globe, IdCard, User } from "lucide-react";
+import { FileText, Globe, IdCard, User } from "lucide-react";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { Button } from "../ui/button";
 import { OwnerProps } from "@/types";
 
 interface OwnerInfoProps {
   ownerInfo: OwnerProps | null;
-  handleEdit: () => void;
 }
 
-function OwnerInfo({ ownerInfo, handleEdit }: OwnerInfoProps) {
-  console.log(ownerInfo);
+function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-end">
-        <Button
-          onClick={handleEdit}
-          className="flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary cursor-pointer"
-        >
-          <span className="font-medium flex items-center gap-2">
-            <Edit size={18} /> Chỉnh sửa
-          </span>
-        </Button>
-      </div>
       <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <User className="h-5 w-5 text-primary dark:text-primary-dark" />

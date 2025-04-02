@@ -29,6 +29,7 @@ import {
 import { useState } from "react";
 import { Separator } from "../ui/separator";
 import { Info } from "lucide-react";
+import getHeaderText from "@/constants/format-header";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -80,7 +81,7 @@ export default function TopWorkspaceTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {getHeaderText<TData, unknown>(column.columnDef.header)}
                   </DropdownMenuCheckboxItem>
                 );
               })}
