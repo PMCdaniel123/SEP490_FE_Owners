@@ -50,7 +50,7 @@ function TopNav() {
           );
 
           if (!decodeResponse.ok) {
-            throw new Error("Có lỗi xảy ra khi giải mã token.");
+            throw new Error("Tài khoản đã bị hệ thống chặn.");
           }
 
           const decoded = await decodeResponse.json();
@@ -58,6 +58,7 @@ function TopNav() {
             id: decoded.claims.sub,
             email: decoded.claims.email,
             phone: decoded.claims.Phone,
+            avatar: decoded.avatar,
           };
           dispatch(login(ownerData));
 
@@ -147,7 +148,7 @@ function TopNav() {
             onClick={() => setOpen(!open)}
           >
             <Image
-              src={"/logo.png"}
+              src={owner?.avatar || "/logo.png"}
               alt="Logo"
               width={40}
               height={40}
@@ -168,7 +169,7 @@ function TopNav() {
             >
               <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
                 <Image
-                  src={"/logo.png"}
+                  src={owner?.avatar || "/logo.png"}
                   alt="Logo"
                   width={40}
                   height={40}

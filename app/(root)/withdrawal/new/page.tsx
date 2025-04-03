@@ -46,7 +46,7 @@ function NewWithdrawal() {
               </span>
               <span>
                 Lần gửi yêu cầu rút tiền tiếp theo sẽ cách lần gửi yêu cầu rút
-                tiền mới nhất ít nhất <b>12 giờ</b>.
+                tiền mới nhất ít nhất <b>24 giờ</b>.
               </span>
             </li>
             <li className="flex items-start gap-2">

@@ -30,6 +30,23 @@ export const passwordSchema = z.object({
   password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
 });
 
+export const resetPasswordSchema = z
+  .object({
+    email: z.string().email("Địa chỉ email không hợp lệ"),
+    token: z
+      .string()
+      .min(6, "Token phải có 6 ký tự")
+      .max(6, "Token phải có 6 ký tự"),
+    newPassword: z.string().min(6, "Mật khẩu mới phải có ít nhất 6 ký tự"),
+    confirmPassword: z
+      .string()
+      .min(6, "Mật khẩu xác nhận phải có ít nhất 6 ký tự"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Mật khẩu mới và xác nhận không khớp nhau",
+    path: ["confirmPassword"],
+  });
+
 export const workspaceSchema = z
   .object({
     name: z.string().min(3, "Tên không gian phải có ít nhất 3 ký tự"),
