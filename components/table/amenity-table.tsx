@@ -35,6 +35,7 @@ import { useState } from "react";
 import { Separator } from "../ui/separator";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
+import getHeaderText from "@/constants/format-header";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -112,7 +113,7 @@ export default function AmenityTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {getHeaderText<TData, unknown>(column.columnDef.header)}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -130,9 +131,9 @@ export default function AmenityTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}

@@ -36,12 +36,14 @@ import { Separator } from "../ui/separator";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { WalletData } from "@/types";
+import getHeaderText from "@/constants/format-header";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   walletData: WalletData | null;
   editMode: boolean;
+  canWithdrawal: boolean;
 }
 
 export default function WithdrawalTable<TData, TValue>({
@@ -49,6 +51,7 @@ export default function WithdrawalTable<TData, TValue>({
   data,
   walletData,
   editMode,
+  canWithdrawal,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -89,7 +92,7 @@ export default function WithdrawalTable<TData, TValue>({
         <h1 className="font-bold text-primary text-xl">
           Lịch sử yêu cầu rút tiền
         </h1>
-        {!editMode && (
+        {!editMode && canWithdrawal && (
           <Button
             className="flex items-center gap-2 text-white font-semibold"
             onClick={() => router.push("withdrawal/new")}
@@ -103,7 +106,9 @@ export default function WithdrawalTable<TData, TValue>({
       <div className="flex items-center">
         <Input
           placeholder="Số tài khoản ngân hàng..."
-          value={(table.getColumn("bankNumber")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("bankNumber")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("bankNumber")?.setFilterValue(event.target.value)
           }
@@ -129,7 +134,7 @@ export default function WithdrawalTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {getHeaderText<TData, unknown>(column.columnDef.header)}
                   </DropdownMenuCheckboxItem>
                 );
               })}

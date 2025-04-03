@@ -16,6 +16,7 @@ export interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
   href: string;
+  collapsed?: boolean;
 }
 
 export interface TopWorkspace {
@@ -326,6 +327,7 @@ export interface OwnerProps {
   status: string;
   updatedAt: string;
   message: string | null;
+  avatar: string | null;
 }
 
 export interface WalletData {
