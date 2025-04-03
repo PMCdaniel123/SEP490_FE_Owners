@@ -8,7 +8,7 @@ import {
   Home,
   KeyRound,
   Landmark,
-  Menu,
+  LayoutList,
   MessageSquareQuote,
   Sofa,
   UsersRound,
@@ -77,7 +77,7 @@ function Sidebar() {
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="mb-2 flex justify-center items-center w-full p-4 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
       >
-        <Menu className="w-5 h-5" />
+        <LayoutList className="w-5 h-5" />
       </motion.button>
       <motion.h1
         initial={{ opacity: 1 }}

@@ -24,6 +24,7 @@ import {
   CircleX,
   CheckCheck,
   TriangleAlert,
+  BadgeInfo,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -286,12 +287,12 @@ function AuthenticationManagement() {
       <div className="p-4 bg-white rounded-xl">
         <div className="w-fit mx-auto bg-white border border-primary rounded-lg p-6 mt-4">
           {isEditing ? (
-            <h1 className="text-xl font-bold text-center text-primary">
-              Xác thực tài khoản
+            <h1 className="text-xl font-bold text-center text-primary flex items-center gap-4">
+              <BadgeInfo /> Xác thực tài khoản
             </h1>
           ) : (
-            <h1 className="text-xl font-bold text-center text-primary">
-              Thông tin doanh nghiệp
+            <h1 className="text-xl font-bold text-center text-primary flex items-center gap-4">
+              <BadgeInfo /> Thông tin doanh nghiệp
             </h1>
           )}
         </div>

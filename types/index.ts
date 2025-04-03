@@ -327,6 +327,7 @@ export interface OwnerProps {
   status: string;
   updatedAt: string;
   message: string | null;
+  avatar: string | null;
 }
 
 export interface WalletData {
