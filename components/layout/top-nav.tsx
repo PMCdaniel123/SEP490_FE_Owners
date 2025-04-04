@@ -3,6 +3,7 @@
 import {
   Banknote,
   ChevronsUpDown,
+  Headset,
   LockKeyhole,
   LogOut,
   Settings,
@@ -20,6 +21,8 @@ import { toast } from "react-toastify";
 import { RootState } from "@/stores";
 import Link from "next/link";
 import { BASE_URL } from "@/constants/environments";
+import { Modal } from "antd";
+import ChangePasswordModal from "../owner-modal/change-password-modal";
 
 function TopNav() {
   const [open, setOpen] = useState(false);
@@ -31,6 +34,7 @@ function TopNav() {
   const { owner } = useSelector((state: RootState) => state.auth);
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [changePassword, setChangePassword] = useState(false);
 
   useEffect(() => {
     if (token !== null && token !== undefined && token !== "") {
@@ -123,6 +127,7 @@ function TopNav() {
   }, [open]);
 
   const handleLogOut = () => {
+    setOpen(false);
     dispatch(logout());
     router.push("/");
   };
@@ -132,79 +137,107 @@ function TopNav() {
   }
 
   return (
-    <div className="flex items-start justify-between gap-4">
-      <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
-        <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
-        <p className="bg-primary text-white text-sm px-3 py-1 rounded-lg flex items-center gap-2">
-          <Banknote />
-          {formatCurrency(balance)}
-        </p>
-      </div>
-      <div className="flex items-center justify-end w-full mb-4 gap-4">
-        <OwnerNotification />
-        <div ref={dropdownRef} className="relative">
-          <div
-            className="group flex items-center justify-center bg-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
-            onClick={() => setOpen(!open)}
-          >
-            <Image
-              src={owner?.avatar || "/logo.png"}
-              alt="Logo"
-              width={40}
-              height={40}
-              className="rounded-full border group-hover:bg-white"
-            />
-            <div className="flex flex-col justify-center items-start">
-              <p className="text-sm font-semibold">SĐT: {owner?.phone}</p>
-              <p className="text-sm">{owner?.email}</p>
-            </div>
-            <ChevronsUpDown size={20} />
-          </div>
-          {open && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4 border"
+    <>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
+          <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
+          <p className="bg-primary text-white text-sm px-3 py-1 rounded-lg flex items-center gap-2">
+            <Banknote />
+            {formatCurrency(balance)}
+          </p>
+        </div>
+        <div className="flex items-center justify-end w-full mb-4 gap-4">
+          <OwnerNotification />
+          <div ref={dropdownRef} className="relative">
+            <div
+              className="group flex items-center justify-center bg-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
+              onClick={() => setOpen(!open)}
             >
-              <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
-                <Image
-                  src={owner?.avatar || "/logo.png"}
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  className="rounded-full border bg-white"
-                />
-                <div className="flex flex-col justify-center items-start">
-                  <p className="text-sm font-semibold text-white">
-                    SĐT: {owner?.phone}
-                  </p>
-                  <p className="text-sm font-medium text-white">
-                    {owner?.email}
-                  </p>
-                </div>
+              <Image
+                src={owner?.avatar || "/logo.png"}
+                alt="Logo"
+                width={40}
+                height={40}
+                className="rounded-full border group-hover:bg-white"
+              />
+              <div className="flex flex-col justify-center items-start">
+                <p className="text-sm font-semibold">SĐT: {owner?.phone}</p>
+                <p className="text-sm">{owner?.email}</p>
               </div>
-              <Separator className="mb-2" />
-              <Link
-                href="/authentication"
-                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+              <ChevronsUpDown size={20} />
+            </div>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4 border"
               >
-                <Settings size={16} /> <span>Sửa thông tin</span>
-              </Link>
-              <li className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer">
-                <LockKeyhole size={16} /> <span>Đổi mật khẩu</span>
-              </li>
-              <li
-                className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
-                onClick={handleLogOut}
-              >
-                <LogOut size={16} /> <span>Đăng xuất</span>
-              </li>
-            </motion.div>
-          )}
+                <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
+                  <Image
+                    src={owner?.avatar || "/logo.png"}
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="rounded-full border bg-white"
+                  />
+                  <div className="flex flex-col justify-center items-start">
+                    <p className="text-sm font-semibold text-white">
+                      SĐT: {owner?.phone}
+                    </p>
+                    <p className="text-sm font-medium text-white">
+                      {owner?.email}
+                    </p>
+                  </div>
+                </div>
+                <Separator className="mb-2" />
+                <Link
+                  href="/authentication"
+                  className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                >
+                  <Settings size={16} /> <span>Sửa thông tin</span>
+                </Link>
+                <li
+                  className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                  onClick={() => {
+                    setOpen(false);
+                    setChangePassword(!changePassword);
+                  }}
+                >
+                  <LockKeyhole size={16} /> <span>Đổi mật khẩu</span>
+                </li>
+                <Link
+                  href="/contact"
+                  className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                >
+                  <Headset size={16} /> <span>Liên hệ với WorkHive</span>
+                </Link>
+                <li
+                  className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                  onClick={handleLogOut}
+                >
+                  <LogOut size={16} /> <span>Đăng xuất</span>
+                </li>
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <Modal
+        title={
+          <p className="text-xl font-bold text-primary">Thay đổi mật khẩu</p>
+        }
+        open={changePassword}
+        onCancel={() => setChangePassword(!changePassword)}
+        footer={null}
+      >
+        <ChangePasswordModal
+          setChangePassword={setChangePassword}
+          changePassword={changePassword}
+        />
+      </Modal>
+    </>
   );
 }
 

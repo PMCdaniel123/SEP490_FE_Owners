@@ -67,12 +67,11 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
       }
 
       const result = await response.json();
-      if (
-        result.token === "" &&
-        result.notification === "Không tìm thấy owner"
-      ) {
-        throw new Error("Số điện thoại hoặc mật khẩu không chính xác!");
+
+      if (result.token === "") {
+        throw new Error(result.notification);
       }
+      
       const token = result.token;
 
       try {

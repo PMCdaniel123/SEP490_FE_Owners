@@ -875,6 +875,27 @@ export const PromotionTableColumns: ColumnDef<PromotionProps>[] = [
 
 export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
   {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã yêu cầu</p>
+          <ArrowUpDown size={16} className="ml-2" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          YCRT{Number(row.getValue("id")).toString().padStart(4, "0")}
+        </p>
+      );
+    },
+  },
+  {
     accessorKey: "bankNumber",
     header: () => {
       return (
@@ -885,7 +906,22 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("bankNumber")}</p>
+        <p className="text-center font-medium w-[200px] truncate">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <p className="text-center font-medium w-[200px] truncate">
+                  {row.getValue("bankNumber")}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-white font-medium text-lg">
+                  {row.getValue("bankNumber")}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </p>
       );
     },
   },
@@ -904,7 +940,20 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">{row.getValue("bankName")}</p>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <p className="text-center font-medium w-[200px] truncate">
+                {row.getValue("bankName")}
+              </p>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white font-medium text-lg">
+                {row.getValue("bankName")}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     },
   },

@@ -87,6 +87,7 @@ function ResetPassword() {
         hideProgressBar: true,
         theme: "light",
       });
+      localStorage.removeItem("email_ls");
       router.push("/");
     } catch (error) {
       console.log(error);

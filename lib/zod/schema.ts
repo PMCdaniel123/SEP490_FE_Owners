@@ -47,6 +47,19 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(6, "Mật khẩu hiện tại là bắt buộc."),
+    newPassword: z.string().min(6, "Mật khẩu mới phải có ít nhất 6 ký tự."),
+    confirmPassword: z
+      .string()
+      .min(6, "Mật khẩu xác nhận phải có ít nhất 6 ký tự."),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Mật khẩu xác nhận không khớp.",
+    path: ["confirmPassword"],
+  });
+
 export const workspaceSchema = z
   .object({
     name: z.string().min(3, "Tên không gian phải có ít nhất 3 ký tự"),
