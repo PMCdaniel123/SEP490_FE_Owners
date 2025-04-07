@@ -67,12 +67,11 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
       }
 
       const result = await response.json();
-      if (
-        result.token === "" &&
-        result.notification === "Không tìm thấy owner"
-      ) {
-        throw new Error("Email hoặc mật khẩu không chính xác!");
+
+      if (result.token === "") {
+        throw new Error(result.notification);
       }
+
       const token = result.token;
 
       try {
@@ -124,7 +123,6 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
         return;
       }
     } catch (error) {
-      console.log(error);
       const errorMessage =
         error instanceof Error ? error.message : "Đã xảy ra lỗi!";
       toast.error(errorMessage, {

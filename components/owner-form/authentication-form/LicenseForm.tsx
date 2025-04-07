@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { FileText } from "lucide-react";
 
 function LicenseForm({
   form,
@@ -134,19 +135,31 @@ function LicenseForm({
         <FormField
           control={form.control}
           name="licenseFile"
-          render={({ field: { onChange, ref } }) => (
+          render={({ field: { onChange, ref, value } }) => (
             <FormItem>
               <FormLabel className="text-fourth font-bold text-base ml-6">
                 File (Vui lòng tải file PDF)
               </FormLabel>
               <FormControl>
-                <Input
-                  className="py-3 px-4 rounded-md file:bg-seventh border h-[50px]"
-                  type="file"
-                  accept="application/pdf"
-                  ref={ref}
-                  onChange={(e) => onChange(e.target.files?.[0])}
-                />
+                <div className="flex items-center gap-4 border rounded-md">
+                  <label
+                    htmlFor="images"
+                    className="cursor-pointer py-3 px-5 bg-primary text-white rounded-s-md text-center flex gap-2 items-center"
+                  >
+                    <FileText /> Chọn file PDF
+                  </label>
+                  <Input
+                    className="py-3 px-4 rounded-md file:bg-seventh border h-[50px] hidden"
+                    id="images"
+                    type="file"
+                    accept="application/pdf"
+                    ref={ref}
+                    onChange={(e) => onChange(e.target.files?.[0])}
+                  />
+                  <span className="text-gray-500 text-sm truncate max-w-[400px]">
+                    {value?.name || "Chưa có file pdf nào được chọn"}
+                  </span>
+                </div>
               </FormControl>
               <FormMessage className="text-red-500 text-xs" />
             </FormItem>

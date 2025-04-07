@@ -47,7 +47,7 @@ function AuthenticationManagement() {
       identityName: "",
       identityNumber: "",
       dateOfBirth: "",
-      sex: "Nam",
+      sex: "",
       nationality: "",
       placeOfOrigin: "",
       placeOfResidence: "",
@@ -83,31 +83,37 @@ function AuthenticationManagement() {
             setIsEditing(true);
             setStatus(data.owner.status);
             setMessage(data.owner.message);
-            form.setValue("identityName", data.owner.identityName);
-            form.setValue("identityNumber", data.owner.identityNumber);
-            form.setValue("dateOfBirth", data.owner.dateOfBirth);
-            form.setValue("sex", data.owner.sex);
-            form.setValue("nationality", data.owner.nationality);
-            form.setValue("placeOfOrigin", data.owner.placeOfOrigin);
-            form.setValue("placeOfResidence", data.owner.placeOfResidence);
+            form.setValue("identityName", data.owner.identityName || "");
+            form.setValue("identityNumber", data.owner.identityNumber || "");
+            form.setValue("dateOfBirth", data.owner.dateOfBirth || "");
+            form.setValue("sex", data.owner.sex || "");
+            form.setValue("nationality", data.owner.nationality || "");
+            form.setValue("placeOfOrigin", data.owner.placeOfOrigin || "");
+            form.setValue(
+              "placeOfResidence",
+              data.owner.placeOfResidence || ""
+            );
             form.setValue(
               "identityExpiredDate",
-              data.owner.identityExpiredDate
+              data.owner.identityExpiredDate || ""
             );
             form.setValue(
               "identityCreatedDate",
-              data.owner.identityCreatedDate
+              data.owner.identityCreatedDate || ""
             );
-            form.setValue("identityFile", data.owner.identityFile);
-            form.setValue("facebook", data.owner.facebook);
-            form.setValue("instagram", data.owner.instagram);
-            form.setValue("tiktok", data.owner.tiktok);
-            form.setValue("licenseName", data.owner.licenseName);
-            form.setValue("licenseNumber", data.owner.licenseNumber);
-            form.setValue("licenseAddress", data.owner.licenseAddress);
-            form.setValue("googleMapUrl", data.owner.googleMapUrl);
-            form.setValue("charterCapital", data.owner.charterCapital + "");
-            form.setValue("licenseFile", data.owner.licenseFile);
+            form.setValue("identityFile", data.owner.identityFile || "");
+            form.setValue("facebook", data.owner.facebook || "");
+            form.setValue("instagram", data.owner.instagram || "");
+            form.setValue("tiktok", data.owner.tiktok || "");
+            form.setValue("licenseName", data.owner.licenseName || "");
+            form.setValue("licenseNumber", data.owner.licenseNumber || "");
+            form.setValue("licenseAddress", data.owner.licenseAddress || "");
+            form.setValue("googleMapUrl", data.owner.googleMapUrl || "");
+            form.setValue(
+              "charterCapital",
+              data.owner.charterCapital ? data.owner.charterCapital + "" : ""
+            );
+            form.setValue("licenseFile", data.owner.licenseFile || "");
           } else {
             setIsEditing(false);
             setOwnerInfo(data.owner);
