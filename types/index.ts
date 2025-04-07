@@ -272,7 +272,7 @@ export interface BookingProps {
   }[];
 }
 
-export interface FeedbackProps {
+export interface Feedback {
   id: string;
   customerId: string;
   workspaceId: string;
@@ -366,4 +366,44 @@ export interface TransactionProp {
   status: string;
   description: string;
   createdAt: string;
+}
+
+export interface ResponseBookingProps {
+  id: number;
+  startDate: string;
+  endDate: string;
+  price: number;
+  status: string;
+  createdAt: string;
+  userId: number;
+  userName: string;
+  workspaceId: number;
+  workspaceName: string;
+  feedbackIds: number[];
+  hasOwnerResponse?: boolean;
+}
+
+export interface FeedbackProps {
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  userId: number;
+  ownerId: number;
+  bookingId: number;
+  workspaceId: number;
+  workspaceName: string;
+  createdAt: string;
+  imageUrls: string[];
+}
+
+export interface ResponseProps {
+  id: number;
+  description: string;
+  status: string;
+  userId: number;
+  ownerId: number;
+  feedbackId: number;
+  createdAt: string;
+  imageUrls: string[];
 }

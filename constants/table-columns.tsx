@@ -5,7 +5,7 @@ import {
   BeverageProps,
   BookingProps,
   CustomerProps,
-  FeedbackProps,
+  Feedback,
   formatCurrency,
   PromotionProps,
   TopRevenueWorkspace,
@@ -1264,7 +1264,7 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
   },
 ];
 
-export const FeedbackTableColumns: ColumnDef<FeedbackProps>[] = [
+export const FeedbackTableColumns: ColumnDef<Feedback>[] = [
   {
     accessorKey: "customerId",
     header: ({ column }) => {
