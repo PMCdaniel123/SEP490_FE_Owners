@@ -1,5 +1,5 @@
 import {
-  FeedbackProps,
+  Feedback,
   MenuItemProps,
   NewCustomerItemProps,
   ReviewItemProps,
@@ -277,7 +277,7 @@ export const timeList: TimeItemProps[] = [
 
 
 
-export const feedbackList: FeedbackProps[] = [
+export const feedbackList: Feedback[] = [
   {
     id: "1",
     customerId: "1",

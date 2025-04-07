@@ -17,7 +17,7 @@ function AuthItem({ icon: Icon, title, form }: AuthItemProps) {
       <div className={`flex items-center justify-between`}>
         <div className="flex items-center gap-3">
           <Icon size={28} />
-          <span className={`font-semibold text-lg`}>{title}</span>
+          <span className={`font-semibold text-base`}>{title}</span>
         </div>
       </div>
       <div

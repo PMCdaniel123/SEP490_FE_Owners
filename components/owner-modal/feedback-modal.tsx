@@ -2,7 +2,7 @@
 import { feedbackList } from "@/constants/constant";
 import {
   CustomerProps,
-  FeedbackProps,
+  Feedback,
   formatCurrency,
   Price,
   Workspace,
@@ -23,7 +23,7 @@ interface FeedbackWorkspaceProps {
 }
 
 function FeedbackModal({ feedbackId }: { feedbackId: string }) {
-  const [feedback, setFeedback] = useState<FeedbackProps | null>(null);
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [customer, setCustomer] = useState<CustomerProps | null>(null);
   const [workspace, setWorkspace] = useState<FeedbackWorkspaceProps | null>(
     null
