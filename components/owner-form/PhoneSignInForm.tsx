@@ -23,6 +23,7 @@ import { AppDispatch } from "@/stores";
 import { login } from "@/stores/slices/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
+import Cookies from "js-cookie";
 
 interface PhoneSignInFormProps {
   initialData?: OwnerPhoneSignInProps | null;
@@ -71,7 +72,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
       if (result.token === "") {
         throw new Error(result.notification);
       }
-      
+
       const token = result.token;
 
       try {
@@ -81,6 +82,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               token: token,
@@ -101,12 +103,12 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
         toast.success("Đăng nhập thành công!", {
           position: "top-right",
           autoClose: 2000,
-          hideProgressBar: true,
+          hideProgressBar: false,
           theme: "light",
         });
 
         dispatch(login(ownerData));
-        localStorage.setItem("owner_token", token);
+        Cookies.set("owner_token", token, { expires: 3 });
         setIsLoading(false);
         router.push("/authentication");
       } catch (error) {
@@ -115,7 +117,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
         toast.error(errorMessage, {
           position: "top-right",
           autoClose: 2000,
-          hideProgressBar: true,
+          hideProgressBar: false,
           theme: "light",
         });
         setIsLoading(false);
@@ -128,7 +130,7 @@ function PhoneSignInForm({ initialData }: PhoneSignInFormProps) {
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 2000,
-        hideProgressBar: true,
+        hideProgressBar: false,
         theme: "light",
       });
       setIsLoading(false);

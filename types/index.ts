@@ -245,6 +245,17 @@ export interface OwnerPhoneSignInProps {
   password: string;
 }
 
+export interface BookingListProps {
+  bookingId: string;
+  start_Date: string;
+  end_Date: string;
+  price: string;
+  status: string;
+  created_At: string;
+  userId: string;
+  workspaceId: string;
+}
+
 export interface BookingProps {
   bookingId: string;
   start_Date: string;

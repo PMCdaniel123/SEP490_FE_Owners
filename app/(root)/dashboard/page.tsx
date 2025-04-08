@@ -18,7 +18,7 @@ import {
   BeverageProps,
   BookingAmenityProps,
   BookingBeverageProps,
-  BookingProps,
+  BookingListProps,
   CustomerProps,
   formatCurrency,
   TopRevenueWorkspace,
@@ -47,7 +47,7 @@ export default function OwnerPage() {
   const [customerList, setCustomerList] = useState<CustomerProps[]>([]);
   const [amenityList, setAmenityList] = useState<AmenityProps[]>([]);
   const [beverageList, setBeverageList] = useState<BeverageProps[]>([]);
-  const [bookingList, setBookingList] = useState<BookingProps[]>([]);
+  const [bookingList, setBookingList] = useState<BookingListProps[]>([]);
   const [workspaceList, setWorkspaceList] = useState<Workspace[]>([]);
   const [bookingAmenityList, setBookingAmenityList] = useState<
     BookingAmenityProps[]
@@ -99,33 +99,37 @@ export default function OwnerPage() {
     );
   });
 
+  const totalRevenue = bookingList.reduce((total, booking) => {
+    return total + Number(booking.price);
+  }, 0);
+
   const currentRevenue = currentMonthBookingList.reduce((total, booking) => {
     return total + Number(booking.price);
   }, 0);
 
-  const numberCurrentCustomer = currentMonthBookingList.reduce(
-    (count, booking, index, array) => {
-      if (index === 0 || array[index - 1].userId !== booking.userId) {
-        return count + 1;
-      }
-      return count;
-    },
-    0
-  );
+  const seenUserIds: Record<string, boolean> = {};
+  let numberCurrentCustomer = 0;
+  let numberPreviousCustomer = 0;
+
+  for (const booking of currentMonthBookingList) {
+    if (!seenUserIds[booking.userId]) {
+      seenUserIds[booking.userId] = true;
+      numberCurrentCustomer++;
+    }
+  }
 
   const previousRevenue = previousMonthBookingList.reduce((total, booking) => {
     return total + Number(booking.price);
   }, 0);
 
-  const numberPreviousCustomer = previousMonthBookingList.reduce(
-    (count, booking, index, array) => {
-      if (index === 0 || array[index - 1].userId !== booking.userId) {
-        return count + 1;
-      }
-      return count;
-    },
-    0
-  );
+  for (const booking of previousMonthBookingList) {
+    if (!seenUserIds[booking.userId]) {
+      seenUserIds[booking.userId] = true;
+      numberPreviousCustomer++;
+    }
+  }
+
+  console.log(numberCurrentCustomer, numberPreviousCustomer);
 
   const percentRevenue =
     (previousRevenue > 0
@@ -151,8 +155,11 @@ export default function OwnerPage() {
           </div>
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
             <p className="font-bold">Doanh thu</p>
-            <p className="text-[#6F757E] text-xl">
-              {formatCurrency(currentRevenue ?? 0)}
+            <p className="text-[#6F757E] text-xl flex items-end gap-2">
+              <span>{formatCurrency(currentRevenue ?? 0)}</span> |
+              <span className="text-sm">
+                Tổng: {formatCurrency(totalRevenue ?? 0)}
+              </span>
             </p>
             {percentRevenue >= 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">
@@ -180,7 +187,10 @@ export default function OwnerPage() {
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
             <p className="font-bold">Khách hàng</p>
             <p className="text-[#6F757E] text-xl">
-              {customerList?.length ?? "0"}
+              <span>{numberCurrentCustomer ?? "0"} người</span> |
+              <span className="text-sm">
+                Tổng: {customerList.length ?? "0"} người
+              </span>
             </p>
             {percentCustomer >= 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">

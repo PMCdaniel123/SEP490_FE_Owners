@@ -5,7 +5,7 @@ import {
   BeverageProps,
   BookingAmenityProps,
   BookingBeverageProps,
-  BookingProps,
+  BookingListProps,
   CustomerProps,
   Price,
   TopRevenueWorkspace,
@@ -166,7 +166,7 @@ export const fetchBeverageList = async (
 
 export const fetchBookingList = async (
   id: string | null,
-  setBookingList: React.Dispatch<React.SetStateAction<BookingProps[]>>,
+  setBookingList: React.Dispatch<React.SetStateAction<BookingListProps[]>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   setLoading(true);
@@ -180,7 +180,7 @@ export const fetchBookingList = async (
     }
     const data = await response.json();
     const formattedBooking = data.bookingByOwnerIdDTOs.filter(
-      (booking: BookingProps) => booking.status === "Success"
+      (booking: BookingListProps) => booking.status === "Success"
     );
     setBookingList(formattedBooking);
     setLoading(false);

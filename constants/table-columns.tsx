@@ -3,7 +3,7 @@
 import {
   AmenityProps,
   BeverageProps,
-  BookingProps,
+  BookingListProps,
   CustomerProps,
   Feedback,
   formatCurrency,
@@ -1127,7 +1127,7 @@ export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
   },
 ];
 
-export const BookingTableColumns: ColumnDef<BookingProps>[] = [
+export const BookingTableColumns: ColumnDef<BookingListProps>[] = [
   {
     accessorKey: "userId",
     header: ({ column }) => {
@@ -1259,7 +1259,7 @@ export const BookingTableColumns: ColumnDef<BookingProps>[] = [
     cell: ({ row }) => {
       const booking = row.original;
 
-      return <BookingDropdown booking={booking} />;
+      return <BookingDropdown bookingId={booking.bookingId} />;
     },
   },
 ];

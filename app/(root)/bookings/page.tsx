@@ -5,13 +5,13 @@ import BookingTable from "@/components/table/booking-table";
 import { BASE_URL } from "@/constants/environments";
 import { BookingTableColumns } from "@/constants/table-columns";
 import { RootState } from "@/stores";
-import { BookingProps } from "@/types";
+import { BookingListProps } from "@/types";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function BookingManagement() {
-  const [bookingList, setBookingList] = useState<BookingProps[]>([]);
+  const [bookingList, setBookingList] = useState<BookingListProps[]>([]);
   const [loading, setLoading] = useState(true);
   const { owner } = useSelector((state: RootState) => state.auth);
 
@@ -33,9 +33,11 @@ function BookingManagement() {
           data.bookingByOwnerIdDTOs === undefined
             ? []
             : data.bookingByOwnerIdDTOs
-                .filter((booking: BookingProps) => booking.status === "Success")
+                .filter(
+                  (booking: BookingListProps) => booking.status === "Success"
+                )
                 .sort(
-                  (a: BookingProps, b: BookingProps) =>
+                  (a: BookingListProps, b: BookingListProps) =>
                     new Date(b.created_At).getTime() -
                     new Date(a.created_At).getTime()
                 );

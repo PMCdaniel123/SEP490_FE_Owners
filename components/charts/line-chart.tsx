@@ -9,7 +9,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { BookingProps } from "@/types";
+import { BookingListProps } from "@/types";
 import dayjs from "dayjs";
 
 const chartConfig = {
@@ -26,7 +26,7 @@ const chartConfig = {
 export default function DashboardLineChart({
   bookingList,
 }: {
-  bookingList: BookingProps[];
+  bookingList: BookingListProps[];
 }) {
   const totalPriceByMonth = bookingList.reduce(
     (acc: { [key: string]: number }, booking) => {
@@ -43,7 +43,7 @@ export default function DashboardLineChart({
   }));
 
   return (
-    <Card className="flex flex-col h-full py-6">
+    <Card className="flex flex-col h-full">
       <CardHeader>
         <CardTitle className="mt-4 font-bold">Doanh thu năm 2025</CardTitle>
       </CardHeader>
