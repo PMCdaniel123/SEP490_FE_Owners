@@ -1,6 +1,5 @@
 import { CustomerProps } from "@/types";
 import dayjs from "dayjs";
-import { Ban } from "lucide-react";
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -44,11 +43,6 @@ function CustomerModal({ customer }: { customer: CustomerProps }) {
           <span className="font-semibold">Giới tính: </span>
           {customer?.sex}
         </p>
-      </div>
-      <div className="mt-4 flex justify-end">
-        <button className="border flex items-center gap-2 rounded-md font-semibold border-red-500 text-red-500 px-6 py-2 hover:bg-red-500 hover:text-white transition-colors duration-300">
-          <Ban size={16} /> Chặn
-        </button>
       </div>
     </div>
   );

@@ -28,10 +28,14 @@ const RevenueByMonthChart: React.FC<Props> = ({ bookings }) => {
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data}>
+          <LineChart
+            data={data}
+            margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" tickMargin={12} tick={{ fontSize: 10 }} />
             <YAxis
+              width={80}
               tick={{ fontSize: 10 }}
               tickMargin={8}
               tickFormatter={(value) =>
@@ -39,9 +43,10 @@ const RevenueByMonthChart: React.FC<Props> = ({ bookings }) => {
               }
             />
             <Tooltip
-              formatter={(value: number) =>
-                new Intl.NumberFormat("vi-VN").format(value) + " ₫"
-              }
+              formatter={(value: number) => [
+                `${new Intl.NumberFormat("vi-VN").format(value)} ₫`,
+                "Doanh thu",
+              ]}
             />
             <Line
               type="monotone"

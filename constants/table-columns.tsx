@@ -195,23 +195,6 @@ export const CustomerTableColumns: ColumnDef<CustomerProps>[] = [
     },
   },
   {
-    accessorKey: "sex",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Giới tính</p>
-          <ArrowUpDown size={16} className="ml-2" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return <p className="text-center font-medium">{row.getValue("sex")}</p>;
-    },
-  },
-  {
     id: "actions",
     cell: ({ row }) => {
       const customer = row.original;
@@ -1128,6 +1111,27 @@ export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
 ];
 
 export const BookingTableColumns: ColumnDef<BookingListProps>[] = [
+  {
+    accessorKey: "bookingId",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã đặt chỗ</p>
+          <ArrowUpDown size={16} className="ml-2" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          ĐC{Number(row.getValue("bookingId")).toString().padStart(4, "0")}
+        </p>
+      );
+    },
+  },
   {
     accessorKey: "userId",
     header: ({ column }) => {

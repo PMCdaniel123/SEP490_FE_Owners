@@ -287,19 +287,19 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           <Link href={ownerInfo?.facebook || ""}>
             <strong>Facebook:</strong>{" "}
             <span className="text-primary hover:text-secondary underline">
-              {ownerInfo?.facebook}
+              {ownerInfo?.facebook || "Chưa cập nhật"}
             </span>
           </Link>
           <Link href={ownerInfo?.instagram || ""}>
             <strong>Instagram:</strong>{" "}
             <span className="text-primary hover:text-secondary underline">
-              {ownerInfo?.instagram}
+              {ownerInfo?.instagram || "Chưa cập nhật"}
             </span>
           </Link>
           <Link href={ownerInfo?.tiktok || ""}>
             <strong>Tiktok:</strong>{" "}
             <span className="text-primary hover:text-secondary underline">
-              {ownerInfo?.tiktok}
+              {ownerInfo?.tiktok || "Chưa cập nhật"}
             </span>
           </Link>
         </div>
