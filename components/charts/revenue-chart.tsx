@@ -1,4 +1,4 @@
-import { getRevenuePerMonth } from "@/constants/chart-config";
+import { getRevenuePerDay } from "@/constants/chart-config";
 import { BookingListProps } from "@/types";
 import {
   LineChart,
@@ -15,12 +15,12 @@ interface Props {
   bookings: BookingListProps[];
 }
 
-const RevenueByMonthChart: React.FC<Props> = ({ bookings }) => {
-  const data = getRevenuePerMonth(bookings);
+const RevenueChart: React.FC<Props> = ({ bookings }) => {
+  const data = getRevenuePerDay(bookings);
 
   return (
-    <div className="flex flex-col gap-4 h-full">
-      <h1 className="font-bold mt-4">Doanh thu theo tháng</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="font-bold mt-4">Doanh thu theo ngày</h1>
       <Separator className="mb-8" />
       {bookings.length === 0 ? (
         <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -30,7 +30,7 @@ const RevenueByMonthChart: React.FC<Props> = ({ bookings }) => {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" tickMargin={12} tick={{ fontSize: 10 }} />
+            <XAxis dataKey="day" tickMargin={10} tick={{ fontSize: 10 }} />
             <YAxis
               tick={{ fontSize: 10 }}
               tickMargin={8}
@@ -46,7 +46,7 @@ const RevenueByMonthChart: React.FC<Props> = ({ bookings }) => {
             <Line
               type="monotone"
               dataKey="revenue"
-              stroke="#67CADF"
+              stroke="#27D095"
               strokeWidth={3}
             />
           </LineChart>
@@ -56,4 +56,4 @@ const RevenueByMonthChart: React.FC<Props> = ({ bookings }) => {
   );
 };
 
-export default RevenueByMonthChart;
+export default RevenueChart;

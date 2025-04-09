@@ -23,6 +23,7 @@ import { AppDispatch } from "@/stores";
 import { login } from "@/stores/slices/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
+import Cookies from "js-cookie";
 
 interface EmailSignInFormProps {
   initialData?: OwnerEmailSignInProps | null;
@@ -81,6 +82,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               token: token,
@@ -102,12 +104,12 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
         toast.success("Đăng nhập thành công!", {
           position: "top-right",
           autoClose: 2000,
-          hideProgressBar: true,
+          hideProgressBar: false,
           theme: "light",
         });
 
         dispatch(login(ownerData));
-        localStorage.setItem("owner_token", token);
+        Cookies.set("owner_token", token, { expires: 3 });
         setIsLoading(false);
         router.push("/authentication");
       } catch (error) {
@@ -116,7 +118,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
         toast.error(errorMessage, {
           position: "top-right",
           autoClose: 2000,
-          hideProgressBar: true,
+          hideProgressBar: false,
           theme: "light",
         });
         setIsLoading(false);
@@ -128,7 +130,7 @@ function EmailSignInForm({ initialData }: EmailSignInFormProps) {
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 2000,
-        hideProgressBar: true,
+        hideProgressBar: false,
         theme: "light",
       });
       setIsLoading(false);

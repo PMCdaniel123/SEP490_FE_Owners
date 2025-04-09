@@ -8,10 +8,15 @@ import {
 import { useState } from "react";
 import { Modal } from "antd";
 import BookingModal from "../owner-modal/booking-modal";
-import { BookingProps } from "@/types";
 
-function BookingDropdown({ booking }: { booking: BookingProps }) {
+function BookingDropdown({ bookingId }: { bookingId: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const handleOpenModal = () => {
+    setTimeout(() => {
+      setIsOpen(true);
+    }, 50);
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -23,7 +28,7 @@ function BookingDropdown({ booking }: { booking: BookingProps }) {
         <DropdownMenuContent align="end" className="py-2">
           <li
             className="px-4 rounded-sm flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleOpenModal}
           >
             <Eye size={16} /> <span>Xem thông tin chi tiết</span>
           </li>
@@ -37,7 +42,7 @@ function BookingDropdown({ booking }: { booking: BookingProps }) {
         onCancel={() => setIsOpen(!isOpen)}
         footer={null}
       >
-        <BookingModal booking={booking} />
+        <BookingModal bookingId={bookingId} />
       </Modal>
     </>
   );

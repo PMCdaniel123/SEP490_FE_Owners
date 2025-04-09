@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 interface Owner {
   id: string | null;
@@ -28,10 +29,15 @@ const authSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
       state.owner = null;
-      localStorage.removeItem("owner_token");
+      Cookies.remove("owner_token");
+    },
+    updateAvatar(state, action) {
+      if (state.owner) {
+        state.owner.avatar = action.payload;
+      }
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateAvatar } = authSlice.actions;
 export default authSlice.reducer;

@@ -23,12 +23,13 @@ import Link from "next/link";
 import { BASE_URL } from "@/constants/environments";
 import { Modal } from "antd";
 import ChangePasswordModal from "../owner-modal/change-password-modal";
+import Cookies from "js-cookie";
 
 function TopNav() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const token =
-    typeof window !== "undefined" ? localStorage.getItem("owner_token") : null;
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const router = useRouter();
   const dispatch = useDispatch();
   const { owner } = useSelector((state: RootState) => state.auth);
@@ -46,6 +47,7 @@ function TopNav() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({
                 token: token,
@@ -98,7 +100,7 @@ function TopNav() {
             hideProgressBar: false,
             theme: "light",
           });
-          localStorage.removeItem("owner_token");
+          Cookies.remove("owner_token");
           router.push("/");
           setIsLoading(false);
         }
@@ -139,9 +141,9 @@ function TopNav() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-3 px-4 h-full">
+        <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-2 px-4 h-full">
           <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
-          <p className="bg-primary text-white text-sm px-3 py-1 rounded-lg flex items-center gap-2">
+          <p className="bg-primary text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold text-base">
             <Banknote />
             {formatCurrency(balance)}
           </p>
@@ -194,6 +196,9 @@ function TopNav() {
                 <Link
                   href="/authentication"
                   className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                  onClick={() => {
+                    setOpen(false);
+                  }}
                 >
                   <Settings size={16} /> <span>Sửa thông tin</span>
                 </Link>
@@ -209,6 +214,9 @@ function TopNav() {
                 <Link
                   href="/contact"
                   className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                  onClick={() => {
+                    setOpen(false);
+                  }}
                 >
                   <Headset size={16} /> <span>Liên hệ với WorkHive</span>
                 </Link>
