@@ -27,7 +27,7 @@ function ForgotPassword() {
         toast.error("Email không tồn tại.", {
           position: "top-right",
           autoClose: 2000,
-          hideProgressBar: true,
+          hideProgressBar: false,
           theme: "light",
         });
         return;
@@ -35,7 +35,7 @@ function ForgotPassword() {
       toast.success("Vui lòng kiểm tra email!", {
         position: "top-right",
         autoClose: 2000,
-        hideProgressBar: true,
+        hideProgressBar: false,
         theme: "light",
       });
       setLoading(false);

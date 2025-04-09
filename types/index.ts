@@ -245,6 +245,28 @@ export interface OwnerPhoneSignInProps {
   password: string;
 }
 
+export interface BookingListProps {
+  bookingId: string;
+  start_Date: string;
+  end_Date: string;
+  price: string;
+  status: string;
+  created_At: string;
+  userId: string;
+  workspaceId: string;
+}
+
+export interface RevenuePerDay {
+  day: string; // e.g., 'Mon'
+  date: string; // e.g., '2025-03-21'
+  revenue: number;
+}
+
+export interface RevenuePerMonth {
+  month: string; // e.g. "01/2024"
+  revenue: number;
+}
+
 export interface BookingProps {
   bookingId: string;
   start_Date: string;

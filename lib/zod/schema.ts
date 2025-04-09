@@ -198,7 +198,22 @@ export const identifySchema = z.object({
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: "Số căn cước công dân phải có 12 chữ số",
     }),
-  dateOfBirth: z.string().nonempty("Vui lòng chọn ngày sinh"),
+  dateOfBirth: z
+    .string()
+    .nonempty("Vui lòng chọn ngày sinh")
+    .refine((val) => {
+      const dob = new Date(val);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
+      const monthDiff = today.getMonth() - dob.getMonth();
+      const dayDiff = today.getDate() - dob.getDate();
+
+      const isBirthdayPassedThisYear =
+        monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0);
+      const actualAge = isBirthdayPassedThisYear ? age : age - 1;
+
+      return actualAge >= 12 && actualAge <= 100;
+    }, "Tuổi phải từ 12 đến 100"),
   sex: z.string({
     required_error: "Vui lòng chọn giới tính hợp lệ",
   }),

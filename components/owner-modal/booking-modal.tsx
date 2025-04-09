@@ -26,6 +26,8 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { toast } from "react-toastify";
+import { BASE_URL } from "@/constants/environments";
 
 export interface BookingWorkspaceProps {
   workspace: Workspace;
@@ -33,22 +35,59 @@ export interface BookingWorkspaceProps {
   googleMapUrl: string;
 }
 
-function BookingModal({ booking }: { booking: BookingProps }) {
+function BookingModal({ bookingId }: { bookingId: string }) {
   const [customer, setCustomer] = useState<CustomerProps | null>(null);
   const [workspace, setWorkspace] = useState<BookingWorkspaceProps | null>(
     null
   );
+  const [booking, setBooking] = useState<BookingProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!booking) {
-      return;
-    }
+    if (!bookingId) return;
+    setLoading(true);
+    const fetchBooking = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/getbookingbyid/${bookingId}`);
+        if (!response.ok) {
+          throw new Error("Có lỗi xảy ra khi tải thông tin đặt chỗ.");
+        }
 
-    fetchCustomerDetail(booking.userId, setCustomer, setLoading);
-    fetchWorkspaceDetail(booking.workspaceId, setWorkspace, setLoading);
-  }, [booking]);
+        const data = await response.json();
+        const formatted =
+          data.bookingByBookingIdDTO === null ||
+          data.bookingByBookingIdDTO === undefined
+            ? null
+            : data.bookingByBookingIdDTO;
+        setBooking(formatted);
+        fetchCustomerDetail(formatted.userId, setCustomer, setLoading);
+        fetchWorkspaceDetail(formatted.workspaceId, setWorkspace, setLoading);
+        setLoading(false);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+        toast.error(errorMessage, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          theme: "light",
+        });
+        setLoading(false);
+      }
+    };
+
+    fetchBooking();
+  }, [bookingId]);
+
+  // useEffect(() => {
+  //   if (!booking) {
+  //     return;
+  //   }
+
+  //   fetchCustomerDetail(booking.userId, setCustomer, setLoading);
+  //   fetchWorkspaceDetail(booking.workspaceId, setWorkspace, setLoading);
+  // }, [booking]);
 
   if (loading) {
     return (
@@ -184,6 +223,7 @@ function BookingModal({ booking }: { booking: BookingProps }) {
           )}
         </p>
         {isOpen &&
+          booking &&
           (booking.amenities.length + booking.beverages.length > 0 ? (
             <div className="flex flex-col gap-4">
               {booking.amenities.length > 0 && (
@@ -192,7 +232,7 @@ function BookingModal({ booking }: { booking: BookingProps }) {
                     <Boxes size={16} /> Tiện ích
                   </p>
                   <ul className="list-disc pl-6 ">
-                    {booking.amenities.map((item, index) => (
+                    {booking?.amenities.map((item, index) => (
                       <li key={index}>
                         <img
                           src={item.image}
@@ -213,7 +253,7 @@ function BookingModal({ booking }: { booking: BookingProps }) {
                     <UtensilsCrossed size={16} /> Thực đơn
                   </p>
                   <ul className="list-disc pl-6 ">
-                    {booking.beverages.map((item, index) => (
+                    {booking?.beverages.map((item, index) => (
                       <li key={index}>
                         <img
                           src={item.image}

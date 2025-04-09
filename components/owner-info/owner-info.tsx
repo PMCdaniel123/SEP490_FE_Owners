@@ -13,6 +13,8 @@ import { toast } from "react-toastify";
 import Loader from "../loader/Loader";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { updateAvatar } from "@/stores/slices/authSlice";
 
 interface OwnerInfoProps {
   ownerInfo: OwnerProps | null;
@@ -25,6 +27,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
   );
   const router = useRouter();
   const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
 
   const handleAvatarChange = (file: File) => {
     setAvatar(file);
@@ -108,6 +111,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
         hideProgressBar: false,
         theme: "light",
       });
+      dispatch(updateAvatar(imgUrl));
       setLoading(false);
       setVisible(false);
       router.push("/authentication");
