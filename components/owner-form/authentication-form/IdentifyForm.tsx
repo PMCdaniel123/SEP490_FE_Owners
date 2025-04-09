@@ -260,14 +260,14 @@ function IdentifyForm({
               <FormControl>
                 <div className="flex items-center gap-4 border rounded-md">
                   <label
-                    htmlFor="images"
+                    htmlFor="identityFile"
                     className="cursor-pointer py-3 px-5 bg-primary text-white rounded-s-md text-center flex gap-2 items-center"
                   >
                     <FileText /> Chọn file PDF
                   </label>
                   <Input
                     className="py-3 px-4 rounded-md file:bg-seventh border h-[50px] hidden"
-                    id="images"
+                    id="identityFile"
                     type="file"
                     accept="application/pdf"
                     ref={ref}
