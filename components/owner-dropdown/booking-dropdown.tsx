@@ -11,15 +11,18 @@ import BookingModal from "../owner-modal/booking-modal";
 
 function BookingDropdown({ bookingId }: { bookingId: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const handleOpenModal = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleViewDetail = () => {
+    setDropdownOpen(false); // Close dropdown
     setTimeout(() => {
-      setIsOpen(true);
-    }, 50);
+      setIsOpen(true); // Open modal (waits for dropdown to fully close)
+    }, 100); // Small delay ensures dropdown closes first
   };
 
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <MoreHorizontal className="h-4 w-4" />
@@ -28,7 +31,7 @@ function BookingDropdown({ bookingId }: { bookingId: string }) {
         <DropdownMenuContent align="end" className="py-2">
           <li
             className="px-4 rounded-sm flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
-            onClick={handleOpenModal}
+            onClick={handleViewDetail}
           >
             <Eye size={16} /> <span>Xem thông tin chi tiết</span>
           </li>

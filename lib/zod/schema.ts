@@ -214,9 +214,7 @@ export const identifySchema = z.object({
 
       return actualAge >= 12 && actualAge <= 100;
     }, "Tuổi phải từ 12 đến 100"),
-  sex: z.string({
-    required_error: "Vui lòng chọn giới tính hợp lệ",
-  }),
+  sex: z.string().nonempty("Vui lòng chọn giới tính hợp lệ"),
   nationality: z.string().nonempty("Vui lòng nhập quốc tịch"),
   placeOfOrigin: z.string().nonempty("Vui lòng nhập quê quán"),
   placeOfResidence: z.string().nonempty("Vui lòng nhập nơi thường trú"),
@@ -230,9 +228,9 @@ export const identifySchema = z.object({
     .refine((file) => file && file.size < 5 * 1024 * 1024, {
       message: "File phải nhỏ hơn 5MB",
     }),
-  facebook: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
-  instagram: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
-  tiktok: z.string().url("Vui lòng nhập đường dẫn hợp lệ"),
+  facebook: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
+  instagram: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
+  tiktok: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
   licenseName: z.string().nonempty("Vui lòng nhập tên doanh nghiệp"),
   licenseNumber: z.string().nonempty("Vui lòng nhập mã số doanh nghiệp"),
   licenseAddress: z
