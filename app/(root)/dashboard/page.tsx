@@ -1,10 +1,10 @@
 "use client";
 
-import DashboardLineChart from "@/components/charts/line-chart";
 import TopWorkspaceTable from "@/components/table/top-workspace-table";
 import { topWorkspaceTableColumns } from "@/constants/table-columns";
 import {
   Boxes,
+  Minus,
   PiggyBank,
   Sofa,
   TrendingDown,
@@ -40,6 +40,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import HotAmenityChart from "@/components/charts/hot-amenity-chart";
 import HotBeverageChart from "@/components/charts/hot-beverage-chart";
+import RevenueChart from "@/components/charts/revenue-chart";
+import RevenueByMonthChart from "@/components/charts/line-chart";
 
 export default function OwnerPage() {
   const [loading, setLoading] = useState(true);
@@ -107,13 +109,14 @@ export default function OwnerPage() {
     return total + Number(booking.price);
   }, 0);
 
-  const seenUserIds: Record<string, boolean> = {};
+  const currentUserIds: Record<string, boolean> = {};
+  const previousUserIds: Record<string, boolean> = {};
   let numberCurrentCustomer = 0;
   let numberPreviousCustomer = 0;
 
   for (const booking of currentMonthBookingList) {
-    if (!seenUserIds[booking.userId]) {
-      seenUserIds[booking.userId] = true;
+    if (!currentUserIds[booking.userId]) {
+      currentUserIds[booking.userId] = true;
       numberCurrentCustomer++;
     }
   }
@@ -123,13 +126,11 @@ export default function OwnerPage() {
   }, 0);
 
   for (const booking of previousMonthBookingList) {
-    if (!seenUserIds[booking.userId]) {
-      seenUserIds[booking.userId] = true;
+    if (!previousUserIds[booking.userId]) {
+      previousUserIds[booking.userId] = true;
       numberPreviousCustomer++;
     }
   }
-
-  console.log(numberCurrentCustomer, numberPreviousCustomer);
 
   const percentRevenue =
     (previousRevenue > 0
@@ -161,7 +162,14 @@ export default function OwnerPage() {
                 Tổng: {formatCurrency(totalRevenue ?? 0)}
               </span>
             </p>
-            {percentRevenue >= 0 ? (
+            {percentRevenue === 0 ? (
+              <div className="flex gap-1 items-center justify-start text-yellow-500 text-sm">
+                <Minus />{" "}
+                <span>
+                  {percentRevenue?.toFixed(2) ?? "Trống"}% tháng trước
+                </span>
+              </div>
+            ) : percentRevenue >= 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">
                 <TrendingUp />{" "}
                 <span>
@@ -192,7 +200,11 @@ export default function OwnerPage() {
                 Tổng: {customerList.length ?? "0"} người
               </span>
             </p>
-            {percentCustomer >= 0 ? (
+            {percentCustomer === 0 ? (
+              <div className="flex gap-1 items-center justify-start text-yellow-500 text-sm">
+                <Minus /> <span>{percentCustomer.toFixed(2)}% tháng trước</span>
+              </div>
+            ) : percentCustomer > 0 ? (
               <div className="flex gap-1 items-center justify-start text-green-500 text-sm">
                 <TrendingUp />{" "}
                 <span>{percentCustomer.toFixed(2)}% tháng trước</span>
@@ -246,19 +258,24 @@ export default function OwnerPage() {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="col-span-2 sticky top-0 h-fit overflow-auto">
-          <DashboardLineChart bookingList={bookingList} />
+        <div className="col-span-2 sticky top-0 h-fit overflow-auto bg-white p-4 rounded-xl">
+          <RevenueByMonthChart bookings={bookingList} />
         </div>
         <div className="col-span-1 h-full">
           <CustomerAnalysisChart customerList={customerList} />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3 relative">
-        <div className="col-span-2 bg-white p-4 rounded-xl sticky top-4 h-fit overflow-auto">
-          <TopWorkspaceTable
-            columns={topWorkspaceTableColumns}
-            data={topWorkspaceList}
-          />
+        <div className="col-span-2 flex flex-col gap-4">
+          <div className="bg-white p-4 rounded-xl">
+            <TopWorkspaceTable
+              columns={topWorkspaceTableColumns}
+              data={topWorkspaceList}
+            />
+          </div>
+          <div className="bg-white p-4 rounded-xl">
+            <RevenueChart bookings={bookingList} />
+          </div>
         </div>
         <div className="col-span-1 flex flex-col gap-4">
           <HotAmenityChart bookingAmenityList={bookingAmenityList} />
