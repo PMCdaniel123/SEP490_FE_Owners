@@ -258,7 +258,7 @@ export default function OwnerPage() {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="col-span-2 sticky top-0 h-fit overflow-auto bg-white p-4 rounded-xl">
+        <div className="col-span-2 h-full bg-white p-4 rounded-xl">
           <RevenueByMonthChart bookings={bookingList} />
         </div>
         <div className="col-span-1 h-full">
