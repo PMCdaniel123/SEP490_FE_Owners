@@ -228,21 +228,9 @@ export const identifySchema = z.object({
     .refine((file) => file && file.size < 5 * 1024 * 1024, {
       message: "File phải nhỏ hơn 5MB",
     }),
-  facebook: z
-    .string()
-    .url("Vui lòng nhập đường dẫn hợp lệ")
-    .nullable()
-    .or(z.literal("")),
-  instagram: z
-    .string()
-    .url("Vui lòng nhập đường dẫn hợp lệ")
-    .nullable()
-    .or(z.literal("")),
-  tiktok: z
-    .string()
-    .url("Vui lòng nhập đường dẫn hợp lệ")
-    .nullable()
-    .or(z.literal("")),
+  facebook: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
+  instagram: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
+  tiktok: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
   licenseName: z.string().nonempty("Vui lòng nhập tên doanh nghiệp"),
   licenseNumber: z.string().nonempty("Vui lòng nhập mã số doanh nghiệp"),
   licenseAddress: z

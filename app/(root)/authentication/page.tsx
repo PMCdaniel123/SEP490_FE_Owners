@@ -144,30 +144,6 @@ function AuthenticationManagement() {
     );
   }
 
-  // const handleEdit = () => {
-  //   setIsEditing(true);
-  //   form.reset();
-  //   form.setValue("identityName", "" + ownerInfo?.identityName);
-  //   form.setValue("identityNumber", "" + ownerInfo?.identityNumber);
-  //   form.setValue("dateOfBirth", "" + ownerInfo?.dateOfBirth);
-  //   form.setValue("sex", "" + ownerInfo?.sex);
-  //   form.setValue("nationality", "" + ownerInfo?.nationality);
-  //   form.setValue("placeOfOrigin", "" + ownerInfo?.placeOfOrigin);
-  //   form.setValue("placeOfResidence", "" + ownerInfo?.placeOfResidence);
-  //   form.setValue("identityExpiredDate", "" + ownerInfo?.identityExpiredDate);
-  //   form.setValue("identityCreatedDate", "" + ownerInfo?.identityCreatedDate);
-  //   form.setValue("identityFile", new File([], ""));
-  //   form.setValue("facebook", "" + ownerInfo?.facebook);
-  //   form.setValue("instagram", "" + ownerInfo?.instagram);
-  //   form.setValue("tiktok", "" + ownerInfo?.tiktok);
-  //   form.setValue("licenseName", "" + ownerInfo?.licenseName);
-  //   form.setValue("licenseNumber", "" + ownerInfo?.licenseNumber);
-  //   form.setValue("licenseAddress", "" + ownerInfo?.licenseAddress);
-  //   form.setValue("googleMapUrl", "" + ownerInfo?.googleMapUrl);
-  //   form.setValue("charterCapital", "" + ownerInfo?.charterCapital + "");
-  //   form.setValue("licenseFile", new File([], ""));
-  // };
-
   const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append("files", file);
