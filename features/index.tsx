@@ -25,7 +25,9 @@ export const fetchCustomerDetail = async (
       throw new Error("Có lỗi xảy ra khi tải thông tin khách hàng.");
 
     const data = await response.json();
-    setCustomer(data.user);
+    const formatted =
+      data.user === null || data.user === undefined ? null : data.user;
+    setCustomer(formatted);
   } catch (error) {
     toast.error(error instanceof Error ? error.message : "Đã xảy ra lỗi!", {
       position: "top-right",
@@ -92,7 +94,9 @@ export const fetchCustomerList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách khách hàng.");
 
     const data = await response.json();
-    setCustomerList(data.users);
+    const formatted =
+      data.users === null || data.users === undefined ? [] : data.users;
+    setCustomerList(formatted);
   } catch (error) {
     toast.error(error instanceof Error ? error.message : "Đã xảy ra lỗi!", {
       position: "top-right",
@@ -119,7 +123,10 @@ export const fetchAmenityList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách tiện ích.");
     }
     const data = await response.json();
-    const formatted = data.amenities;
+    const formatted =
+      data.amenities === null || data.amenities === undefined
+        ? []
+        : data.amenities;
     setAmenityList(formatted);
     setLoading(false);
   } catch (error) {
@@ -148,7 +155,10 @@ export const fetchBeverageList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách tiện ích.");
     }
     const data = await response.json();
-    const formatted = data.beverages;
+    const formatted =
+      data.beverages === null || data.beverages === undefined
+        ? []
+        : data.beverages;
     setBeverageList(formatted);
     setLoading(false);
   } catch (error) {
@@ -179,9 +189,13 @@ export const fetchBookingList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách đặt chỗ.");
     }
     const data = await response.json();
-    const formattedBooking = data.bookingByOwnerIdDTOs.filter(
-      (booking: BookingListProps) => booking.status === "Success"
-    );
+    const formattedBooking =
+      data.bookingByOwnerIdDTOs === null ||
+      data.bookingByOwnerIdDTOs === undefined
+        ? []
+        : data.bookingByOwnerIdDTOs.filter(
+            (booking: BookingListProps) => booking.status === "Success"
+          );
     setBookingList(formattedBooking);
     setLoading(false);
   } catch (error) {
@@ -255,7 +269,11 @@ export const fetchBookingAmenityList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách đặt tiện ích.");
     }
     const data = await response.json();
-    const formatted = data.numberOfBookingAmenitiesDTOs;
+    const formatted =
+      data.numberOfBookingAmenitiesDTOs === null ||
+      data.numberOfBookingAmenitiesDTOs === undefined
+        ? []
+        : data.numberOfBookingAmenitiesDTOs;
     setBookingAmenityList(formatted);
     setLoading(false);
   } catch (error) {
@@ -288,7 +306,11 @@ export const fetchBookingBeverageList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách đặt món.");
     }
     const data = await response.json();
-    const formatted = data.numberOfBookingBeveragesDTOs;
+    const formatted =
+      data.numberOfBookingBeveragesDTOs === null ||
+      data.numberOfBookingBeveragesDTOs === undefined
+        ? []
+        : data.numberOfBookingBeveragesDTOs;
     setBookingBeverageList(formatted);
     setLoading(false);
   } catch (error) {
