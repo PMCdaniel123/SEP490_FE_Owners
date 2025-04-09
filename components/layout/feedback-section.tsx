@@ -181,7 +181,9 @@ function FeedbackSection({
               <div className="grid grid-cols-1 gap-2">
                 <div>
                   <Text strong>Mã đặt chỗ:</Text>
-                  <Text className="ml-2">#{selectedBooking.id}</Text>
+                  <Text className="ml-2">
+                    ĐC{Number(selectedBooking.id).toString().padStart(4, "0")}
+                  </Text>
                 </div>
                 <div>
                   <Text strong>Tiêu đề:</Text>
@@ -196,7 +198,8 @@ function FeedbackSection({
           <Card className=" border-0 overflow-hidden">
             <div className="mb-6">
               <Title level={4} className="text-gray-800 mb-0">
-                Phản hồi của khách hàng
+                Phản hồi của khách hàng KH
+                {Number(feedback?.userId).toString().padStart(4, "0")}
               </Title>
             </div>
 

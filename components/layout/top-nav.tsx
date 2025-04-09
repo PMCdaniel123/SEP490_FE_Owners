@@ -152,7 +152,7 @@ function TopNav() {
           <OwnerNotification />
           <div ref={dropdownRef} className="relative">
             <div
-              className="group flex items-center justify-center bg-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
+              className="group flex items-center justify-start bg-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
               onClick={() => setOpen(!open)}
             >
               <Image
@@ -173,9 +173,9 @@ function TopNav() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4 border"
+                className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4 border min-w-[250px]"
               >
-                <div className="flex items-center justify-center py-2 px-4 gap-4 bg-primary rounded-t-xl">
+                <div className="flex items-center justify-start py-2 px-4 gap-4 bg-primary rounded-t-xl">
                   <Image
                     src={owner?.avatar || "/logo.png"}
                     alt="Logo"

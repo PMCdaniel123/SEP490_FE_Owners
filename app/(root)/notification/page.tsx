@@ -204,7 +204,7 @@ export default function NotificationPage() {
               <div
                 key={notification.id}
                 className={`p-4 shadow-md border-b rounded-md last:border-b-0 flex flex-col cursor-pointer transition-all hover:bg-gray-100 col-span-1 ${
-                  notification.read ? "bg-gray-100" : "bg-white"
+                  notification.read ? "bg-gray-200" : "bg-white"
                 }`}
                 onClick={() =>
                   !notification.read && markAsRead(notification.id)

@@ -55,7 +55,11 @@ function ResponseBooking({
                       <Tag color="yellow">Chờ phản hồi</Tag>
                     )}
                   </div>
-                  <div className="flex justify-between items-center text-xs text-gray-500">
+                  <div className="flex flex-col justify-between text-xs text-gray-500">
+                    <span>
+                      Mã đặt chỗ: ĐC
+                      {Number(booking.id).toString().padStart(4, "0")}
+                    </span>
                     <span>
                       Ngày đặt: {dayjs(booking.startDate).format("DD/MM/YYYY")}
                     </span>
