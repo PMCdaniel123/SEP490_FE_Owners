@@ -37,7 +37,9 @@ function CustomerModal({ customer }: { customer: CustomerProps }) {
         </p>
         <p>
           <span className="font-semibold">Ngày sinh: </span>
-          {dayjs(customer?.dateOfBirth).format("DD/MM/YYYY")}
+          {customer?.dateOfBirth
+            ? dayjs(customer?.dateOfBirth).format("DD/MM/YYYY")
+            : "Chưa cập nhật"}
         </p>
         <p>
           <span className="font-semibold">Giới tính: </span>

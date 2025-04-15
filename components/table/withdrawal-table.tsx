@@ -37,6 +37,7 @@ import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { WalletData } from "@/types";
 import getHeaderText from "@/constants/format-header";
+import SlideArrowButton from "../animate-ui/slide-arrow-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -93,24 +94,25 @@ export default function WithdrawalTable<TData, TValue>({
           Lịch sử yêu cầu rút tiền
         </h1>
         {!editMode && canWithdrawal && (
-          <Button
-            className="flex items-center gap-2 text-white font-semibold"
-            onClick={() => router.push("withdrawal/new")}
-          >
-            <CirclePlus />
-            <span>Tạo yêu cầu rút tiền mới</span>
-          </Button>
+          <div onClick={() => router.push("withdrawal/new")}>
+            <SlideArrowButton
+              text="Tạo yêu cầu rút tiền mới"
+              primaryColor="#835101"
+              icon={CirclePlus}
+              className="cursor-pointer"
+            />
+          </div>
         )}
       </div>
       <Separator className="mb-4" />
       <div className="flex items-center">
         <Input
-          placeholder="Số tài khoản ngân hàng..."
+          placeholder="Tên ngân hàng..."
           value={
-            (table.getColumn("bankNumber")?.getFilterValue() as string) ?? ""
+            (table.getColumn("bankName")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("bankNumber")?.setFilterValue(event.target.value)
+            table.getColumn("bankName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

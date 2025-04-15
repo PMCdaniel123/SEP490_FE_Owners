@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { BASE_URL } from "@/constants/environments";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 function Sidebar() {
   const { owner } = useSelector((state: RootState) => state.auth);
@@ -67,10 +68,10 @@ function Sidebar() {
 
   return (
     <motion.aside
-      initial={{ width: "288px" }}
-      animate={{ width: isCollapsed ? "84px" : "288px" }}
+      initial={{ width: "276px" }}
+      animate={{ width: isCollapsed ? "84px" : "276px" }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="bg-white p-4 rounded-xl min-h-screen flex flex-col"
+      className="bg-white p-4 rounded-xl min-h-screen flex flex-col border border-primary"
     >
       <motion.button
         whileTap={{ scale: 0.9 }}
@@ -79,16 +80,19 @@ function Sidebar() {
       >
         <LayoutList className="w-5 h-5" />
       </motion.button>
-      <motion.h1
-        initial={{ opacity: 1 }}
-        animate={{ opacity: isCollapsed ? 0 : 1 }}
-        transition={{ duration: 0.3 }}
-        className={`text-2xl font-extrabold mt-4 mb-8 text-primary text-center ${
-          isCollapsed ? "hidden" : "block"
-        }`}
-      >
-        WorkHive
-      </motion.h1>
+      <div className="flex items-center gap-2 justify-center mt-4 mb-6">
+        <Image src={"/workhive.png"} alt="logo" width={50} height={50} />
+        <motion.h1
+          initial={{ opacity: 1 }}
+          animate={{ opacity: isCollapsed ? 0 : 1 }}
+          transition={{ duration: 0.3 }}
+          className={`text-2xl font-extrabold text-primary text-center ${
+            isCollapsed ? "hidden" : "block"
+          }`}
+        >
+          WorkHive
+        </motion.h1>
+      </div>
       <nav className="flex flex-col gap-2">
         {isValidate && (
           <SidebarItem

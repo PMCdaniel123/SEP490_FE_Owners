@@ -879,36 +879,6 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
     },
   },
   {
-    accessorKey: "bankNumber",
-    header: () => {
-      return (
-        <div className="text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer">
-          <p>Số tài khoản ngân hàng</p>
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium w-[200px] truncate">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <p className="text-center font-medium w-[200px] truncate">
-                  {row.getValue("bankNumber")}
-                </p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-white font-medium text-lg">
-                  {row.getValue("bankNumber")}
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </p>
-      );
-    },
-  },
-  {
     accessorKey: "bankName",
     header: ({ column }) => {
       return (

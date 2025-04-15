@@ -20,13 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body className="min-h-screen bg-third flex items-center justify-center w-full">
+      <body className="min-h-screen bg-gradient-to-r from-secondary to-third flex items-center justify-center w-full">
         <Providers>
           <div className="w-5xl mx-auto flex flex-col md:flex-row items-center justify-center min-h-[600px] border border-primary rounded-md shadow-2xl">
             <div className="relative w-full h-[600px] flex-1/2">
               <Image
-                src="/signup.jpg"
-                alt="logo"
+                src="/become-owner.jpg"
+                alt="auth image"
                 fill
                 className="object-cover w-full h-full rounded-l-md"
                 priority

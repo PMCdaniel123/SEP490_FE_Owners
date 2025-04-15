@@ -36,6 +36,7 @@ import { Separator } from "../ui/separator";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import getHeaderText from "@/constants/format-header";
+import SlideArrowButton from "../animate-ui/slide-arrow-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -77,13 +78,14 @@ export default function PromotionTable<TData, TValue>({
         <h1 className="font-bold text-primary text-xl">
           Danh sách mã khuyến mãi
         </h1>
-        <Button
-          className="flex items-center gap-2 text-white font-semibold"
-          onClick={() => router.push("promotions/new")}
-        >
-          <CirclePlus />
-          <span>Tạo mã khuyến mãi mới</span>
-        </Button>
+        <div onClick={() => router.push("promotions/new")}>
+          <SlideArrowButton
+            text="Tạo mã khuyến mãi mới"
+            primaryColor="#835101"
+            icon={CirclePlus}
+            className="cursor-pointer"
+          />
+        </div>
       </div>
       <Separator className="mb-4" />
       <div className="flex items-center">
