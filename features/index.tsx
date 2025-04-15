@@ -344,7 +344,7 @@ export const fetchTopWorkspaceList = async (
       throw new Error("Có lỗi xảy ra khi tải danh sách không gian.");
     }
     const data = await response.json();
-    const formatted =
+    let formatted =
       data.workspaces === null || data.workspaces === undefined
         ? []
         : data.workspaces.map((workspace: TopRevenueWorkspace) => ({
@@ -356,6 +356,9 @@ export const fetchTopWorkspaceList = async (
               workspace.prices.find((price) => price.category === "Ngày")
                 ?.averagePrice || 0,
           }));
+    formatted = formatted.sort(
+      (a: TopRevenueWorkspace, b: TopRevenueWorkspace) => b.revenue - a.revenue
+    );
     setTopWorkspaceList(formatted);
     setLoading(false);
   } catch (error) {

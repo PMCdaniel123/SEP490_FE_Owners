@@ -2,7 +2,6 @@
 
 import Loader from "@/components/loader/Loader";
 import AuthItem from "@/components/owner-form/authentication-form/auth-item";
-import IdentifyForm from "@/components/owner-form/authentication-form/IdentifyForm";
 import LicenseForm from "@/components/owner-form/authentication-form/LicenseForm";
 // import PhoneForm from "@/components/owner-form/authentication-form/PhoneForm";
 import SocialForm from "@/components/owner-form/authentication-form/SocialForm";
@@ -16,7 +15,6 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Modal } from "antd";
 import {
-  IdCard,
   FileText,
   Save,
   Globe,
@@ -44,16 +42,9 @@ function AuthenticationManagement() {
   const form = useForm<z.infer<typeof identifySchema>>({
     resolver: zodResolver(identifySchema),
     defaultValues: {
-      identityName: "",
-      identityNumber: "",
-      dateOfBirth: "",
+      ownerName: "",
+      registrationDate: "",
       sex: "",
-      nationality: "",
-      placeOfOrigin: "",
-      placeOfResidence: "",
-      identityExpiredDate: "",
-      identityCreatedDate: "",
-      identityFile: undefined,
       facebook: "",
       instagram: "",
       tiktok: "",
@@ -83,25 +74,12 @@ function AuthenticationManagement() {
             setIsEditing(true);
             setStatus(data.owner.status);
             setMessage(data.owner.message);
-            form.setValue("identityName", data.owner.identityName || "");
-            form.setValue("identityNumber", data.owner.identityNumber || "");
-            form.setValue("dateOfBirth", data.owner.dateOfBirth || "");
+            form.setValue("ownerName", data.owner.ownerName || "");
+            form.setValue(
+              "registrationDate",
+              data.owner.registrationDate || ""
+            );
             form.setValue("sex", data.owner.sex || "");
-            form.setValue("nationality", data.owner.nationality || "");
-            form.setValue("placeOfOrigin", data.owner.placeOfOrigin || "");
-            form.setValue(
-              "placeOfResidence",
-              data.owner.placeOfResidence || ""
-            );
-            form.setValue(
-              "identityExpiredDate",
-              data.owner.identityExpiredDate || ""
-            );
-            form.setValue(
-              "identityCreatedDate",
-              data.owner.identityCreatedDate || ""
-            );
-            form.setValue("identityFile", data.owner.identityFile || "");
             form.setValue("facebook", data.owner.facebook || "");
             form.setValue("instagram", data.owner.instagram || "");
             form.setValue("tiktok", data.owner.tiktok || "");
@@ -175,29 +153,7 @@ function AuthenticationManagement() {
   };
 
   const onCreate = async (values: z.infer<typeof identifySchema>) => {
-    let identityFile = values.identityFile;
     let licenseFile = values.licenseFile;
-
-    if (typeof identityFile !== "string") {
-      try {
-        const uploadedUrl = await uploadFile(identityFile);
-        if (!uploadedUrl) {
-          throw new Error("Có lỗi xảy ra khi tải lên ảnh.");
-        }
-        identityFile = uploadedUrl;
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Đã xảy ra lỗi!";
-        toast.error(errorMessage, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          theme: "light",
-        });
-        setLoading(false);
-        return;
-      }
-    }
 
     if (typeof licenseFile !== "string") {
       try {
@@ -222,7 +178,6 @@ function AuthenticationManagement() {
 
     const data = {
       ...values,
-      identityFile,
       licenseFile,
     };
 
@@ -301,11 +256,6 @@ function AuthenticationManagement() {
                   onSubmit={form.handleSubmit(onCreate)}
                   className="flex flex-col gap-4"
                 >
-                  <AuthItem
-                    icon={IdCard}
-                    title="Căn cước công dân"
-                    form={<IdentifyForm form={form} />}
-                  />
                   <AuthItem
                     icon={Globe}
                     title="Tài khoản mạng xã hội"
