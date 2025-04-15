@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { FileText, Globe, IdCard, Save, Upload, User } from "lucide-react";
+import { FileText, Globe, Save, Upload, User } from "lucide-react";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import dayjs from "dayjs";
@@ -230,56 +230,6 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
       <Separator className="my-4 dark:border-gray-700" />
       <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
-          <IdCard className="h-5 w-5 text-primary dark:text-primary-dark" />
-          Căn cước công dân
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mt-4">
-          <p>
-            <strong>Họ và tên:</strong> {ownerInfo?.identityName}
-          </p>
-          <p>
-            <strong>Số CCCD:</strong> {ownerInfo?.identityNumber}
-          </p>
-          <p>
-            <strong>Ngày sinh:</strong>{" "}
-            {dayjs(ownerInfo?.dateOfBirth).format("DD/MM/YYYY")}
-          </p>
-          <p>
-            <strong>Giới tính:</strong> {ownerInfo?.sex}
-          </p>
-          <p>
-            <strong>Quốc tịch:</strong> {ownerInfo?.nationality}
-          </p>
-          <p>
-            <strong>Quê quán:</strong> {ownerInfo?.placeOfOrigin}
-          </p>
-          <p>
-            <strong>Nơi cư trú:</strong> {ownerInfo?.placeOfResidence}
-          </p>
-          <p>
-            <strong>Ngày hết hạn:</strong>{" "}
-            {dayjs(ownerInfo?.identityExpiredDate).format("DD/MM/YYYY")}
-          </p>
-          <p>
-            <strong>Ngày cấp:</strong>{" "}
-            {dayjs(ownerInfo?.identityCreatedDate).format("DD/MM/YYYY")}
-          </p>
-          <p>
-            <strong>Tệp đính kèm:</strong>{" "}
-            <a
-              href={ownerInfo?.identityFile}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:text-secondary underline"
-            >
-              Xem tệp
-            </a>
-          </p>
-        </div>
-      </div>
-      <Separator className="my-4 dark:border-gray-700" />
-      <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
-        <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <Globe className="h-5 w-5 text-primary dark:text-primary-dark" />
           Tài khoản mạng xã hội
         </h2>
@@ -312,12 +262,22 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mt-4">
           <p>
+            <strong>Họ và tên:</strong> {ownerInfo?.ownerName}
+          </p>
+          <p>
+            <strong>Giới tính:</strong> {ownerInfo?.sex}
+          </p>
+          <p>
+            <strong>Ngày đăng kí doanh nghiệp:</strong>{" "}
+            {ownerInfo?.registrationDate}
+          </p>
+          <p>
             <strong>Tên công ty:</strong> {ownerInfo?.licenseName}
           </p>
           <p>
             <strong>Số giấy phép:</strong> {ownerInfo?.licenseNumber}
           </p>
-          <p>
+          <p className="md:col-span-2">
             <strong>Địa chỉ:</strong> {ownerInfo?.licenseAddress}
           </p>
           <p>

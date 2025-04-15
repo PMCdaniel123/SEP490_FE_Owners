@@ -76,8 +76,8 @@ export default function CustomerAnalysisChart({
 
   return (
     <Card className="flex flex-col h-full">
-      <CardHeader>
-        <CardTitle className="mt-4 font-bold">Số lượng khách hàng</CardTitle>
+      <CardHeader className="items-center mt-4">
+        <CardTitle>Số lượng khách hàng</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         {safeCustomerList.length === 0 ? (

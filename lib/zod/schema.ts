@@ -190,44 +190,18 @@ export const withdrawalSchema = z.object({
 });
 
 export const identifySchema = z.object({
-  identityName: z.string().min(3, "Họ và tên phải có ít nhất 3 ký tự"),
-  identityNumber: z
+  ownerName: z.string().min(3, "Họ và tên phải có ít nhất 3 ký tự"),
+  registrationDate: z
     .string()
-    .min(12, "Số căn cước công dân phải có 12 chữ số")
-    .max(12, "Số căn cước công dân phải có 12 chữ số")
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Số căn cước công dân phải có 12 chữ số",
-    }),
-  dateOfBirth: z
-    .string()
-    .nonempty("Vui lòng chọn ngày sinh")
+    .nonempty("Vui lòng chọn ngày đăng kí doanh nghiệp")
     .refine((val) => {
-      const dob = new Date(val);
+      const registD = new Date(val);
       const today = new Date();
-      const age = today.getFullYear() - dob.getFullYear();
-      const monthDiff = today.getMonth() - dob.getMonth();
-      const dayDiff = today.getDate() - dob.getDate();
+      const diff = today.getDate() - registD.getDate();
 
-      const isBirthdayPassedThisYear =
-        monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0);
-      const actualAge = isBirthdayPassedThisYear ? age : age - 1;
-
-      return actualAge >= 12 && actualAge <= 100;
-    }, "Tuổi phải từ 12 đến 100"),
+      return diff > 0;
+    }, "Ngày đăng kí không thể ở tương lai"),
   sex: z.string().nonempty("Vui lòng chọn giới tính hợp lệ"),
-  nationality: z.string().nonempty("Vui lòng nhập quốc tịch"),
-  placeOfOrigin: z.string().nonempty("Vui lòng nhập quê quán"),
-  placeOfResidence: z.string().nonempty("Vui lòng nhập nơi thường trú"),
-  identityExpiredDate: z.string().nonempty("Vui lòng chọn ngày hết hạn"),
-  identityCreatedDate: z.string().nonempty("Vui lòng chọn ngày tạo cccd"),
-  identityFile: z
-    .any()
-    .refine((file) => file instanceof File, {
-      message: "Vui lòng tải lên một file hợp lệ",
-    })
-    .refine((file) => file && file.size < 5 * 1024 * 1024, {
-      message: "File phải nhỏ hơn 5MB",
-    }),
   facebook: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
   instagram: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
   tiktok: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),

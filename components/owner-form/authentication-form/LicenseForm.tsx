@@ -13,6 +13,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { FileText } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function LicenseForm({
   form,
@@ -22,28 +29,113 @@ function LicenseForm({
   return (
     <div className="flex flex-col w-full gap-6">
       <Separator className="mt-4 bg-primary" />
-      <div className="sm:col-span-2 flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <FormField
-            control={form.control}
-            name="licenseName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-fourth font-bold text-base ml-6">
-                  Tên doanh nghiệp
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="py-6 px-4 rounded-md file:bg-seventh"
-                    placeholder="Nhập tên doanh nghiệp..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-500 text-xs" />
-              </FormItem>
-            )}
-          />
-        </div>
+      <div className="sm:col-span-2 flex flex-col gap-2">
+        <FormField
+          control={form.control}
+          name="ownerName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-fourth font-bold text-base ml-6">
+                Họ và tên
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="py-6 px-4 rounded-md file:bg-seventh"
+                  placeholder="Nhập họ và tên..."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+      </div>
+      <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+        <FormField
+          control={form.control}
+          name="sex"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-fourth font-bold text-base ml-6">
+                Giới tính
+              </FormLabel>
+              <FormControl>
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => field.onChange(value)}
+                >
+                  <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                    <SelectValue placeholder="Chọn giới tính" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem
+                      className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
+                      value="Nam"
+                    >
+                      Nam
+                    </SelectItem>
+                    <SelectItem
+                      className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
+                      value="Nữ"
+                    >
+                      Nữ
+                    </SelectItem>
+                    <SelectItem
+                      className="rounded-sm flex items-center gap-2 focus:bg-primary focus:text-white p-2 transition-colors duration-200"
+                      value="Khác"
+                    >
+                      Khác
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+      </div>
+      <div className="sm:col-span-2 flex flex-col gap-2 w-full">
+        <FormField
+          control={form.control}
+          name="registrationDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-fourth font-bold text-base ml-6">
+                Ngày đăng kí doanh nghiệp
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="py-6 px-4 rounded-md file:bg-seventh"
+                  placeholder="Nhập ngày đăng kí doanh nghiệp..."
+                  type="date"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
+      </div>
+      <div className="sm:col-span-2 flex flex-col gap-2">
+        <FormField
+          control={form.control}
+          name="licenseName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-fourth font-bold text-base ml-6">
+                Tên doanh nghiệp
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="py-6 px-4 rounded-md file:bg-seventh"
+                  placeholder="Nhập tên doanh nghiệp..."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-red-500 text-xs" />
+            </FormItem>
+          )}
+        />
       </div>
       <div className="sm:col-span-2 flex flex-col gap-2 w-full">
         <FormField

@@ -327,16 +327,9 @@ export interface OwnerProps {
   id: number;
   email: string;
   phone: string;
-  identityName: string;
-  identityNumber: string;
-  dateOfBirth: string;
+  ownerName: string;
+  registrationDate: string;
   sex: string;
-  nationality: string;
-  placeOfOrigin: string;
-  placeOfResidence: string;
-  identityExpiredDate: string;
-  identityCreatedDate: string;
-  identityFile: string;
   facebook: string;
   instagram: string;
   tiktok: string;
