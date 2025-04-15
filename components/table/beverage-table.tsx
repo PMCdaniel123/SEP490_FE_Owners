@@ -36,6 +36,7 @@ import { Separator } from "../ui/separator";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import getHeaderText from "@/constants/format-header";
+import SlideArrowButton from "../animate-ui/slide-arrow-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -75,13 +76,14 @@ export default function BeverageTable<TData, TValue>({
     <div className="flex flex-col gap-4">
       <div className="mt-4 flex items-center justify-between">
         <h1 className="font-bold text-primary text-xl">Danh sách thực đơn</h1>
-        <Button
-          className="flex items-center gap-2 text-white font-semibold"
-          onClick={() => router.push("beverages/new")}
-        >
-          <CirclePlus />
-          <span>Tạo món mới</span>
-        </Button>
+        <div onClick={() => router.push("beverages/new")}>
+          <SlideArrowButton
+            text="Tạo món mới"
+            primaryColor="#835101"
+            icon={CirclePlus}
+            className="cursor-pointer"
+          />
+        </div>
       </div>
       <Separator className="mb-4" />
       <div className="flex items-center">

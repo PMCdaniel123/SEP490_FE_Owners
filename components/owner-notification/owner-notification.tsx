@@ -4,8 +4,9 @@ import {
   Bell,
   CheckCheck,
   CheckCircle,
-  DollarSign,
-  RefreshCw,
+  CircleArrowDown,
+  CircleArrowLeft,
+  UserRoundCheck,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -47,12 +48,12 @@ const OwnerNotification = () => {
   const unreadCount = notifications.filter((n) => !n.read).length;
   const getIconForTitle = (title: string) => {
     switch (title) {
-      case "Đặt chỗ thành công":
-        return <CheckCircle size={16} className="text-primary" />;
-      case "Nạp tiền thành công":
-        return <DollarSign size={16} className="text-primary" />;
-      case "Hoàn tiền thành công":
-        return <RefreshCw size={16} className="text-primary" />;
+      case "Đặt chỗ":
+        return <CircleArrowDown size={16} className="text-primary" />;
+      case "Xác thực tài khoản thành công":
+        return <UserRoundCheck size={16} className="text-green-500" />;
+      case "Hoàn tiền":
+        return <CircleArrowLeft size={16} className="text-red-500" />;
       default:
         return <CheckCircle size={16} className="text-gray-500" />;
     }
@@ -303,7 +304,7 @@ const OwnerNotification = () => {
       >
         <Bell size={24} />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-bounce">
             {unreadCount}
           </span>
         )}
@@ -323,14 +324,14 @@ const OwnerNotification = () => {
                 <div
                   key={notification.id}
                   className={`p-4 flex flex-col cursor-pointer transition-all hover:bg-gray-100 ${
-                    notification.read ? "bg-gray-50" : "bg-white"
+                    notification.read ? "bg-gray-100" : "bg-white"
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 w-full">
                       {getIconForTitle(notification.title)}{" "}
-                      <h3 className="text-black font-semibold text-sm">
+                      <h3 className="text-black font-semibold text-sm w-4/5">
                         {notification.title}
                       </h3>
                     </div>
@@ -350,7 +351,7 @@ const OwnerNotification = () => {
                   )}
                 </div>
               ))}
-              {notifications.length > MAX_DISPLAY && (
+              {notifications.length > 0 && (
                 <div className="p-2 text-center bg-white">
                   <p
                     onClick={() => {
@@ -365,7 +366,7 @@ const OwnerNotification = () => {
               )}
             </>
           ) : (
-            <div className="p-4 text-gray-500 text-center">
+            <div className="p-4 text-gray-300 text-center">
               Không có thông báo mới
             </div>
           )}
