@@ -113,7 +113,7 @@ export default function HotBeverageChart({
             </Pie>
             <ChartLegend
               content={<ChartLegendContent nameKey="browser" />}
-              className="flex flex-col gap-4 items-start"
+              className="flex flex-wrap gap-10 items-center justify-center"
             />
           </PieChart>
         </ChartContainer>

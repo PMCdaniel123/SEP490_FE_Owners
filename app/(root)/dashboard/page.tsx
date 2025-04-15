@@ -273,12 +273,16 @@ export default function OwnerPage() {
               data={topWorkspaceList}
             />
           </div>
+        </div>
+        <div className="col-span-1 flex flex-col gap-4">
+          <HotAmenityChart bookingAmenityList={bookingAmenityList} />
+        </div>
+        <div className="col-span-2 flex flex-col gap-4">
           <div className="bg-white p-4 rounded-xl">
             <RevenueChart bookings={bookingList} />
           </div>
         </div>
         <div className="col-span-1 flex flex-col gap-4">
-          <HotAmenityChart bookingAmenityList={bookingAmenityList} />
           <HotBeverageChart bookingBeverageList={bookingBeverageList} />
         </div>
       </div>

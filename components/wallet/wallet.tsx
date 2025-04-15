@@ -90,9 +90,9 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
   useEffect(() => {
     if (!walletData) return;
     form.reset({
-      bankName: walletData?.bankName,
-      bankAccountName: walletData?.bankAccountName,
-      bankNumber: walletData?.bankNumber,
+      bankName: walletData?.bankName || "",
+      bankAccountName: walletData?.bankAccountName || "",
+      bankNumber: walletData?.bankNumber || "",
     });
   }, [form, walletData]);
 
@@ -137,8 +137,6 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
       setLoading(false);
     }
   };
-
-  console.log(walletData);
 
   return (
     <div className="flex flex-col gap-6 py-4">
@@ -229,8 +227,8 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                     </FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
                         disabled={!editMode}
                       >
                         <SelectTrigger className="py-6 px-4 rounded-md w-full">
