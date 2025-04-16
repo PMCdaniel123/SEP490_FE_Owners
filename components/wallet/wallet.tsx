@@ -178,7 +178,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                 name="bankAccountName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-semibold text-sm ml-6">
                       Tên chủ tài khoản ngân hàng
                     </FormLabel>
                     <FormControl>
@@ -200,7 +200,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                 name="bankNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-semibold text-sm ml-6">
                       Số tài khoản ngân hàng
                     </FormLabel>
                     <FormControl>
@@ -222,7 +222,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                 name="bankName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-semibold text-sm ml-6">
                       Tên ngân hàng
                     </FormLabel>
                     <FormControl>

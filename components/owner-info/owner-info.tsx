@@ -138,6 +138,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
 
   return (
     <div className="flex flex-col gap-6">
+      <Separator className="my-4 dark:border-gray-700" />
       <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <User className="h-5 w-5 text-primary dark:text-primary-dark" />

@@ -141,7 +141,7 @@ function TopNav() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-2 px-4 h-full">
+        <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-2 px-4 h-full border border-primary">
           <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
           <p className="bg-primary text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold text-base">
             <Banknote />
@@ -152,7 +152,7 @@ function TopNav() {
           <OwnerNotification />
           <div ref={dropdownRef} className="relative">
             <div
-              className="group flex items-center justify-start bg-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
+              className="group flex items-center justify-start bg-white border border-primary hover:border-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
               onClick={() => setOpen(!open)}
             >
               <Image
@@ -173,9 +173,9 @@ function TopNav() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-4 border min-w-[250px]"
+                className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-2 border min-w-[250px]"
               >
-                <div className="flex items-center justify-start py-2 px-4 gap-4 bg-primary rounded-t-xl">
+                <div className="flex items-center justify-start py-3 px-4 gap-4 bg-gradient-to-r from-primary to-fourth rounded-t-xl">
                   <Image
                     src={owner?.avatar || "/logo.png"}
                     alt="Logo"
@@ -220,8 +220,9 @@ function TopNav() {
                 >
                   <Headset size={16} /> <span>Liên hệ với WorkHive</span>
                 </Link>
+                <Separator className="my-2" />
                 <li
-                  className="px-4 flex items-center gap-2 hover:bg-primary hover:text-white py-2 transition-colors duration-200 cursor-pointer"
+                  className="px-4 flex items-center gap-2 text-red-500 hover:bg-red-500 hover:text-white py-2 transition-colors duration-200 cursor-pointer"
                   onClick={handleLogOut}
                 >
                   <LogOut size={16} /> <span>Đăng xuất</span>

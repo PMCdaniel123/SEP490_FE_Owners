@@ -222,13 +222,13 @@ function AuthenticationManagement() {
   return (
     <>
       <div className="p-4 bg-white rounded-xl">
-        <div className="w-fit mx-auto bg-white border border-primary rounded-lg p-6 mt-4">
+        <div className="w-full mx-auto bg-primary border border-primary rounded-lg p-6 mt-4">
           {isEditing ? (
-            <h1 className="text-xl font-bold text-center text-primary flex items-center gap-4">
+            <h1 className="text-xl font-bold text-center text-white flex items-center justify-center gap-4">
               <BadgeInfo /> Xác thực tài khoản
             </h1>
           ) : (
-            <h1 className="text-xl font-bold text-center text-primary flex items-center gap-4">
+            <h1 className="text-xl font-bold text-center text-white flex items-center justify-center gap-4">
               <BadgeInfo /> Thông tin doanh nghiệp
             </h1>
           )}

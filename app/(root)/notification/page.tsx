@@ -5,9 +5,10 @@ import {
   CheckCircle,
   Bell,
   Filter,
-  DollarSign,
-  RefreshCw,
   CheckCheck,
+  CircleArrowDown,
+  UserRoundCheck,
+  CircleArrowLeft,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -35,14 +36,14 @@ export default function NotificationPage() {
   const { owner } = useSelector((state: RootState) => state.auth);
   const getIconForTitle = (title: string) => {
     switch (title) {
-      case "Đặt chỗ thành công":
-        return <CheckCircle size={20} className="text-green-500" />;
-      case "Nạp tiền thành công":
-        return <DollarSign size={20} className="text-blue-500" />;
-      case "Hoàn tiền thành công":
-        return <RefreshCw size={20} className="text-yellow-500" />;
+      case "Đặt chỗ":
+        return <CircleArrowDown size={16} className="text-primary" />;
+      case "Xác thực tài khoản thành công":
+        return <UserRoundCheck size={16} className="text-green-500" />;
+      case "Hoàn tiền":
+        return <CircleArrowLeft size={16} className="text-red-500" />;
       default:
-        return <CheckCircle size={20} className="text-gray-500" />;
+        return <CheckCircle size={16} className="text-gray-500" />;
     }
   };
   const fetchNotifications = useCallback(async () => {
@@ -214,7 +215,7 @@ export default function NotificationPage() {
                   <div className="flex items-center gap-2 mb-1">
                     {getIconForTitle(notification.title)}{" "}
                     {/* Render the icon */}
-                    <h3 className="text-gray-800 text-base font-semibold">
+                    <h3 className="text-gray-800 text-base font-semibold w-4/5">
                       {notification.title}
                     </h3>
                   </div>
