@@ -340,9 +340,30 @@ export interface OwnerProps {
   charterCapital: string;
   licenseFile: string;
   status: string;
+  createdAt: string;
   updatedAt: string;
-  message: string | null;
   avatar: string | null;
+}
+
+export interface VerifyOwnerProps {
+  id: number;
+  ownerId: number;
+  userId: number;
+  message: string;
+  status: string;
+  googleMapUrl: string;
+  licenseName: string;
+  licenseNumber: string;
+  licenseAddress: string;
+  charterCapital: number;
+  licenseFile: string;
+  ownerName: string;
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  createdAt: string;
+  updatedAt: string;
+  registrationDate: string;
 }
 
 export interface WalletData {

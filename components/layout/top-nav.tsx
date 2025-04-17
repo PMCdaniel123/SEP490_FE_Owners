@@ -156,7 +156,7 @@ function TopNav() {
               onClick={() => setOpen(!open)}
             >
               <Image
-                src={owner?.avatar || "/logo.png"}
+                src={owner?.avatar || "/workhive.png"}
                 alt="Logo"
                 width={40}
                 height={40}
@@ -173,11 +173,11 @@ function TopNav() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full right-0 z-10 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-2 border min-w-[250px]"
+                className="absolute top-full right-0 z-50 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-2 border min-w-[250px]"
               >
                 <div className="flex items-center justify-start py-3 px-4 gap-4 bg-gradient-to-r from-primary to-fourth rounded-t-xl">
                   <Image
-                    src={owner?.avatar || "/logo.png"}
+                    src={owner?.avatar || "/workhive.png"}
                     alt="Logo"
                     width={40}
                     height={40}
