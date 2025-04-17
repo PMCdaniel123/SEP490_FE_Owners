@@ -226,6 +226,12 @@ export const identifySchema = z.object({
     }),
 });
 
+export const socialSchema = z.object({
+  facebook: z.string().url("Vuiź nhập đường dẫn hợp lệ").or(z.literal("")),
+  instagram: z.string().url("Vuiź nhập đường dẫn hợp lệ").or(z.literal("")),
+  tiktok: z.string().url("Vuiź nhập đường dẫn hợp lệ").or(z.literal("")),
+});
+
 export const walletSchema = z.object({
   bankAccountName: z
     .string()

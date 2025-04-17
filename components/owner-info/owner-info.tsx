@@ -1,20 +1,34 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { FileText, Globe, Save, Upload, User } from "lucide-react";
+import { Edit, FileText, Globe, Save, Upload, User, X } from "lucide-react";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { OwnerProps } from "@/types";
+import { formatCurrency, OwnerProps } from "@/types";
 import { Button, Upload as AntUpload, ConfigProvider } from "antd";
 import ImgCrop from "antd-img-crop";
 import { BASE_URL } from "@/constants/environments";
 import { toast } from "react-toastify";
 import Loader from "../loader/Loader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { updateAvatar } from "@/stores/slices/authSlice";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { socialSchema } from "@/lib/zod/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoadingOutlined } from "@ant-design/icons";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
 
 interface OwnerInfoProps {
   ownerInfo: OwnerProps | null;
@@ -28,6 +42,25 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
+  const [isEdit, setIsEdit] = useState(false);
+  const form = useForm<z.infer<typeof socialSchema>>({
+    resolver: zodResolver(socialSchema),
+    defaultValues: {
+      facebook: ownerInfo?.facebook || "",
+      instagram: ownerInfo?.instagram || "",
+      tiktok: ownerInfo?.tiktok || "",
+    },
+  });
+
+  useEffect(() => {
+    if (isEdit && ownerInfo) {
+      form.reset({
+        facebook: ownerInfo?.facebook || "",
+        instagram: ownerInfo?.instagram || "",
+        tiktok: ownerInfo?.tiktok || "",
+      });
+    }
+  }, [isEdit, form, ownerInfo]);
 
   const handleAvatarChange = (file: File) => {
     setAvatar(file);
@@ -136,12 +169,58 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
     );
   }
 
+  const handleUpdateSocial = async (data: z.infer<typeof socialSchema>) => {
+    setLoading(true);
+    const rawData = {
+      facebook: data.facebook,
+      instagram: data.instagram,
+      tiktok: data.tiktok,
+      id: ownerInfo?.id,
+    };
+    try {
+      const response = await fetch(
+        `${BASE_URL}/workspace-owners/${ownerInfo?.id}/socials`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(rawData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Có lỗi xảy ra khi cập nhật tài khoản mạng xã hội.");
+      }
+
+      toast.success("Cập nhật tài khoản mạng xã hội thành công!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      setLoading(false);
+      setIsEdit(false);
+      window.location.reload();
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Đã xảy ra lỗi!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        theme: "light",
+      });
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6">
-      <Separator className="my-4 dark:border-gray-700" />
-      <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
+      <Separator className="my-4" />
+      <div className="border border-primary p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
-          <User className="h-5 w-5 text-primary dark:text-primary-dark" />
+          <User className="h-5 w-5 text-primary" />
           Thông tin cá nhân
         </h2>
         <div className="flex items-center">
@@ -158,7 +237,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
               />
             ) : (
               <img
-                src="/logo.png"
+                src="/workhive.png"
                 alt="Default Avatar"
                 className="w-full h-full object-cover"
               />
@@ -197,7 +276,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
             </AntUpload>
           </ImgCrop>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mt-4">
           <p>
             <strong>Email:</strong> {ownerInfo?.email}
           </p>
@@ -215,8 +294,8 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
             )}
           </p>
           <p>
-            <strong>Ngày tạo:</strong>{" "}
-            {dayjs(ownerInfo?.updatedAt).format("HH:mm DD/MM/YYYY")}
+            <strong>Ngày tạo tài khoản:</strong>{" "}
+            {dayjs(ownerInfo?.createdAt).format("HH:mm DD/MM/YYYY")}
           </p>
         </div>
       </div>
@@ -228,40 +307,148 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           <Save size={18} /> Lưu thay đổi
         </button>
       )}
-      <Separator className="my-4 dark:border-gray-700" />
-      <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
+      <Separator className="my-4" />
+      <div className="border border-primary p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
-          <Globe className="h-5 w-5 text-primary dark:text-primary-dark" />
+          <Globe className="h-5 w-5 text-primary" />
           Tài khoản mạng xã hội
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mt-4">
-          <Link href={ownerInfo?.facebook || ""}>
-            <strong>Facebook:</strong>{" "}
-            <span className="text-primary hover:text-secondary underline">
-              {ownerInfo?.facebook || "Chưa cập nhật"}
-            </span>
-          </Link>
-          <Link href={ownerInfo?.instagram || ""}>
-            <strong>Instagram:</strong>{" "}
-            <span className="text-primary hover:text-secondary underline">
-              {ownerInfo?.instagram || "Chưa cập nhật"}
-            </span>
-          </Link>
-          <Link href={ownerInfo?.tiktok || ""}>
-            <strong>Tiktok:</strong>{" "}
-            <span className="text-primary hover:text-secondary underline">
-              {ownerInfo?.tiktok || "Chưa cập nhật"}
-            </span>
-          </Link>
-        </div>
+        {!isEdit && (
+          <button
+            className="font-medium text-sm rounded-lg cursor-pointer hover:bg-secondary flex items-center gap-2 text-white absolute -top-[18px] right-4 bg-primary px-4 py-2"
+            onClick={() => setIsEdit(true)}
+          >
+            <Edit className="h-4 w-4" />
+            Chỉnh sửa
+          </button>
+        )}
+        {isEdit && (
+          <div className="flex items-center gap-2 absolute -top-[18px] right-4">
+            <button
+              className="font-medium text-sm rounded-lg cursor-pointer hover:bg-red-300 flex items-center gap-2 text-white bg-red-500 px-4 py-2"
+              onClick={() => setIsEdit(false)}
+            >
+              <X className="h-4 w-4" />
+              Hủy
+            </button>
+          </div>
+        )}
+        {!isEdit && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mt-4">
+            <Link href={ownerInfo?.facebook || ""}>
+              <strong>Facebook:</strong>{" "}
+              <span className="text-primary hover:text-secondary underline">
+                {ownerInfo?.facebook || "Chưa cập nhật"}
+              </span>
+            </Link>
+            <Link href={ownerInfo?.instagram || ""}>
+              <strong>Instagram:</strong>{" "}
+              <span className="text-primary hover:text-secondary underline">
+                {ownerInfo?.instagram || "Chưa cập nhật"}
+              </span>
+            </Link>
+            <Link href={ownerInfo?.tiktok || ""}>
+              <strong>Tiktok:</strong>{" "}
+              <span className="text-primary hover:text-secondary underline">
+                {ownerInfo?.tiktok || "Chưa cập nhật"}
+              </span>
+            </Link>
+          </div>
+        )}
+        {isEdit && (
+          <Form {...form}>
+            <form
+              className="grid sm:grid-cols-2 gap-6 mt-4"
+              onSubmit={form.handleSubmit(handleUpdateSocial)}
+            >
+              <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="facebook"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Facebook
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          placeholder="Nhập đường dẫn hợp lệ..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="instagram"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Instagram
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          placeholder="Nhập đường dẫn hợp lệ..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="tiktok"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                        Tiktok
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          placeholder="Nhập đường dẫn hợp lệ..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="sm:col-span-2 flex flex-col gap-2 w-full">
+                <button
+                  className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
+                  type="submit"
+                >
+                  {loading ? (
+                    <LoadingOutlined style={{ color: "white" }} />
+                  ) : (
+                    <span className="font-bold flex items-center gap-2">
+                      <Save size={18} /> Xác nhận
+                    </span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </Form>
+        )}
       </div>
-      <Separator className="my-4 dark:border-gray-700" />
-      <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
+      <Separator className="my-4" />
+      <div className="border border-primary p-6 rounded-lg relative">
         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
-          <FileText className="h-5 w-5 text-primary dark:text-primary-dark" />
+          <FileText className="h-5 w-5 text-primary" />
           Giấy phép kinh doanh
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mt-4">
           <p>
             <strong>Họ và tên:</strong> {ownerInfo?.ownerName}
           </p>
@@ -282,7 +469,10 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
             <strong>Địa chỉ:</strong> {ownerInfo?.licenseAddress}
           </p>
           <p>
-            <strong>Vốn điều lệ:</strong> {ownerInfo?.charterCapital}
+            <strong>Vốn điều lệ:</strong>{" "}
+            {ownerInfo?.charterCapital
+              ? formatCurrency(Number(ownerInfo?.charterCapital))
+              : "Chưa cập nhật"}
           </p>
           <p>
             <strong>Tệp đính kèm:</strong>{" "}
