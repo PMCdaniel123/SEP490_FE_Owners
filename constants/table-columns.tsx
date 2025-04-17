@@ -10,6 +10,7 @@ import {
   PromotionProps,
   TopRevenueWorkspace,
   TransactionProp,
+  VerifyOwnerProps,
   WithdrawalProps,
   Workspace,
 } from "@/types";
@@ -1358,6 +1359,166 @@ export const FeedbackTableColumns: ColumnDef<Feedback>[] = [
     cell: ({ row }) => {
       const feedback = row.original;
       return <FeedbackDropdown feedbackId={feedback.id} />;
+    },
+  },
+];
+
+export const VerifyTableColumns: ColumnDef<VerifyOwnerProps>[] = [
+  {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã yêu cầu</p>
+          <ArrowUpDown size={16} className="ml-2" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          YCXT{Number(row.getValue("id")).toString().padStart(4, "0")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "ownerId",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white dark:text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Mã doanh nghiệp</p>
+          <ArrowUpDown size={16} className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          DN{Number(row.getValue("ownerId")).toString().padStart(4, "0")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "licenseName",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white dark:text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Tên doanh nghiệp</p>
+          <ArrowUpDown size={16} className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">{row.getValue("licenseName")}</p>
+      );
+    },
+  },
+  {
+    accessorKey: "licenseNumber",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white dark:text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Số giấy phép</p>
+          <ArrowUpDown size={16} className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {row.getValue("licenseNumber")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white dark:text-white font-semibold text-base text-center items-center flex justify-center cursor-pointer"
+        >
+          <p>Ngày tạo</p>
+          <ArrowUpDown size={16} className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {dayjs(row.getValue("createdAt")).format("HH:mm DD/MM/YYYY")}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white dark:text-white font-semibold text-base text-center items-center flex justify-center gap-2 cursor-pointer"
+        >
+          <p>Trạng thái</p>
+          <ArrowUpDown size={16} className="ml-2 h-4 w-4" />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      return status === "Handling" ? (
+        <p className={`text-center font-medium text-yellow-500`}>
+          Chờ xác thực
+        </p>
+      ) : status === "Success" ? (
+        <p className={`text-center font-medium text-green-500`}>
+          Xác thực thành công
+        </p>
+      ) : (
+        <p className={`text-center font-medium text-red-500`}>
+          Xác thực thất bại
+        </p>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const verify = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="py-2">
+            <Link
+              className="px-4 rounded-sm flex items-center gap-2 hover:bg-primary hover:text-white py-1 transition-colors duration-200 cursor-pointer"
+              href={`/authentication/verify-requests/${verify.id}`}
+            >
+              <Eye size={16} /> <span>Xem thông tin chi tiết</span>
+            </Link>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
   },
 ];

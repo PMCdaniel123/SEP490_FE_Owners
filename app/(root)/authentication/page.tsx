@@ -1,5 +1,6 @@
 "use client";
 
+import SlideArrowButton from "@/components/animate-ui/slide-arrow-button";
 import Loader from "@/components/loader/Loader";
 import AuthItem from "@/components/owner-form/authentication-form/auth-item";
 import LicenseForm from "@/components/owner-form/authentication-form/LicenseForm";
@@ -23,7 +24,9 @@ import {
   CheckCheck,
   TriangleAlert,
   BadgeInfo,
+  History,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -37,8 +40,8 @@ function AuthenticationManagement() {
   const [ownerInfo, setOwnerInfo] = useState<OwnerProps | null>(null);
   const [isEditing, setIsEditing] = useState(true);
   const [status, setStatus] = useState("");
-  const [message, setMessage] = useState("");
   const [isOpen, setIsOpen] = useState(true);
+  const router = useRouter();
   const form = useForm<z.infer<typeof identifySchema>>({
     resolver: zodResolver(identifySchema),
     defaultValues: {
@@ -73,7 +76,6 @@ function AuthenticationManagement() {
           if (data.owner.status !== "Success") {
             setIsEditing(true);
             setStatus(data.owner.status);
-            setMessage(data.owner.message);
             form.setValue("ownerName", data.owner.ownerName || "");
             form.setValue(
               "registrationDate",
@@ -87,10 +89,7 @@ function AuthenticationManagement() {
             form.setValue("licenseNumber", data.owner.licenseNumber || "");
             form.setValue("licenseAddress", data.owner.licenseAddress || "");
             form.setValue("googleMapUrl", data.owner.googleMapUrl || "");
-            form.setValue(
-              "charterCapital",
-              data.owner.charterCapital ? data.owner.charterCapital + "" : ""
-            );
+            form.setValue("charterCapital", data.owner.charterCapital || "");
             form.setValue("licenseFile", data.owner.licenseFile || "");
           } else {
             setIsEditing(false);
@@ -234,7 +233,18 @@ function AuthenticationManagement() {
           )}
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 flex items-center justify-end">
+          <div onClick={() => router.push("/authentication/verify-requests")}>
+            <SlideArrowButton
+              text="Xem lịch sử"
+              primaryColor="#835101"
+              icon={History}
+              className="cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div className="mt-6">
           {isEditing ? (
             <div className="flex flex-col w-full gap-6">
               {status === "Handling" && (
@@ -247,7 +257,7 @@ function AuthenticationManagement() {
               {status === "Fail" && (
                 <div className="flex items-center justify-start">
                   <p className="text-red-500 border rounded-lg border-red-500 px-4 py-2 flex items-center gap-2">
-                    <CircleX size={18} /> Xác thực thất bại! Lí do: {message}
+                    <CircleX size={18} /> Xác thực thất bại!
                   </p>
                 </div>
               )}
@@ -266,20 +276,22 @@ function AuthenticationManagement() {
                     title="Giấy phép kinh doanh"
                     form={<LicenseForm form={form} />}
                   />
-                  <div className="flex flex-col gap-2 w-full">
-                    <button
-                      className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
-                      type="submit"
-                    >
-                      {newLoading ? (
-                        <LoadingOutlined style={{ color: "white" }} />
-                      ) : (
-                        <span className="font-bold flex items-center gap-2">
-                          <Save size={18} /> Xác nhận
-                        </span>
-                      )}
-                    </button>
-                  </div>
+                  {status !== "Handling" && (
+                    <div className="flex flex-col gap-2 w-full">
+                      <button
+                        className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
+                        type="submit"
+                      >
+                        {newLoading ? (
+                          <LoadingOutlined style={{ color: "white" }} />
+                        ) : (
+                          <span className="font-bold flex items-center gap-2">
+                            <Save size={18} /> Xác nhận
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </form>
               </Form>
             </div>
