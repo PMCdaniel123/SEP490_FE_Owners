@@ -3,7 +3,14 @@
 import Loader from "@/components/loader/Loader";
 import WorkspaceForm from "@/components/owner-form/WorkspaceForm";
 import { BASE_URL } from "@/constants/environments";
-import { Facilities, Image, Policies, Price, Workspace } from "@/types";
+import {
+  Details,
+  Facilities,
+  Image,
+  Policies,
+  Price,
+  Workspace,
+} from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -44,6 +51,9 @@ function WorkspaceDetail() {
           ),
           policiesStr: data.getWorkSpaceByIdResult.policies.map(
             (policy: Policies) => policy.policyName
+          ),
+          detailsStr: data.getWorkSpaceByIdResult.details.map(
+            (detail: Details) => detail.detailName
           ),
           imagesStr: data.getWorkSpaceByIdResult.images.map(
             (image: Image) => image.imgUrl
