@@ -29,6 +29,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import GoogleMap from "../google-map/google-map";
 
 interface OwnerInfoProps {
   ownerInfo: OwnerProps | null;
@@ -486,6 +487,11 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
             </a>
           </p>
         </div>
+        {ownerInfo?.googleMapUrl && (
+          <div className="mt-8 rounded-lg">
+            <GoogleMap url={ownerInfo?.googleMapUrl} />
+          </div>
+        )}
       </div>
     </div>
   );

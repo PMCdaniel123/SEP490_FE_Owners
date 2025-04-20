@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import GoogleMap from "@/components/google-map/google-map";
 
 function LicenseForm({
   form,
@@ -186,15 +187,16 @@ function LicenseForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-fourth font-bold text-base ml-6">
-                Địa chỉ Google Map
+                Đường dẫn Google Map
               </FormLabel>
               <FormControl>
                 <Input
                   className="py-6 px-4 rounded-md file:bg-seventh"
-                  placeholder="Nhập địa chỉ Google Map URL..."
+                  placeholder="Nhập đường dẫn Google Map URL..."
                   {...field}
                 />
               </FormControl>
+              <GoogleMap url={field.value} />
               <FormMessage className="text-red-500 text-xs" />
             </FormItem>
           )}
