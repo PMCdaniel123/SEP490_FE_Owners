@@ -43,6 +43,9 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { TimePicker } from "antd";
 import dayjs from "dayjs";
 import { BASE_URL } from "@/constants/environments";
+import DetailToolTip from "../tooltip-btn/detail-tooltip";
+import FacilitiesToolTip from "../tooltip-btn/facilities-tooltip";
+import PoliciesToolTip from "../tooltip-btn/policies-tooltip";
 
 interface WorkspaceFormProps {
   initialData?: Workspace | null;
@@ -79,6 +82,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           capacity: "",
           category: "Bàn cá nhân",
           status: "Active",
+          code: "",
         },
   });
   const is24h = form.watch("is24h");
@@ -139,6 +143,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       description: values.description,
       openTime: values.openTime,
       closeTime: values.closeTime,
+      code: values.code,
       is24h: values.is24h,
       area: Number(values.area),
       cleanTime: Number(values.cleanTime),
@@ -223,6 +228,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
       description: values.description,
       openTime: values.openTime,
       closeTime: values.closeTime,
+      code: values.code,
       is24h: values.is24h,
       area: Number(values.area),
       cleanTime: Number(values.cleanTime),
@@ -623,18 +629,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
                     <span>Chi tiết không gian</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Info size={20} className="text-primary" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-white font-medium">
-                            Enter để thêm
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <DetailToolTip />
                   </FormLabel>
                   <FormControl>
                     <MultiText
@@ -655,6 +650,27 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               )}
             />
           </div>
+          <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+            <FormField
+              control={form.control}
+              name="code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                    Mã bàn
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      placeholder="Nhập mã bàn..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500 text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <FormField
               control={form.control}
@@ -663,18 +679,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
                     <span>Cơ sở vật chất</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Info size={20} className="text-primary" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-white font-medium">
-                            Enter để thêm
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <FacilitiesToolTip />
                   </FormLabel>
                   <FormControl>
                     <MultiText
@@ -741,18 +746,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
                     <span>Quy định chung</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Info size={20} className="text-primary" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-white font-medium">
-                            Enter để thêm
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <PoliciesToolTip />
                   </FormLabel>
                   <FormControl>
                     <MultiText

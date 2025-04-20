@@ -127,6 +127,7 @@ export interface Workspace {
   imagesStr: string[];
   createdAt: string;
   updatedAt: string;
+  code: string;
 }
 
 export interface TopRevenueWorkspace {
