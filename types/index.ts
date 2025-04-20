@@ -95,6 +95,11 @@ export interface Policies {
   policyName: string;
 }
 
+export interface Details {
+  id: string;
+  detailName: string;
+}
+
 export interface Workspace {
   id: string;
   name: string;
@@ -114,12 +119,15 @@ export interface Workspace {
   facilities: Facilities[];
   policies: Policies[];
   images: Image[];
+  details: Details[];
   pricesStr: string[];
   facilitiesStr: string[];
   policiesStr: string[];
+  detailsStr: string[];
   imagesStr: string[];
   createdAt: string;
   updatedAt: string;
+  code: string;
 }
 
 export interface TopRevenueWorkspace {
