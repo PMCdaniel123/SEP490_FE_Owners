@@ -171,21 +171,51 @@ export const promotionSchema = z
           message: "% phải lớn hơn 0 và nhỏ hơn 100",
         }
       ),
-    startDate: z
-      .string()
-      .nonempty("Vui lòng chọn ngày bắt đầu")
-      .refine((val) => new Date(val) > new Date(), {
-        message: "Ngày bắt đầu không thể là ngày trong quá khứ",
-      }),
-    endDate: z.string().nonempty("Vui lòng chọn ngày kết thúc"),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
     status: z.string({
       required_error: "Vui lòng chọn trạng thái hợp lệ",
     }),
     workspaceId: z.number().min(1, "Vui lòng chọn không gian"),
   })
-  .refine((data) => new Date(data.endDate) > new Date(data.startDate), {
-    message: "Ngày kết thúc phải lớn hơn ngày bắt đầu",
-    path: ["endDate"],
+  .superRefine((data, ctx) => {
+    if (data.status === "Active") {
+      if (!data.startDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Ngày bắt đầu không được để trống",
+          path: ["startDate"],
+        });
+      }
+      if (data.startDate) {
+        const start = new Date(data.startDate);
+        if (start < new Date()) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Ngày bắt đầu không thể là ngày trong quá khứ",
+            path: ["startDate"],
+          });
+        }
+      }
+      if (!data.endDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Ngày kết thúc không được để trống",
+          path: ["endDate"],
+        });
+      }
+      if (data.startDate && data.endDate) {
+        const start = new Date(data.startDate);
+        const end = new Date(data.endDate);
+        if (start >= end) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Ngày kết thúc phải sau ngày bắt đầu",
+            path: ["endDate"],
+          });
+        }
+      }
+    }
   });
 
 export const withdrawalSchema = z.object({
