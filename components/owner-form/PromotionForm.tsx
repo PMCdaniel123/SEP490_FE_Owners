@@ -32,6 +32,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
+import "dayjs/locale/vi";
+dayjs.locale("vi");
 
 interface PromotionFormProps {
   initialData?: PromotionProps | null;
@@ -104,8 +106,8 @@ function PromotionForm({ initialData }: PromotionFormProps) {
   const onSubmit = async (values: z.infer<typeof promotionSchema>) => {
     const data = {
       ...values,
-      startDate: new Date(values.startDate).toISOString(),
-      endDate: new Date(values.endDate).toISOString(),
+      startDate: dayjs(values.startDate ?? "").format("YYYY-MM-DDTHH:mm"),
+      endDate: dayjs(values.endDate ?? "").format("YYYY-MM-DDTHH:mm"),
       discount: Number(values.discount),
     };
 
