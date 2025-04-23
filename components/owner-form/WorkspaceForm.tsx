@@ -442,8 +442,8 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               </div>
             </div>
 
-            <div className="sm:col-span-1 flex flex-col gap-6 h-full justify-center w-full p-4 border-2 border-primary rounded-md shadow-md">
-              <Label className="text-fourth font-bold text-base ml-6">
+            <div className="sm:col-span-1 flex flex-col gap-6 h-full justify-center w-full p-4 bg-primary rounded-md shadow-md">
+              <Label className="text-white font-bold text-base ml-6">
                 Giá tiền
               </Label>
               <FormField
@@ -451,12 +451,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 name="shortTermPrice"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-sm">
+                    <FormLabel className="text-white font-bold text-sm">
                       1. Theo giờ (VND)
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-fourth placeholder:text-fourth text-fourth"
+                        className="py-6 px-4 rounded-md file:bg-white placeholder:text-white text-white"
                         placeholder="Nhập giá theo giờ..."
                         {...field}
                       />
@@ -470,12 +470,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 name="longTermPrice"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-sm">
+                    <FormLabel className="text-white font-bold text-sm">
                       2. Theo ngày (VND)
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-fourth placeholder:text-fourth text-fourth"
+                        className="py-6 px-4 rounded-md file:bg-white placeholder:text-white text-white"
                         placeholder="Nhập giá theo ngày..."
                         {...field}
                       />
