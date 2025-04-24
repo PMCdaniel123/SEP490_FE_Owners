@@ -1,4 +1,4 @@
-import { WithdrawalProps } from "@/types";
+import { formatCurrency, WithdrawalProps } from "@/types";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
@@ -38,7 +38,7 @@ function WithdrawalModal({ request }: { request: WithdrawalProps }) {
         </p>
         <p>
           <span className="font-semibold">Số tiền: </span>
-          {request?.balance}
+          {formatCurrency(Number(request?.balance || "0"))}
         </p>
         <p>
           <span className="font-semibold">Trạng thái: </span>

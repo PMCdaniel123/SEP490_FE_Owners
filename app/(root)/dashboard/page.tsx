@@ -195,7 +195,7 @@ export default function OwnerPage() {
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
             <p className="font-bold">Khách hàng</p>
             <p className="text-[#6F757E] text-xl">
-              <span>{numberCurrentCustomer ?? "0"} người</span> |
+              <span>{numberCurrentCustomer ?? "0"} người</span> |{" "}
               <span className="text-sm">
                 Tổng: {customerList.length ?? "0"} người
               </span>
