@@ -111,7 +111,10 @@ function BookingModal({ bookingId }: { bookingId: string }) {
         <p className="text-base font-semibold text-primary flex gap-2">
           <History /> Thông tin đơn đặt chỗ
         </p>
-        <p>Ngày tạo: {dayjs(booking?.created_At).format("HH:mm DD/MM/YYYY")}</p>
+        <p>Mã đặt chỗ: ĐC{Number(bookingId).toString().padStart(4, "0")}</p>
+        <p>
+          Ngày tạo: {dayjs(booking?.created_At).format("HH:mm:ss DD/MM/YYYY")}
+        </p>
         <p>
           Bắt đầu từ: {dayjs(booking?.start_Date).format("HH:mm DD/MM/YYYY")}
         </p>
@@ -132,7 +135,12 @@ function BookingModal({ bookingId }: { bookingId: string }) {
           </p>
         )}
         {booking?.promotionId && <p>Mã giảm giá: {booking?.promotionId}</p>}
-        <p>Phương thức thanh toán: {booking?.payment_Method}</p>
+        <p>
+          Phương thức thanh toán:{" "}
+          {booking?.payment_Method === "WorkHive Wallet"
+            ? "Thanh toán bằng ví WorkHive"
+            : "Thanh toán bằng ngân hàng"}
+        </p>
         <div className="my-2">
           <Card className="relative overflow-hidden rounded-lg shadow-lg border border-gray-100">
             <div className="relative group">

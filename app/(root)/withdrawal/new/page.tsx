@@ -45,8 +45,8 @@ function NewWithdrawal() {
                 <CheckCheck />
               </span>
               <span>
-                Lần gửi yêu cầu rút tiền tiếp theo sẽ cách lần gửi yêu cầu rút
-                tiền mới nhất ít nhất <b>24 giờ</b>.
+                Mỗi lần rút tiền sẽ rút <b>toàn bộ số tiền</b> hiện đang có trên
+                hệ thống.
               </span>
             </li>
             <li className="flex items-start gap-2">
@@ -54,8 +54,9 @@ function NewWithdrawal() {
                 <CheckCheck />
               </span>
               <span>
-                Mỗi lần rút tiền sẽ rút <b>toàn bộ số tiền</b> hiện đang có trên
-                hệ thống.
+                Khi yêu cầu rút tiền <b>đang chờ xử lý</b>, nếu có bất kì khách
+                hàng nào yêu cầu hoàn tiền thì yêu cầu rút tiền sẽ{" "}
+                <b>thất bại</b>.
               </span>
             </li>
           </ul>
