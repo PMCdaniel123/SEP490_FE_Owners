@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -76,16 +75,6 @@ export default function VerifyTable<TData, TValue>({
       </div>
       <Separator className="mb-4 dark:border-gray-700" />
       <div className="flex items-center">
-        <Input
-          placeholder="Tên doanh nghiệp cần xác minh..."
-          value={
-            (table.getColumn("licenseName")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("licenseName")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

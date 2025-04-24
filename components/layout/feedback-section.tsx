@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { BASE_URL } from "@/constants/environments";
 import { SendHorizontal } from "lucide-react";
-import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -302,11 +302,11 @@ function FeedbackSection({
                             <Text strong className="block">
                               Phản hồi:
                             </Text>
-                            <Input
+                            <Textarea
                               placeholder="Nhập phản hồi từ chủ không gian..."
                               className="py-6 px-4 rounded-md file:bg-seventh"
                               onChange={(e) => setDescription(e.target.value)}
-                              type="text"
+                              rows={4}
                             />
                             <button
                               disabled={!description}
