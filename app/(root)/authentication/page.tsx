@@ -340,17 +340,8 @@ function AuthenticationManagement() {
                 <CheckCheck />
               </span>
               <span>
-                Nếu bạn có không gian làm việc đang hoạt động, mọi thông tin cập
-                nhật sẽ tạm thời vô hiệu hóa tất cả không gian làm việc của bạn.
-              </span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="text-green-500">
-                <CheckCheck />
-              </span>
-              <span>
-                Quá trình xác minh yêu cầu cung cấp các tài liệu sau: căn cước
-                công dân, tài khoản mạng xã hội và giấy phép kinh doanh hợp lệ.
+                Quá trình xác minh yêu cầu cung cấp giấy phép kinh doanh hợp lệ
+                và các tài liệu liên quan.
               </span>
             </li>
           </ul>

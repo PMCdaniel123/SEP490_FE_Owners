@@ -377,6 +377,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
             <button
               className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
               type="submit"
+              disabled={loading}
             >
               {loading ? (
                 <LoadingOutlined style={{ color: "white" }} />
