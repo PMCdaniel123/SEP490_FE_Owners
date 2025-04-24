@@ -196,7 +196,7 @@ function LicenseForm({
                   {...field}
                 />
               </FormControl>
-              <GoogleMap url={field.value} />
+              {field.value && <GoogleMap url={field.value} />}
               <FormMessage className="text-red-500 text-xs" />
             </FormItem>
           )}
