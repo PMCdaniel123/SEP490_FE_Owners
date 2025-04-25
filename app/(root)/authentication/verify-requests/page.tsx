@@ -64,7 +64,7 @@ function VerifyRequests() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <VerifyTable columns={VerifyTableColumns} data={verifyList} />
     </div>
   );

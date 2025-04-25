@@ -127,7 +127,7 @@ function WithdrawalManagement() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="p-4 bg-white rounded-xl">
+      <div className="p-4 bg-white rounded-md">
         <Wallet
           walletData={walletData}
           editMode={editMode}
@@ -135,7 +135,7 @@ function WithdrawalManagement() {
         />
       </div>
       {!editMode && (
-        <div className="p-4 bg-white rounded-xl">
+        <div className="p-4 bg-white rounded-md">
           <WithdrawalTable
             columns={WithdrawalTableColumns}
             data={withdrawalList}

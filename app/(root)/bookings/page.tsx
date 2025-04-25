@@ -69,7 +69,7 @@ function BookingManagement() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <BookingTable columns={BookingTableColumns} data={bookingList} />
     </div>
   );

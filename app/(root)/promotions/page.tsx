@@ -59,7 +59,7 @@ function PromotionManagement() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <PromotionTable columns={PromotionTableColumns} data={promotionList} />
     </div>
   );

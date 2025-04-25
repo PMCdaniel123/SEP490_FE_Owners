@@ -231,9 +231,8 @@ export const identifySchema = z.object({
     .refine((val) => {
       const registD = new Date(val);
       const today = new Date();
-      const diff = today.getDate() - registD.getDate();
 
-      return diff > 0;
+      return registD <= today;
     }, "Ngày đăng kí không thể ở tương lai"),
   sex: z.string().nonempty("Vui lòng chọn giới tính hợp lệ"),
   facebook: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),

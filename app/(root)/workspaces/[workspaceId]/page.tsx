@@ -97,7 +97,7 @@ function WorkspaceDetail() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <WorkspaceForm initialData={workspaceDetail} />
     </div>
   );

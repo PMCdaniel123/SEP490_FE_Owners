@@ -17,18 +17,18 @@ export default function SlideArrowButton({
 }: SlideArrowButtonProps) {
   return (
     <button
-      className={`group relative rounded-xl border border-primary bg-white p-2 text-base font-semibold ${className}`}
+      className={`group relative rounded-md border border-primary bg-white p-1.5 text-base font-semibold ${className}`}
       {...props}
     >
       <div
-        className="absolute left-0 top-0 flex h-full w-11 items-center justify-end rounded-xl transition-all duration-200 ease-in-out group-hover:w-full"
+        className="absolute left-0 top-0 flex h-full w-11 items-center justify-end rounded-sm transition-all duration-200 ease-in-out group-hover:w-full"
         style={{ backgroundColor: primaryColor }}
       >
         <span className="mr-3 text-white transition-all duration-200 ease-in-out">
           {Icon ? <Icon size={20} /> : <ArrowRight size={20} />}
         </span>
       </div>
-      <span className="relative left-4 z-10 whitespace-nowrap px-8 font-semibold text-primary transition-all duration-200 ease-in-out group-hover:-left-3 group-hover:text-white">
+      <span className="relative left-4 z-10 whitespace-nowrap px-8 text-sm font-semibold text-primary transition-all duration-200 ease-in-out group-hover:-left-3 group-hover:text-white">
         {text}
       </span>
     </button>

@@ -138,6 +138,13 @@ function PromotionForm({ initialData }: PromotionFormProps) {
         );
       }
 
+      const result = await response.json();
+      if (
+        result.notification === "Mã khuyến mãi đã tồn tại cho workspace này"
+      ) {
+        throw new Error(result.notification);
+      }
+
       toast.success(
         initialData
           ? "Cập nhật mã khuyến mãi thành công!"
@@ -166,7 +173,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-primary flex items-center gap-4 mt-4">
+      <h1 className="text-base font-bold text-primary flex items-center gap-4 mt-4">
         <SquarePen />
         {initialData ? (
           <span>Chỉnh sửa mã khuyến mãi</span>
@@ -188,12 +195,12 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                   name="code"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Mã khuyến mãi
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          className="py-4 px-4 rounded-md file:bg-seventh"
                           placeholder="Nhập mã khuyến mãi..."
                           {...field}
                         />
@@ -210,7 +217,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Mô tả
                       </FormLabel>
                       <FormControl>
@@ -233,12 +240,12 @@ function PromotionForm({ initialData }: PromotionFormProps) {
               name="startDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Ngày bắt đầu
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập ngày bắt đầu..."
                       type="datetime-local"
                       {...field}
@@ -255,12 +262,12 @@ function PromotionForm({ initialData }: PromotionFormProps) {
               name="endDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Ngày kết thúc
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập ngày kết thúc..."
                       type="datetime-local"
                       {...field}
@@ -278,12 +285,12 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                 name="discount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-bold text-sm ml-6">
                       Giảm giá (%)
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
+                        className="py-4 px-4 rounded-md file:bg-seventh"
                         placeholder="Nhập % giảm giá..."
                         {...field}
                       />
@@ -299,7 +306,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-bold text-sm ml-6">
                       Trạng thái
                     </FormLabel>
                     <FormControl>
@@ -307,7 +314,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                         value={field.value || "Active"}
                         onValueChange={(value) => field.onChange(value)}
                       >
-                        <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                        <SelectTrigger className="py-4 px-4 rounded-md w-full">
                           <SelectValue placeholder="Chọn trạng thái" />
                         </SelectTrigger>
                         <SelectContent>
@@ -338,7 +345,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                   name="workspaceId"
                   render={({ field, fieldState }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Áp dụng cho không gian
                       </FormLabel>
                       <FormControl>
@@ -348,7 +355,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
                             field.onChange(Number(value))
                           }
                         >
-                          <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                          <SelectTrigger className="py-4 px-4 rounded-md w-full">
                             <SelectValue placeholder="Chọn không gian" />
                           </SelectTrigger>
                           <SelectContent>

@@ -150,8 +150,8 @@ export default function OwnerPage() {
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div className="grid gap-4 md:grid-cols-4">
-        <div className="col-span-2 rounded-xl bg-white grid gap-4 md:grid-cols-4 p-4">
-          <div className="col-span-1 flex items-center justify-center bg-[#27D095] rounded-xl text-white">
+        <div className="col-span-2 rounded-md bg-white grid gap-4 md:grid-cols-4 p-4">
+          <div className="col-span-1 flex items-center justify-center bg-[#27D095] rounded-md text-white">
             <PiggyBank size={36} />
           </div>
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
@@ -188,8 +188,8 @@ export default function OwnerPage() {
           </div>
         </div>
 
-        <div className="col-span-2 rounded-xl bg-white grid gap-4 md:grid-cols-4 p-4">
-          <div className="col-span-1 flex items-center justify-center bg-[#67CADF] rounded-xl text-white">
+        <div className="col-span-2 rounded-md bg-white grid gap-4 md:grid-cols-4 p-4">
+          <div className="col-span-1 flex items-center justify-center bg-[#67CADF] rounded-md text-white">
             <UsersRound size={36} />
           </div>
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
@@ -222,8 +222,8 @@ export default function OwnerPage() {
         </div>
 
         <div className="col-span-4 grid gap-4 md:grid-cols-3">
-          <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
-            <div className="col-span-1 flex items-center justify-center bg-[#F54F5F] rounded-xl text-white">
+          <div className="col-span-1 rounded-md bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
+            <div className="col-span-1 flex items-center justify-center bg-[#F54F5F] rounded-md text-white">
               <Sofa size={36} />
             </div>
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
@@ -233,8 +233,8 @@ export default function OwnerPage() {
               </p>
             </div>
           </div>
-          <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
-            <div className="col-span-1 flex items-center justify-center bg-[#fcba03] rounded-xl text-white">
+          <div className="col-span-1 rounded-md bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
+            <div className="col-span-1 flex items-center justify-center bg-[#fcba03] rounded-md text-white">
               <Boxes size={36} />
             </div>
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
@@ -244,8 +244,8 @@ export default function OwnerPage() {
               </p>
             </div>
           </div>
-          <div className="col-span-1 rounded-xl bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
-            <div className="col-span-1 flex items-center justify-center bg-[#FF8E29] rounded-xl text-white">
+          <div className="col-span-1 rounded-md bg-white grid gap-4 md:grid-cols-3 p-4 md:min-h-28">
+            <div className="col-span-1 flex items-center justify-center bg-[#FF8E29] rounded-md text-white">
               <UtensilsCrossed size={36} />
             </div>
             <div className="col-span-2 flex flex-col items-center justify-center gap-2">
@@ -258,7 +258,7 @@ export default function OwnerPage() {
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="col-span-2 h-full bg-white p-4 rounded-xl">
+        <div className="col-span-2 h-full bg-white p-4 rounded-md">
           <RevenueByMonthChart bookings={bookingList} />
         </div>
         <div className="col-span-1 h-full">
@@ -267,7 +267,7 @@ export default function OwnerPage() {
       </div>
       <div className="grid gap-4 md:grid-cols-3 relative">
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="bg-white p-4 rounded-xl">
+          <div className="bg-white p-4 rounded-md">
             <TopWorkspaceTable
               columns={topWorkspaceTableColumns}
               data={topWorkspaceList}
@@ -278,7 +278,7 @@ export default function OwnerPage() {
           <HotAmenityChart bookingAmenityList={bookingAmenityList} />
         </div>
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="bg-white p-4 rounded-xl">
+          <div className="bg-white p-4 rounded-md">
             <RevenueChart bookings={bookingList} />
           </div>
         </div>

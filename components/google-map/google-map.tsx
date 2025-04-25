@@ -65,7 +65,7 @@ function GoogleMap({ url }: { url: string }) {
     <iframe
       src={embedUrl}
       width="100%"
-      height="400px"
+      height="300px"
       style={{ border: 0 }}
       allowFullScreen
       loading="lazy"

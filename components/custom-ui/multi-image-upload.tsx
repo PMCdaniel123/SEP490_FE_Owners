@@ -75,12 +75,12 @@ const MultiImageUpload = ({
       <div className="flex items-center gap-4 border rounded-md">
         <label
           htmlFor="images"
-          className="cursor-pointer py-3 px-5 bg-primary text-white rounded-s-md text-center flex gap-2 items-center"
+          className="cursor-pointer py-2 px-4 bg-primary text-white rounded-s-md text-center flex gap-2 items-center text-sm"
         >
-          <ImagePlus /> Chọn hình ảnh
+          <ImagePlus size={18} /> Chọn hình ảnh
         </label>
         <Input
-          className="py-3 px-4 rounded-md file:bg-seventh border h-[50px] hidden"
+          className="py-2 px-4 rounded-md file:bg-seventh border h-[50px] hidden"
           id="images"
           type="file"
           accept="image/*"

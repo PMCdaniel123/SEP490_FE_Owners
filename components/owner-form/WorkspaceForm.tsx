@@ -297,7 +297,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-primary flex items-center gap-4 mt-4">
+      <h1 className="text-base font-bold text-primary flex items-center gap-4 mt-4">
         <SquarePen />
         {initialData ? (
           <span>Chỉnh sửa không gian</span>
@@ -323,12 +323,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Tên không gian
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          className="py-4 px-4 rounded-md file:bg-seventh"
                           placeholder="Tên công ty + Loại không gian + ..."
                           {...field}
                         />
@@ -338,13 +338,13 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                   )}
                 />
               </div>
-              <div className="sm:col-span-2 my-1">
+              <div className="sm:col-span-2 my-0">
                 <FormField
                   control={form.control}
                   name="is24h"
                   render={({ field }) => (
                     <FormItem className="flex items-center gap-6">
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Mở cửa 24h
                       </FormLabel>
                       <FormControl>
@@ -375,7 +375,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                     name="openTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-fourth font-bold text-base ml-6">
+                        <FormLabel className="text-fourth font-bold text-sm ml-6">
                           Thời gian mở cửa
                         </FormLabel>
                         <FormControl>
@@ -392,7 +392,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                             }}
                             style={{
                               width: "100%",
-                              height: "49.6px",
+                              height: "36px",
                               borderRadius: "10px",
                               border: "1px solid var(--input)",
                               boxShadow: "1px",
@@ -410,7 +410,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                     name="closeTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-fourth font-bold text-base ml-6">
+                        <FormLabel className="text-fourth font-bold text-sm ml-6">
                           Thời gian đóng cửa
                         </FormLabel>
                         <FormControl>
@@ -427,7 +427,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                             }}
                             style={{
                               width: "100%",
-                              height: "49.6px",
+                              height: "36px",
                               borderRadius: "10px",
                               border: "1px solid var(--input)",
                               boxShadow: "1px",
@@ -442,8 +442,8 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               </div>
             </div>
 
-            <div className="sm:col-span-1 flex flex-col gap-6 h-full justify-center w-full p-4 bg-primary rounded-md shadow-md">
-              <Label className="text-white font-bold text-base ml-6">
+            <div className="sm:col-span-1 flex flex-col gap-4 h-full justify-center w-full p-4 bg-primary rounded-md shadow-md">
+              <Label className="text-white font-bold text-sm ml-6">
                 Giá tiền
               </Label>
               <FormField
@@ -452,11 +452,11 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white font-bold text-sm">
-                      1. Theo giờ (VND)
+                      1. Theo giờ
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-white placeholder:text-white text-white"
+                        className="py-4 px-4 rounded-md file:bg-white placeholder:text-white text-white"
                         placeholder="Nhập giá theo giờ..."
                         {...field}
                       />
@@ -471,11 +471,11 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-white font-bold text-sm">
-                      2. Theo ngày (VND)
+                      2. Theo ngày
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-white placeholder:text-white text-white"
+                        className="py-4 px-4 rounded-md file:bg-white placeholder:text-white text-white"
                         placeholder="Nhập giá theo ngày..."
                         {...field}
                       />
@@ -493,7 +493,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Loại không gian
                   </FormLabel>
                   <FormControl>
@@ -501,7 +501,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       value={field.value || "Văn phòng"}
                       onValueChange={(value) => field.onChange(value)}
                     >
-                      <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                      <SelectTrigger className="py-4 px-4 rounded-md w-full">
                         <SelectValue placeholder="Chọn loại không gian" />
                       </SelectTrigger>
                       <SelectContent>
@@ -543,12 +543,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="area"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Diện tích (m²)
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập diện tích..."
                       {...field}
                     />
@@ -564,12 +564,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="capacity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Sức chứa tối đa (người)
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập sức chứa tối đa..."
                       {...field}
                     />
@@ -585,7 +585,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Mô tả
                   </FormLabel>
                   <FormControl>
@@ -606,12 +606,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="cleanTime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Thời gian dọn dẹp (phút)
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập thời gian dọn dẹp..."
                       {...field}
                     />
@@ -627,7 +627,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="detailsStr"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6 flex gap-4 items-center">
                     <span>Chi tiết không gian</span>
                     <DetailToolTip />
                   </FormLabel>
@@ -656,12 +656,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Mã bàn
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập mã bàn..."
                       {...field}
                     />
@@ -677,7 +677,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="facilitiesStr"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6 flex gap-4 items-center">
                     <span>Cơ sở vật chất</span>
                     <FacilitiesToolTip />
                   </FormLabel>
@@ -706,7 +706,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Trạng thái
                   </FormLabel>
                   <FormControl>
@@ -714,7 +714,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
                       value={field.value || "Inactive"}
                       onValueChange={(value) => field.onChange(value)}
                     >
-                      <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                      <SelectTrigger className="py-4 px-4 rounded-md w-full">
                         <SelectValue placeholder="Chọn trạng thái" />
                       </SelectTrigger>
                       <SelectContent>
@@ -744,7 +744,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="policiesStr"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6 flex gap-4 items-center">
                     <span>Quy định chung</span>
                     <PoliciesToolTip />
                   </FormLabel>
@@ -773,7 +773,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               name="imagesStr"
               render={() => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6 flex gap-4 items-center">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6 flex gap-4 items-center">
                     <span>Hình ảnh</span>
                     <TooltipProvider>
                       <Tooltip>

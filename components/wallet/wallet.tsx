@@ -139,7 +139,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
   };
 
   return (
-    <div className="flex flex-col gap-6 py-4">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-end">
         {!editMode && (
           <Button
@@ -162,14 +162,14 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
           </Button>
         )}
       </div>
-      <div className="border border-primary dark:bg-gray-800 p-6 rounded-lg relative">
-        <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
+      <div className="border border-primary dark:bg-gray-800 p-4 rounded-md relative">
+        <h2 className="font-semibold text-base mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <Wallet2 className="h-5 w-5 text-primary dark:text-primary-dark" />
           <span>Tài khoản ngân hàng</span>
         </h2>
         <Form {...form}>
           <form
-            className="grid sm:grid-cols-2 gap-6"
+            className="grid sm:grid-cols-2 gap-6 mt-4"
             onSubmit={form.handleSubmit(updateBank)}
           >
             <div className="sm:col-span-1 flex flex-col gap-2">
@@ -183,7 +183,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
+                        className="py-4 px-4 rounded-md file:bg-seventh"
                         placeholder="Nhập tên chủ tài khoản ngân hàng..."
                         disabled={!editMode}
                         {...field}
@@ -205,7 +205,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
+                        className="py-4 px-4 rounded-md file:bg-seventh"
                         placeholder="Nhập số tài khoản ngân hàng..."
                         disabled={!editMode}
                         {...field}
@@ -231,7 +231,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
                         onValueChange={(value) => field.onChange(value)}
                         disabled={!editMode}
                       >
-                        <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                        <SelectTrigger className="py-4 px-4 rounded-md w-full">
                           <SelectValue placeholder="Chọn tên ngân hàng" />
                         </SelectTrigger>
                         <SelectContent>

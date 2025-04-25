@@ -142,7 +142,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
             : "Thanh toán bằng ngân hàng"}
         </p>
         <div className="my-2">
-          <Card className="relative overflow-hidden rounded-lg shadow-lg border border-gray-100">
+          <Card className="relative overflow-hidden rounded-md shadow-lg border border-gray-100">
             <div className="relative group">
               <div className="overflow-hidden h-56">
                 <img

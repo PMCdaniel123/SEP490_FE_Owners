@@ -105,12 +105,12 @@ function ChangePasswordModal({
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Mật khẩu hiện tại
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập mật khẩu hiện tại"
                       type="password"
                       {...field}
@@ -127,12 +127,12 @@ function ChangePasswordModal({
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Mật khẩu mới
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập mật khẩu mới"
                       type="password"
                       {...field}
@@ -149,12 +149,12 @@ function ChangePasswordModal({
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Xác nhận mật khẩu mới
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập xác nhận mật khẩu mới"
                       type="password"
                       {...field}

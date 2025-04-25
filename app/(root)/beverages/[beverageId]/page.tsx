@@ -20,9 +20,7 @@ function BeverageDetail() {
 
     const getAmenityDetail = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/beverages/${beverageId}`
-        );
+        const response = await fetch(`${BASE_URL}/beverages/${beverageId}`);
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải món.");
         }
@@ -59,7 +57,7 @@ function BeverageDetail() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <BeverageForm initialData={beverageDetail} />
     </div>
   );

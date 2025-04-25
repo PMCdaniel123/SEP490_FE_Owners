@@ -9,7 +9,7 @@ function NewWithdrawal() {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>
-      <div className="p-4 bg-white rounded-xl">
+      <div className="p-4 bg-white rounded-md">
         <WithdrawalForm />
       </div>
       <Modal
@@ -25,7 +25,7 @@ function NewWithdrawal() {
         onCancel={() => setIsOpen(!isOpen)}
         footer={null}
       >
-        <div className="flex flex-col border border-primary rounded-lg p-6 mt-4">
+        <div className="flex flex-col border border-primary rounded-md p-6 mt-4">
           <p className="text-center text-gray-500 italic mb-4 text-sm">
             Để hoàn tất quá trình xác minh, vui lòng cung cấp đầy đủ các thông
             tin bắt buộc.
