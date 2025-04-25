@@ -20,9 +20,7 @@ function CustomerManagement() {
 
     const getCustomersByOwnerId = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/users/owner/` + owner?.id
-        );
+        const response = await fetch(`${BASE_URL}/users/owner/` + owner?.id);
 
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải danh sách khách hàng.");
@@ -58,7 +56,7 @@ function CustomerManagement() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <CustomerTable columns={CustomerTableColumns} data={customerList} />
     </div>
   );

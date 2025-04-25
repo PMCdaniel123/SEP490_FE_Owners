@@ -315,7 +315,7 @@ const OwnerNotification = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute right-0 mt-2 w-80 bg-[#835101] shadow-lg rounded-lg border overflow-hidden z-50"
+          className="absolute right-0 mt-2 w-80 bg-[#835101] shadow-lg rounded-md border overflow-hidden z-50"
         >
           <div className="p-4 font-semibold border-b text-white">Thông báo</div>
           {notifications.length > 0 ? (

@@ -60,7 +60,7 @@ function AmenitiesManagement() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <AmenityTable columns={AmenityTableColumns} data={amenityList} />
     </div>
   );

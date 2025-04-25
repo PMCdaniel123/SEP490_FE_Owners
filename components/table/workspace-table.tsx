@@ -32,7 +32,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useState } from "react";
-import { Separator } from "../ui/separator";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import getHeaderText from "@/constants/format-header";
@@ -74,8 +73,12 @@ export default function WorkspaceTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="mt-4 flex items-center justify-between">
-        <h1 className="font-bold text-primary text-xl">Danh sách không gian</h1>
+      <div className="w-full mx-auto bg-gradient-to-r from-primary to-secondary rounded-md p-3">
+        <h1 className="text-base font-bold text-center text-white flex items-center justify-center gap-4">
+          Danh sách không gian
+        </h1>
+      </div>
+      <div className="flex items-center justify-end">
         <div onClick={() => router.push("workspaces/new")}>
           <SlideArrowButton
             text="Tạo không gian mới"
@@ -85,7 +88,6 @@ export default function WorkspaceTable<TData, TValue>({
           />
         </div>
       </div>
-      <Separator className="mb-4" />
       <div className="flex items-center">
         <Input
           placeholder="Tên không gian..."

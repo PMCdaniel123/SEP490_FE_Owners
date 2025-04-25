@@ -85,13 +85,11 @@ function WithdrawalForm() {
 
   return (
     <div className="flex flex-col">
-      <div className="w-fit mx-auto bg-white border border-primary rounded-lg p-6 mt-4">
-        <h1 className="text-xl font-bold text-primary flex items-center justify-center gap-4">
-          <SquarePen />
-          <span>Tạo mới yêu cầu rút tiền</span>
-        </h1>
-      </div>
-      <Separator className="my-8 bg-primary" />
+      <h1 className="text-base font-bold text-primary flex items-center gap-4 mt-4">
+        <SquarePen />
+        <span>Tạo mới yêu cầu rút tiền</span>
+      </h1>
+      <Separator className="mt-4 mb-8 bg-primary" />
       <Form {...form}>
         <form
           className="grid sm:grid-cols-2 gap-6"
@@ -104,12 +102,12 @@ function WithdrawalForm() {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-bold text-sm ml-6">
                       Tiêu đề
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
+                        className="py-4 px-4 rounded-md file:bg-seventh"
                         placeholder="Nhập tiêu đề..."
                         {...field}
                       />
@@ -127,12 +125,12 @@ function WithdrawalForm() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-bold text-sm ml-6">
                       Mô tả
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="py-6 px-4 rounded-md file:bg-seventh"
+                        className="py-4 px-4 rounded-md file:bg-seventh"
                         placeholder="Nhập mô tả..."
                         {...field}
                       />

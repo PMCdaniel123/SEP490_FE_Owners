@@ -21,7 +21,7 @@ function ResponseBooking({
 }: ThisProps) {
   return (
     <div>
-      <Card className="shadow-md border-0 overflow-hidden rounded-xl">
+      <Card className="shadow-md border-0 overflow-hidden rounded-md">
         <p className="mb-4 font-bold text-primary text-lg">
           Danh sách phản hồi đã gửi
         </p>

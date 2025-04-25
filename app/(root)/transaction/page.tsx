@@ -67,7 +67,7 @@ function TransactionPage() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <TransactionTable
         data={transactionList}
         columns={TransactionTableColumns}

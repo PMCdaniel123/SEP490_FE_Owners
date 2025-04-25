@@ -218,9 +218,8 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Separator className="my-4" />
-      <div className="border border-primary p-6 rounded-lg relative">
-        <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
+      <div className="border border-primary p-4 rounded-md relative">
+        <h2 className="font-semibold text-base mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <User className="h-5 w-5 text-primary" />
           Thông tin cá nhân
         </h2>
@@ -268,8 +267,8 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
                 }}
               >
                 <Button
-                  size="large"
-                  icon={<Upload className="mr-2" size={20} />}
+                  size="middle"
+                  icon={<Upload className="mr-2" size={16} />}
                 >
                   Chọn ảnh
                 </Button>
@@ -278,13 +277,13 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           </ImgCrop>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mt-4">
-          <p>
+          <p className="text-sm">
             <strong>Email:</strong> {ownerInfo?.email}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Số điện thoại:</strong> {ownerInfo?.phone}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Trạng thái:</strong>{" "}
             {ownerInfo?.status === "Success" ? (
               <span className="text-green-500">Xác thực thành công</span>
@@ -294,7 +293,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
               <span className="text-yellow-500">Xác thực thành công</span>
             )}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Ngày tạo tài khoản:</strong>{" "}
             {dayjs(ownerInfo?.createdAt).format("HH:mm DD/MM/YYYY")}
           </p>
@@ -308,15 +307,15 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           <Save size={18} /> Lưu thay đổi
         </button>
       )}
-      <Separator className="my-4" />
-      <div className="border border-primary p-6 rounded-lg relative">
-        <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
+      <Separator className="my-2" />
+      <div className="border border-primary p-4 rounded-md relative">
+        <h2 className="font-semibold text-base mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <Globe className="h-5 w-5 text-primary" />
           Tài khoản mạng xã hội
         </h2>
         {!isEdit && (
           <button
-            className="font-medium text-sm rounded-lg cursor-pointer hover:bg-secondary flex items-center gap-2 text-white absolute -top-[18px] right-4 bg-primary px-4 py-2"
+            className="font-medium text-sm rounded-md cursor-pointer hover:bg-secondary flex items-center gap-2 text-white absolute -top-[18px] right-4 bg-primary px-4 py-2"
             onClick={() => setIsEdit(true)}
           >
             <Edit className="h-4 w-4" />
@@ -326,7 +325,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
         {isEdit && (
           <div className="flex items-center gap-2 absolute -top-[18px] right-4">
             <button
-              className="font-medium text-sm rounded-lg cursor-pointer hover:bg-red-300 flex items-center gap-2 text-white bg-red-500 px-4 py-2"
+              className="font-medium text-sm rounded-md cursor-pointer hover:bg-red-300 flex items-center gap-2 text-white bg-red-500 px-4 py-2"
               onClick={() => setIsEdit(false)}
             >
               <X className="h-4 w-4" />
@@ -336,19 +335,19 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
         )}
         {!isEdit && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mt-4">
-            <Link href={ownerInfo?.facebook || ""}>
+            <Link className="text-sm" href={ownerInfo?.facebook || ""}>
               <strong>Facebook:</strong>{" "}
               <span className="text-primary hover:text-secondary underline">
                 {ownerInfo?.facebook || "Chưa cập nhật"}
               </span>
             </Link>
-            <Link href={ownerInfo?.instagram || ""}>
+            <Link className="text-sm" href={ownerInfo?.instagram || ""}>
               <strong>Instagram:</strong>{" "}
               <span className="text-primary hover:text-secondary underline">
                 {ownerInfo?.instagram || "Chưa cập nhật"}
               </span>
             </Link>
-            <Link href={ownerInfo?.tiktok || ""}>
+            <Link className="text-sm" href={ownerInfo?.tiktok || ""}>
               <strong>Tiktok:</strong>{" "}
               <span className="text-primary hover:text-secondary underline">
                 {ownerInfo?.tiktok || "Chưa cập nhật"}
@@ -368,12 +367,12 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
                   name="facebook"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Facebook
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          className="py-4 px-4 text-sm rounded-md file:bg-seventh"
                           placeholder="Nhập đường dẫn hợp lệ..."
                           {...field}
                         />
@@ -389,12 +388,12 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
                   name="instagram"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Instagram
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          className="py-4 px-4 text-sm rounded-md file:bg-seventh"
                           placeholder="Nhập đường dẫn hợp lệ..."
                           {...field}
                         />
@@ -410,12 +409,12 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
                   name="tiktok"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Tiktok
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          className="py-4 px-4 text-sm rounded-md file:bg-seventh"
                           placeholder="Nhập đường dẫn hợp lệ..."
                           {...field}
                         />
@@ -443,39 +442,41 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           </Form>
         )}
       </div>
-      <Separator className="my-4" />
-      <div className="border border-primary p-6 rounded-lg relative">
-        <h2 className="font-semibold text-lg mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
+      <Separator className="my-2" />
+      <div className="border border-primary p-4 rounded-md relative">
+        <h2 className="font-semibold text-base mb-4 flex items-center gap-2 text-primary absolute -top-4 left-4 bg-white px-4">
           <FileText className="h-5 w-5 text-primary" />
           Giấy phép kinh doanh
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mt-4">
-          <p>
+          <p className="text-sm">
             <strong>Họ và tên:</strong> {ownerInfo?.ownerName}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Giới tính:</strong> {ownerInfo?.sex}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Ngày đăng kí doanh nghiệp:</strong>{" "}
-            {ownerInfo?.registrationDate}
+            {ownerInfo?.registrationDate
+              ? dayjs(ownerInfo?.registrationDate).format("DD/MM/YYYY")
+              : "Chưa cập nhật"}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Tên công ty:</strong> {ownerInfo?.licenseName}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Số giấy phép:</strong> {ownerInfo?.licenseNumber}
           </p>
-          <p className="md:col-span-2">
+          <p className="text-sm md:col-span-2">
             <strong>Địa chỉ:</strong> {ownerInfo?.licenseAddress}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Vốn điều lệ:</strong>{" "}
             {ownerInfo?.charterCapital
               ? formatCurrency(Number(ownerInfo?.charterCapital))
               : "Chưa cập nhật"}
           </p>
-          <p>
+          <p className="text-sm">
             <strong>Tệp đính kèm:</strong>{" "}
             <a
               href={ownerInfo?.licenseFile}
@@ -488,7 +489,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           </p>
         </div>
         {ownerInfo?.googleMapUrl && (
-          <div className="mt-8 rounded-lg">
+          <div className="mt-8 rounded-md">
             <GoogleMap url={ownerInfo?.googleMapUrl} />
           </div>
         )}

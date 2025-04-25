@@ -34,6 +34,7 @@ function TopNav() {
   const dispatch = useDispatch();
   const { owner } = useSelector((state: RootState) => state.auth);
   const [balance, setBalance] = useState(0);
+  const [showNotif, setShowNotif] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [changePassword, setChangePassword] = useState(false);
 
@@ -88,6 +89,7 @@ function TopNav() {
             balanceData.balance === undefined
           ) {
             balanceData.balance = 0;
+            setShowNotif(false);
           }
           setBalance(balanceData.balance);
           setIsLoading(false);
@@ -141,18 +143,20 @@ function TopNav() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center justify-between w-[560px] bg-white rounded-xl py-2 px-4 h-full border border-primary">
-          <p className="font-bold text-primary">Số tiền trên hệ thống:</p>
-          <p className="bg-primary text-white px-3 py-2 rounded-lg flex items-center gap-2 font-semibold text-base">
+        <div className="flex items-center justify-between min-w-[300px] bg-white rounded-md p-2 h-full border border-primary">
+          <p className="font-bold text-primary text-sm">
+            Số tiền trên hệ thống:
+          </p>
+          <p className="bg-primary text-white px-3 py-2 rounded-md flex items-center gap-2 font-semibold text-sm">
             <Banknote />
             {formatCurrency(balance)}
           </p>
         </div>
         <div className="flex items-center justify-end w-full mb-4 gap-4">
-          <OwnerNotification />
+          {showNotif && <OwnerNotification />}
           <div ref={dropdownRef} className="relative">
             <div
-              className="group flex items-center justify-start bg-white border border-primary hover:border-white rounded-xl py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
+              className="group flex items-center justify-start bg-white border border-primary hover:border-white rounded-md py-2 px-4 gap-4 group hover:bg-primary hover:text-white cursor-pointer transition-colors duration-200"
               onClick={() => setOpen(!open)}
             >
               <Image
@@ -173,9 +177,9 @@ function TopNav() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full right-0 z-50 mt-2 w-auto gap-3 rounded-xl bg-white shadow-xl pb-2 border min-w-[250px]"
+                className="absolute top-full right-0 z-50 mt-2 w-auto gap-3 rounded-md bg-white shadow-xl pb-2 border min-w-[250px]"
               >
-                <div className="flex items-center justify-start py-3 px-4 gap-4 bg-gradient-to-r from-primary to-fourth rounded-t-xl">
+                <div className="flex items-center justify-start py-3 px-4 gap-4 bg-gradient-to-r from-primary to-fourth rounded-t-md">
                   <Image
                     src={owner?.avatar || "/workhive.png"}
                     alt="Logo"

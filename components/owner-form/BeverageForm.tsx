@@ -223,7 +223,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-primary flex items-center gap-4 mt-4">
+      <h1 className="text-base font-bold text-primary flex items-center gap-4 mt-4">
         <SquarePen />
         {initialData ? <span>Chỉnh sửa món</span> : <span>Tạo mới món</span>}
       </h1>
@@ -245,12 +245,12 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Tên tiện ích
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="py-6 px-4 rounded-md file:bg-seventh"
+                          className="py-4 px-4 rounded-md file:bg-seventh"
                           placeholder="Nhập tên tiện ích..."
                           {...field}
                         />
@@ -267,7 +267,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-fourth font-bold text-base ml-6">
+                      <FormLabel className="text-fourth font-bold text-sm ml-6">
                         Mô tả
                       </FormLabel>
                       <FormControl>
@@ -291,7 +291,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Phân loại món
                   </FormLabel>
                   <FormControl>
@@ -299,7 +299,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                      <SelectTrigger className="py-4 px-4 rounded-md w-full">
                         <SelectValue placeholder="Chọn phân loại" />
                       </SelectTrigger>
                       <SelectContent>
@@ -329,12 +329,12 @@ function BeverageForm({ initialData }: BeverageFormProps) {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Giá tiền (VND)
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="py-6 px-4 rounded-md file:bg-seventh"
+                      className="py-4 px-4 rounded-md file:bg-seventh"
                       placeholder="Nhập giá tiền..."
                       {...field}
                     />
@@ -350,7 +350,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-fourth font-bold text-base ml-6">
+                  <FormLabel className="text-fourth font-bold text-sm ml-6">
                     Trạng thái
                   </FormLabel>
                   <FormControl>
@@ -358,7 +358,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                       value={field.value || "Inactive"}
                       onValueChange={(value) => field.onChange(value)}
                     >
-                      <SelectTrigger className="py-6 px-4 rounded-md w-full">
+                      <SelectTrigger className="py-4 px-4 rounded-md w-full">
                         <SelectValue placeholder="Chọn trạng thái" />
                       </SelectTrigger>
                       <SelectContent>
@@ -395,7 +395,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                     : "";
                 return (
                   <FormItem>
-                    <FormLabel className="text-fourth font-bold text-base ml-6">
+                    <FormLabel className="text-fourth font-bold text-sm ml-6">
                       Hình ảnh
                     </FormLabel>
                     <FormControl>

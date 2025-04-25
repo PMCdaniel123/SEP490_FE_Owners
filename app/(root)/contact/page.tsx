@@ -46,13 +46,13 @@ function Contact() {
   };
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <div className="w-full mx-auto mt-10">
         <SectionTitle>Hỗ trợ người dùng</SectionTitle>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
           {/* Contact Info */}
-          <div className="bg-gray-100 p-6 rounded-lg">
+          <div className="bg-gray-100 p-6 rounded-md">
             <div className="flex items-center gap-4">
               <Phone className="text-brown-700 text-2xl" />
               <h3 className="text-lg font-semibold">Liên hệ qua hotline</h3>
@@ -73,7 +73,7 @@ function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="col-span-2 bg-white p-6 rounded-lg border border-primary">
+          <div className="col-span-2 bg-white p-6 rounded-md border border-primary">
             {success && (
               <p className="text-green-500">Tin nhắn đã được gửi thành công!</p>
             )}
@@ -86,7 +86,7 @@ function Contact() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full py-6 px-2 border rounded-lg"
+                className="w-full py-6 px-2 border rounded-md"
                 placeholder="Nhập họ tên..."
                 required
               />
@@ -95,7 +95,7 @@ function Contact() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full py-6 px-2 border rounded-lg"
+                className="w-full py-6 px-2 border rounded-md"
                 placeholder="Nhập email..."
                 required
               />
@@ -104,7 +104,7 @@ function Contact() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full py-6 px-2 border rounded-lg"
+                className="w-full py-6 px-2 border rounded-md"
                 placeholder="Nhập sđt..."
                 required
               />
@@ -112,7 +112,7 @@ function Contact() {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full py-6 px-2 border rounded-lg col-span-3"
+                className="w-full py-6 px-2 border rounded-md col-span-3"
                 rows={6}
                 placeholder="Tin nhắn..."
                 required
@@ -120,7 +120,7 @@ function Contact() {
               <div className="col-span-3 flex justify-end">
                 <Button
                   type="submit"
-                  className="bg-[#8B5D27] text-white py-2 px-6 rounded-lg"
+                  className="bg-[#8B5D27] text-white py-2 px-6 rounded-md"
                   disabled={loading}
                 >
                   {loading ? "Đang gửi..." : "Gửi"}
@@ -140,7 +140,7 @@ function Contact() {
               height="100%"
               allowFullScreen
               loading="lazy"
-              className="rounded-lg"
+              className="rounded-md"
             ></iframe>
           </div>
         </section>

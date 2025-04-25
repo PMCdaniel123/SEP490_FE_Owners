@@ -38,7 +38,7 @@ const MultiText: React.FC<MultiTextProps> = ({
             addValue();
           }
         }}
-        className="py-6 px-4 rounded-md file:bg-seventh"
+        className="py-4 px-4 rounded-md file:bg-seventh"
       />
       <div className="flex flex-col gap-2 mt-2">
         {value.map((item, index) => (

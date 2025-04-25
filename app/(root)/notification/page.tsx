@@ -181,7 +181,7 @@ export default function NotificationPage() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <div className="max-w-4xl mx-auto py-8 px-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Thông báo</h1>
@@ -191,7 +191,7 @@ export default function NotificationPage() {
                 prevFilter === "all" ? "unread" : "all"
               )
             }
-            className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-2 rounded-lg hover:bg-gray-200 transition"
+            className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-2 rounded-md hover:bg-gray-200 transition"
           >
             <Filter size={16} />
             {filter === "all" ? "Chỉ chưa đọc" : "Tất cả"}
@@ -235,7 +235,7 @@ export default function NotificationPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-8 text-center">
+          <div className="flex flex-col items-center justify-center bg-white rounded-md shadow-md p-8 text-center">
             <Bell size={48} className="text-gray-400 mb-4" />
             <p className="text-gray-600 text-lg font-semibold">
               Không có thông báo nào

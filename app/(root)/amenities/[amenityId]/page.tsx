@@ -18,9 +18,7 @@ function AmenityDetail() {
 
     const getAmenityDetail = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/amenities/${amenityId}`
-        );
+        const response = await fetch(`${BASE_URL}/amenities/${amenityId}`);
         if (!response.ok) {
           throw new Error("Có lỗi xảy ra khi tải tiện ích.");
         }
@@ -58,7 +56,7 @@ function AmenityDetail() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-xl">
+    <div className="p-4 bg-white rounded-md">
       <AmenityForm initialData={amenityDetail} />
     </div>
   );

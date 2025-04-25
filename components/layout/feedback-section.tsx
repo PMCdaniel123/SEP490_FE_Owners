@@ -159,7 +159,7 @@ function FeedbackSection({
   };
 
   return selectedBooking ? (
-    <Card className="shadow-md border-0 rounded-xl">
+    <Card className="shadow-md border-0 rounded-md">
       {selectedBooking.feedbackIds.length > 0 ? (
         <>
           {selectedBooking.feedbackIds.length > 1 && (
@@ -172,7 +172,7 @@ function FeedbackSection({
           )}
 
           {feedback && (
-            <div className="mb-4 bg-gray-200 p-4 rounded-lg">
+            <div className="mb-4 bg-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-2">
                 <Text strong className="text-[#8B5E3C]">
                   Thông tin phản hồi
@@ -209,7 +209,7 @@ function FeedbackSection({
                   color: "blue",
                   dot: <CommentOutlined style={{ fontSize: "16px" }} />,
                   children: (
-                    <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                    <div className="bg-gray-50 p-4 rounded-md mb-4">
                       <div className="mb-2">
                         <Text strong>Ngày gửi:</Text>
                         <Text className="ml-2">
@@ -265,7 +265,7 @@ function FeedbackSection({
                           <CheckCircleOutlined style={{ fontSize: "16px" }} />
                         ),
                         children: (
-                          <div className="bg-green-50 p-4 rounded-lg mb-4">
+                          <div className="bg-green-50 p-4 rounded-md mb-4">
                             <div className="flex justify-between items-center mb-2">
                               <Text strong>Phản hồi từ chủ không gian</Text>
                               <Text className="text-gray-500 text-sm">
@@ -298,7 +298,7 @@ function FeedbackSection({
                       {
                         color: "yellow",
                         children: (
-                          <div className="flex flex-col gap-2 p-4 bg-yellow-50 rounded-lg mb-4">
+                          <div className="flex flex-col gap-2 p-4 bg-yellow-50 rounded-md mb-4">
                             <Text strong className="block">
                               Phản hồi:
                             </Text>

@@ -1,5 +1,5 @@
 function BookingDetail() {
-  return <div className="p-4 bg-white rounded-xl">hello</div>;
+  return <div className="p-4 bg-white rounded-md">hello</div>;
 }
 
 export default BookingDetail;

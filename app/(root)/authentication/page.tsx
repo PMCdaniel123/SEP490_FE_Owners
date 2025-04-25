@@ -220,20 +220,20 @@ function AuthenticationManagement() {
 
   return (
     <>
-      <div className="p-4 bg-white rounded-xl">
-        <div className="w-full mx-auto bg-primary border border-primary rounded-lg p-6 mt-4">
+      <div className="p-4 bg-white rounded-md">
+        <div className="w-full mx-auto bg-gradient-to-r from-primary to-secondary rounded-md p-3">
           {isEditing ? (
-            <h1 className="text-xl font-bold text-center text-white flex items-center justify-center gap-4">
+            <h1 className="text-base font-bold text-center text-white flex items-center justify-center gap-4">
               <BadgeInfo /> Xác thực tài khoản
             </h1>
           ) : (
-            <h1 className="text-xl font-bold text-center text-white flex items-center justify-center gap-4">
+            <h1 className="text-base font-bold text-center text-white flex items-center justify-center gap-4">
               <BadgeInfo /> Thông tin doanh nghiệp
             </h1>
           )}
         </div>
 
-        <div className="mt-10 flex items-center justify-end">
+        <div className="mt-8 flex items-center justify-end">
           <div onClick={() => router.push("/authentication/verify-requests")}>
             <SlideArrowButton
               text="Xem lịch sử"
@@ -244,19 +244,19 @@ function AuthenticationManagement() {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4">
           {isEditing ? (
             <div className="flex flex-col w-full gap-6">
               {status === "Handling" && (
                 <div className="flex items-center justify-start">
-                  <p className="text-yellow-500 border rounded-lg border-yellow-500 px-4 py-2 flex items-center gap-2">
+                  <p className="text-yellow-500 border rounded-md border-yellow-500 px-4 py-2 flex items-center gap-2">
                     <CircleEllipsis size={18} /> Chờ xác thực!
                   </p>
                 </div>
               )}
               {status === "Fail" && (
                 <div className="flex items-center justify-start">
-                  <p className="text-red-500 border rounded-lg border-red-500 px-4 py-2 flex items-center gap-2">
+                  <p className="text-red-500 border rounded-md border-red-500 px-4 py-2 flex items-center gap-2">
                     <CircleX size={18} /> Xác thực thất bại!
                   </p>
                 </div>
@@ -320,7 +320,7 @@ function AuthenticationManagement() {
         onCancel={() => setIsOpen(!isOpen)}
         footer={null}
       >
-        <div className="flex flex-col border border-primary rounded-lg p-6 mt-4">
+        <div className="flex flex-col border border-primary rounded-md p-6 mt-4">
           <p className="text-center text-gray-500 italic mb-4 text-sm">
             Để hoàn tất quá trình xác minh, vui lòng cung cấp đầy đủ các thông
             tin bắt buộc.

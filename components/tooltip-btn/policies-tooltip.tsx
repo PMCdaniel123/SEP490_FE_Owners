@@ -89,7 +89,7 @@ function PoliciesToolTip() {
             {policyList.map((policy) => (
               <div
                 key={policy.id}
-                className="border border-primary rounded-lg p-4"
+                className="border border-primary rounded-md p-4"
               >
                 <p className="text-sm font-semibold text-fourth">
                   {policy.name}

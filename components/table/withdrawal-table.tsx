@@ -32,7 +32,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useState } from "react";
-import { Separator } from "../ui/separator";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { WalletData } from "@/types";
@@ -89,10 +88,12 @@ export default function WithdrawalTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="mt-4 flex items-center justify-between">
-        <h1 className="font-bold text-primary text-xl">
+      <div className="w-full mx-auto bg-gradient-to-r from-primary to-secondary rounded-md p-3">
+        <h1 className="text-base font-bold text-center text-white flex items-center justify-center gap-4">
           Lịch sử yêu cầu rút tiền
         </h1>
+      </div>
+      <div className="flex items-center justify-end">
         {!editMode && canWithdrawal && (
           <div onClick={() => router.push("withdrawal/new")}>
             <SlideArrowButton
@@ -104,7 +105,6 @@ export default function WithdrawalTable<TData, TValue>({
           </div>
         )}
       </div>
-      <Separator className="mb-4" />
       <div className="flex items-center">
         <Input
           placeholder="Tên ngân hàng..."
