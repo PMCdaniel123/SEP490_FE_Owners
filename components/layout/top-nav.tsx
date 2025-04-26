@@ -143,7 +143,7 @@ function TopNav() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center justify-between min-w-[300px] bg-white rounded-md p-2 h-full border border-primary">
+        <div className="flex items-center justify-between min-w-[400px] bg-white rounded-md p-2 h-full border border-primary">
           <p className="font-bold text-primary text-sm">
             Số tiền trên hệ thống:
           </p>

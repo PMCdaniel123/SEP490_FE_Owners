@@ -52,6 +52,8 @@ const OwnerNotification = () => {
         return <CircleArrowDown size={16} className="text-primary" />;
       case "Xác thực tài khoản thành công":
         return <UserRoundCheck size={16} className="text-green-500" />;
+      case "Xác thực tài khoản không thành công":
+        return <UserRoundCheck size={16} className="text-red-500" />;
       case "Hoàn tiền":
         return <CircleArrowLeft size={16} className="text-red-500" />;
       default:
