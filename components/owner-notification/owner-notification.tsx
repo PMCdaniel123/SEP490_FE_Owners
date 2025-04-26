@@ -15,6 +15,7 @@ import { BASE_URL } from "@/constants/environments";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
+import Cookies from "js-cookie";
 
 interface Notification {
   id: number;
@@ -44,6 +45,8 @@ const OwnerNotification = () => {
   const lastFetchTimeRef = useRef<number>(0);
   const isFetchingRef = useRef<boolean>(false);
   const { owner } = useSelector((state: RootState) => state.auth);
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
 
   const unreadCount = notifications.filter((n) => !n.read).length;
   const getIconForTitle = (title: string) => {
@@ -159,7 +162,13 @@ const OwnerNotification = () => {
     try {
       const response = await fetch(
         `${BASE_URL}/Owners/updateOwnernotification/${id}`,
-        { method: "PATCH" }
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (!response.ok) {

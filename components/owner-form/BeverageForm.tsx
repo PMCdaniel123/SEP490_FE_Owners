@@ -32,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
+import Cookies from "js-cookie";
 
 interface BeverageFormProps {
   initialData?: BeverageProps | null;
@@ -40,6 +41,8 @@ interface BeverageFormProps {
 function BeverageForm({ initialData }: BeverageFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof beverageSchema>>({
     resolver: zodResolver(beverageSchema),
@@ -68,6 +71,10 @@ function BeverageForm({ initialData }: BeverageFormProps) {
     try {
       const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -127,6 +134,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
@@ -192,6 +200,7 @@ function BeverageForm({ initialData }: BeverageFormProps) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });

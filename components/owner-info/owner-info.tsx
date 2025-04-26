@@ -30,6 +30,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import GoogleMap from "../google-map/google-map";
+import Cookies from "js-cookie";
 
 interface OwnerInfoProps {
   ownerInfo: OwnerProps | null;
@@ -43,6 +44,8 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const [isEdit, setIsEdit] = useState(false);
   const form = useForm<z.infer<typeof socialSchema>>({
     resolver: zodResolver(socialSchema),
@@ -75,6 +78,10 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
     try {
       const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -128,6 +135,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             avatarUrl: imgUrl,
@@ -185,6 +193,7 @@ function OwnerInfo({ ownerInfo }: OwnerInfoProps) {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(rawData),
         }

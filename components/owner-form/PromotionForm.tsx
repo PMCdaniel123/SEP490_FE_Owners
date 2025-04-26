@@ -34,6 +34,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
 import "dayjs/locale/vi";
 dayjs.locale("vi");
+import Cookies from "js-cookie";
 
 interface PromotionFormProps {
   initialData?: PromotionProps | null;
@@ -43,6 +44,8 @@ function PromotionForm({ initialData }: PromotionFormProps) {
   const router = useRouter();
   const { owner } = useSelector((state: RootState) => state.auth);
   const [loading, setLoading] = useState(false);
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const form = useForm<z.infer<typeof promotionSchema>>({
     resolver: zodResolver(promotionSchema),
@@ -125,6 +128,7 @@ function PromotionForm({ initialData }: PromotionFormProps) {
           method: initialData ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(data),
         }

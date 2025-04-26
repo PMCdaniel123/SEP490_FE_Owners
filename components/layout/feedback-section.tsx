@@ -15,6 +15,7 @@ import Image from "next/image";
 import { BASE_URL } from "@/constants/environments";
 import { SendHorizontal } from "lucide-react";
 import { Textarea } from "../ui/textarea";
+import Cookies from "js-cookie";
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -37,6 +38,8 @@ function FeedbackSection({
   );
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [description, setDescription] = useState<string>("");
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
 
   useEffect(() => {
     if (!selectedBooking || !ownerId) return;
@@ -116,6 +119,7 @@ function FeedbackSection({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           feedbackId: feedback?.id,

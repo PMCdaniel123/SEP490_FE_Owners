@@ -32,6 +32,7 @@ import { RootState } from "@/stores";
 import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
+import Cookies from "js-cookie";
 
 interface AmenityFormProps {
   initialData?: AmenityProps | null;
@@ -41,6 +42,8 @@ function AmenityForm({ initialData }: AmenityFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const form = useForm<z.infer<typeof amenitySchema>>({
     resolver: zodResolver(amenitySchema),
     defaultValues: initialData
@@ -69,6 +72,10 @@ function AmenityForm({ initialData }: AmenityFormProps) {
     try {
       const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -128,6 +135,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
@@ -200,6 +208,7 @@ function AmenityForm({ initialData }: AmenityFormProps) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });

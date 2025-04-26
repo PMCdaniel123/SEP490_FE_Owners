@@ -46,6 +46,7 @@ import { BASE_URL } from "@/constants/environments";
 import DetailToolTip from "../tooltip-btn/detail-tooltip";
 import FacilitiesToolTip from "../tooltip-btn/facilities-tooltip";
 import PoliciesToolTip from "../tooltip-btn/policies-tooltip";
+import Cookies from "js-cookie";
 
 interface WorkspaceFormProps {
   initialData?: Workspace | null;
@@ -55,6 +56,8 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
   const { owner } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(
     initialData ? initialData.imagesStr : []
@@ -100,6 +103,10 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
     try {
       const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -179,6 +186,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
@@ -265,6 +273,7 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(data),
         }
