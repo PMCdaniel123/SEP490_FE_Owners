@@ -23,6 +23,7 @@ import { BASE_URL } from "@/constants/environments";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
+import Cookies from "js-cookie";
 
 function WithdrawalForm() {
   const form = useForm<z.infer<typeof withdrawalSchema>>({
@@ -37,6 +38,8 @@ function WithdrawalForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { owner } = useSelector((state: RootState) => state.auth);
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
 
   useEffect(() => {
     form.reset({
@@ -58,6 +61,7 @@ function WithdrawalForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });

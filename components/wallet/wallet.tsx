@@ -29,6 +29,7 @@ import {
 } from "../ui/select";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Cookies from "js-cookie";
 
 interface WalletDetailProps {
   walletData: WalletData | null;
@@ -38,6 +39,8 @@ interface WalletDetailProps {
 
 function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
   const [loading, setLoading] = useState(true);
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const [bankData, setBankData] = useState<BankProps[]>([]);
   const form = useForm<z.infer<typeof walletSchema>>({
     resolver: zodResolver(walletSchema),
@@ -113,6 +116,7 @@ function Wallet({ walletData, editMode, setEditMode }: WalletDetailProps) {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(data),
         }

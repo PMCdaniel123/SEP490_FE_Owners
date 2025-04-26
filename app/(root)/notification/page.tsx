@@ -34,6 +34,9 @@ export default function NotificationPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const { owner } = useSelector((state: RootState) => state.auth);
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
+
   const getIconForTitle = (title: string) => {
     switch (title) {
       case "Đặt chỗ":
@@ -106,7 +109,13 @@ export default function NotificationPage() {
     try {
       const response = await fetch(
         `${BASE_URL}/Owners/updateOwnernotification/${id}`,
-        { method: "PATCH" }
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (!response.ok) {
@@ -129,11 +138,10 @@ export default function NotificationPage() {
   };
 
   useEffect(() => {
-    const token = Cookies.get("owner_token");
     if (token && owner) {
       fetchNotifications();
     }
-  }, [owner, fetchNotifications]);
+  }, [owner, fetchNotifications, token]);
 
   useEffect(() => {
     const handleNotificationMarkedRead = (event: CustomEvent) => {

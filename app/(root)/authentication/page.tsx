@@ -32,6 +32,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
+import Cookies from "js-cookie";
 
 function AuthenticationManagement() {
   const { owner } = useSelector((state: RootState) => state.auth);
@@ -42,6 +43,8 @@ function AuthenticationManagement() {
   const [status, setStatus] = useState("");
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
+  const token =
+    typeof window !== "undefined" ? Cookies.get("owner_token") : null;
   const form = useForm<z.infer<typeof identifySchema>>({
     resolver: zodResolver(identifySchema),
     defaultValues: {
@@ -128,6 +131,10 @@ function AuthenticationManagement() {
     try {
       const response = await fetch(`${BASE_URL}/files/upload`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -186,6 +193,7 @@ function AuthenticationManagement() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
