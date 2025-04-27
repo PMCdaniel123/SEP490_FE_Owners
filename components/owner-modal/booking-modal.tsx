@@ -5,12 +5,17 @@ import {
   BookingProps,
   CustomerProps,
   formatCurrency,
+  PromotionProps,
   Workspace,
 } from "@/types";
 import { useEffect, useState } from "react";
 import Loader from "../loader/Loader";
 import dayjs from "dayjs";
-import { fetchCustomerDetail, fetchWorkspaceDetail } from "@/features";
+import {
+  fetchCustomerDetail,
+  fetchPromotionDetail,
+  fetchWorkspaceDetail,
+} from "@/features";
 import { Card, CardContent } from "../ui/card";
 import {
   Boxes,
@@ -41,6 +46,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
     null
   );
   const [booking, setBooking] = useState<BookingProps | null>(null);
+  const [promotion, setPromotion] = useState<PromotionProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,6 +69,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
         setBooking(formatted);
         fetchCustomerDetail(formatted.userId, setCustomer, setLoading);
         fetchWorkspaceDetail(formatted.workspaceId, setWorkspace, setLoading);
+        fetchPromotionDetail(formatted.promotionId, setPromotion, setLoading);
         setLoading(false);
       } catch (error) {
         const errorMessage =
@@ -79,15 +86,6 @@ function BookingModal({ bookingId }: { bookingId: string }) {
 
     fetchBooking();
   }, [bookingId]);
-
-  // useEffect(() => {
-  //   if (!booking) {
-  //     return;
-  //   }
-
-  //   fetchCustomerDetail(booking.userId, setCustomer, setLoading);
-  //   fetchWorkspaceDetail(booking.workspaceId, setWorkspace, setLoading);
-  // }, [booking]);
 
   if (loading) {
     return (
@@ -108,13 +106,13 @@ function BookingModal({ bookingId }: { bookingId: string }) {
         <p>Số điện thoại: {customer?.phone}</p>
       </div>
       <div className="border rounded-md p-4 flex flex-col gap-2 text-black mt-4">
+        <p className="text-sm font-semibold text-primary">
+          {dayjs(booking?.created_At).format("HH:mm:ss DD/MM/YYYY")}
+        </p>
         <p className="text-base font-semibold text-primary flex gap-2">
           <History /> Thông tin đơn đặt chỗ
         </p>
         <p>Mã đặt chỗ: ĐC{Number(bookingId).toString().padStart(4, "0")}</p>
-        <p>
-          Ngày tạo: {dayjs(booking?.created_At).format("HH:mm:ss DD/MM/YYYY")}
-        </p>
         <p>
           Bắt đầu từ: {dayjs(booking?.start_Date).format("HH:mm DD/MM/YYYY")}
         </p>
@@ -134,7 +132,10 @@ function BookingModal({ bookingId }: { bookingId: string }) {
             Trạng thái: <span className="text-red-500">Thất bại</span>
           </p>
         )}
-        {booking?.promotionId && <p>Mã giảm giá: {booking?.promotionId}</p>}
+        <p>
+          Mã khuyến mãi: {booking?.promotionId ? promotion?.code : "Không có"}
+        </p>
+        {promotion?.discount && <p>Giảm giá (%): {promotion?.discount}%</p>}
         <p>
           Phương thức thanh toán:{" "}
           {booking?.payment_Method === "WorkHive Wallet"

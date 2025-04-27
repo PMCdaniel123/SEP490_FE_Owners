@@ -72,7 +72,6 @@ function BeverageForm({ initialData }: BeverageFormProps) {
       const response = await fetch(`${BASE_URL}/images/upload`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: formData,

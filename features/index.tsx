@@ -8,6 +8,7 @@ import {
   BookingListProps,
   CustomerProps,
   Price,
+  PromotionProps,
   TopRevenueWorkspace,
   Workspace,
 } from "@/types";
@@ -36,6 +37,33 @@ export const fetchCustomerDetail = async (
       theme: "light",
     });
     setCustomer(null);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const fetchPromotionDetail = async (
+  id: string,
+  setPromotion: React.Dispatch<React.SetStateAction<PromotionProps | null>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  setLoading(true);
+  try {
+    const response = await fetch(`${BASE_URL}/promotions/${Number(id)}`);
+    if (!response.ok)
+      throw new Error("Có lỗi xảy ra khi tải thông tin khuyến mãi.");
+
+    const data = await response.json();
+    const formatted = data === null || data === undefined ? null : data;
+    setPromotion(formatted);
+  } catch (error) {
+    toast.error(error instanceof Error ? error.message : "Đã xảy ra lỗi!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      theme: "light",
+    });
+    setPromotion(null);
   } finally {
     setLoading(false);
   }

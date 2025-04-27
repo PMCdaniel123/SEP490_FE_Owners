@@ -410,6 +410,8 @@ export interface TransactionProp {
   status: string;
   description: string;
   createdAt: string;
+  beforeAmount: number;
+  afterAmount: number;
 }
 
 export interface ResponseBookingProps {
