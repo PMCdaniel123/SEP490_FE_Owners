@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 interface Notification {
   id: number;
@@ -41,6 +42,7 @@ const OwnerNotification = () => {
   const router = useRouter();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isMarkingAll, setIsMarkingAll] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const lastFetchTimeRef = useRef<number>(0);
   const isFetchingRef = useRef<boolean>(false);
@@ -193,6 +195,63 @@ const OwnerNotification = () => {
     }
   };
 
+  const markAllAsRead = async () => {
+    if (!owner?.id || isMarkingAll || unreadCount === 0) return;
+
+    setIsMarkingAll(true);
+
+    try {
+      // Get all unread notification IDs
+      const unreadIds = notifications
+        .filter((notification) => !notification.read)
+        .map((notification) => notification.id);
+
+      // Update local state immediately for better user experience
+      setNotifications((prev) =>
+        prev.map((notification) => ({ ...notification, read: true }))
+      );
+
+      // Make API calls for each unread notification
+      const markPromises = unreadIds.map((id) =>
+        fetch(`${BASE_URL}/Owners/updateOwnernotification/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }).then((response) => {
+          if (response.status === 401) {
+            router.push("/unauthorized");
+            throw new Error("Bạn không được phép truy cập!");
+          } else if (!response.ok) {
+            throw new Error(
+              "An error occurred while marking notifications as read."
+            );
+          }
+        })
+      );
+
+      await Promise.all(markPromises);
+
+      // Dispatch events for each marked notification
+      unreadIds.forEach((id) => {
+        const event = new CustomEvent(notificationEvents.MARKED_READ, {
+          detail: { id },
+        });
+        window.dispatchEvent(event);
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Có lỗi xảy ra khi đánh dấu tất cả thông báo đã đọc!";
+      console.log(errorMessage);
+      fetchNotifications(true);
+    } finally {
+      setIsMarkingAll(false);
+    }
+  };
+
   useEffect(() => {
     if (owner) {
       fetchNotifications(true);
@@ -328,7 +387,32 @@ const OwnerNotification = () => {
           exit={{ opacity: 0, y: -10 }}
           className="absolute right-0 mt-2 w-80 bg-[#835101] shadow-lg rounded-md border overflow-hidden z-50"
         >
-          <div className="p-4 font-semibold border-b text-white">Thông báo</div>
+          <div className="p-4 font-semibold border-b border-white/20 text-white flex items-center justify-between bg-black/10">
+            <Link href="/notification" className="flex items-center gap-2">
+              <Bell size={18} />
+              <span>Thông báo</span>
+            </Link>
+            <div className="flex items-center gap-2">
+              {unreadCount > 0 && (
+                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                  {unreadCount} mới
+                </span>
+              )}
+              {unreadCount > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    markAllAsRead();
+                  }}
+                  disabled={isMarkingAll}
+                  className="text-xs bg-white/20 hover:bg-white/30 text-white px-2 py-1 rounded transition-all"
+                  title="Đánh dấu tất cả là đã đọc"
+                >
+                  <CheckCheck size={16} />
+                </button>
+              )}
+            </div>
+          </div>
           {notifications.length > 0 ? (
             <>
               {notifications.slice(0, MAX_DISPLAY).map((notification) => (
