@@ -19,6 +19,7 @@ import Loader from "@/components/loader/Loader";
 import Cookies from "js-cookie";
 import dayjs from "dayjs";
 import { notificationEvents } from "@/components/owner-notification/owner-notification";
+import { Button } from "@/components/ui/button";
 
 interface Notification {
   id: number;
@@ -36,6 +37,7 @@ export default function NotificationPage() {
   const { owner } = useSelector((state: RootState) => state.auth);
   const token =
     typeof window !== "undefined" ? Cookies.get("owner_token") : null;
+  const [isMarkingAll, setIsMarkingAll] = useState(false);
 
   const getIconForTitle = (title: string) => {
     switch (title) {
@@ -137,6 +139,84 @@ export default function NotificationPage() {
     }
   };
 
+  const markAllAsRead = async () => {
+    if (!owner?.id || isMarkingAll) return;
+
+    const unreadNotifications = filteredNotifications.filter(
+      (notification) => !notification.read
+    );
+    if (unreadNotifications.length === 0) {
+      toast.info("Không có thông báo nào để đánh dấu đã đọc", {
+        position: "top-right",
+        autoClose: 1500,
+      });
+      return;
+    }
+
+    setIsMarkingAll(true);
+
+    try {
+      // Get all unread notification IDs
+      const unreadIds = unreadNotifications.map(
+        (notification) => notification.id
+      );
+
+      // Update local state immediately for better user experience
+      setNotifications((prev) =>
+        prev.map((notification) => {
+          if (!notification.read) {
+            return { ...notification, read: true };
+          }
+          return notification;
+        })
+      );
+
+      // Make API calls for each unread notification
+      const markPromises = unreadIds.map((id) =>
+        fetch(`${BASE_URL}/Owners/updateOwnernotification/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error("Có lỗi xảy ra khi đánh dấu thông báo!");
+          }
+        })
+      );
+
+      await Promise.all(markPromises);
+
+      // Dispatch events for each marked notification
+      unreadIds.forEach((id) => {
+        const event = new CustomEvent(notificationEvents.MARKED_READ, {
+          detail: { id },
+        });
+        window.dispatchEvent(event);
+      });
+
+      toast.success("Tất cả thông báo đã được đánh dấu là đã đọc", {
+        position: "top-right",
+        autoClose: 1500,
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Đã xảy ra lỗi khi đánh dấu thông báo!";
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 1500,
+      });
+
+      // Revert to previous state if there was an error
+      fetchNotifications();
+    } finally {
+      setIsMarkingAll(false);
+    }
+  };
+
   useEffect(() => {
     if (token && owner) {
       fetchNotifications();
@@ -190,27 +270,42 @@ export default function NotificationPage() {
     );
   }
 
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
   return (
     <div className="p-4 bg-white rounded-md">
       <div className="max-w-4xl mx-auto py-8 px-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Thông báo</h1>
-          <button
-            onClick={() =>
-              setFilter((prevFilter) =>
-                prevFilter === "all" ? "unread" : "all"
-              )
-            }
-            className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-2 rounded-md hover:bg-gray-200 transition"
-          >
-            <Filter size={16} />
-            {filter === "all" ? "Chỉ chưa đọc" : "Tất cả"}
-          </button>
+          <div className="flex items-center gap-3">
+            {unreadCount > 0 && (
+              <Button
+                onClick={markAllAsRead}
+                disabled={isMarkingAll}
+                variant="outline"
+                className="flex items-center gap-2 text-sm font-medium"
+              >
+                <CheckCheck size={16} />
+                <span>Đánh dấu tất cả đã đọc</span>
+              </Button>
+            )}
+            <button
+              onClick={() =>
+                setFilter((prevFilter) =>
+                  prevFilter === "all" ? "unread" : "all"
+                )
+              }
+              className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-2 rounded-lg hover:bg-gray-200 transition"
+            >
+              <Filter size={16} />
+              {filter === "all" ? "Chỉ chưa đọc" : "Tất cả"}
+            </button>
+          </div>
         </div>
         <Separator className="mb-6" />
 
         {filteredNotifications.length > 0 ? (
-          <div className="bg-white overflow-hidden grid grid-cols-2 gap-4 space-y-4">
+          <div className="bg-white overflow-hidden grid grid-cols-1 gap-4 space-y-4">
             {filteredNotifications.map((notification) => (
               <div
                 key={notification.id}
