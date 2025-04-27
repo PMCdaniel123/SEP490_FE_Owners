@@ -18,7 +18,7 @@ export function getRevenuePerDay(
   const weekStart = isMonday
     ? now.add(7, "day").startOf("isoWeek")
     : now.startOf("isoWeek");
-  const weekEnd = weekStart.add(6, "day");
+  const weekEnd = weekStart.clone().add(6, "day").endOf("day");
 
   // Prepare the result array for each day of the week
   const result: RevenuePerDay[] = Array.from({ length: 7 }, (_, i) => {

@@ -267,7 +267,7 @@ export default function OwnerPage() {
       </div>
       <div className="grid gap-4 md:grid-cols-3 relative">
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="bg-white p-4 rounded-md">
+          <div className="bg-white p-4 rounded-md h-full">
             <TopWorkspaceTable
               columns={topWorkspaceTableColumns}
               data={topWorkspaceList}
@@ -278,7 +278,7 @@ export default function OwnerPage() {
           <HotAmenityChart bookingAmenityList={bookingAmenityList} />
         </div>
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="bg-white p-4 rounded-md">
+          <div className="bg-white p-4 rounded-md h-full">
             <RevenueChart bookings={bookingList} />
           </div>
         </div>
