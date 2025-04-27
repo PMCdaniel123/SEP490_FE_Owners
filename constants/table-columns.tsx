@@ -254,9 +254,7 @@ export const WorkspaceTableColumns: ColumnDef<Workspace>[] = [
   {
     accessorKey: "image",
     header: () => (
-      <div className="text-white font-bold text-sm text-center">
-        Hình ảnh
-      </div>
+      <div className="text-white font-bold text-sm text-center">Hình ảnh</div>
     ),
     cell: ({ row }) => {
       return (
@@ -429,9 +427,7 @@ export const AmenityTableColumns: ColumnDef<AmenityProps>[] = [
   {
     accessorKey: "image",
     header: () => (
-      <div className="text-white font-bold text-sm text-center">
-        Hình ảnh
-      </div>
+      <div className="text-white font-bold text-sm text-center">Hình ảnh</div>
     ),
     cell: ({ row }) => {
       return (
@@ -598,9 +594,7 @@ export const BeverageTableColumns: ColumnDef<BeverageProps>[] = [
   {
     accessorKey: "image",
     header: () => (
-      <div className="text-white font-bold text-sm text-center">
-        Hình ảnh
-      </div>
+      <div className="text-white font-bold text-sm text-center">Hình ảnh</div>
     ),
     cell: ({ row }) => {
       return (
@@ -1004,8 +998,25 @@ export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center font-medium">
+        <p className="text-center font-medium text-primary">
           {formatCurrency(row.getValue("amount"))}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "afterAmount",
+    header: () => {
+      return (
+        <div className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer">
+          <p>Số dư</p>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <p className="text-center font-medium">
+          {formatCurrency(row.getValue("afterAmount"))}
         </p>
       );
     },

@@ -132,7 +132,6 @@ function AuthenticationManagement() {
       const response = await fetch(`${BASE_URL}/files/upload`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: formData,
