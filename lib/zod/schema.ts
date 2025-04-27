@@ -239,7 +239,11 @@ export const identifySchema = z.object({
   instagram: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
   tiktok: z.string().url("Vui lòng nhập đường dẫn hợp lệ").or(z.literal("")),
   licenseName: z.string().nonempty("Vui lòng nhập tên doanh nghiệp"),
-  licenseNumber: z.string().nonempty("Vui lòng nhập mã số doanh nghiệp"),
+  licenseNumber: z
+    .string()
+    .nonempty("Vui lòng nhập mã số doanh nghiệp")
+    .min(11, "Mã số doanh nghiệp phải có ít nhất 11 ký tự")
+    .max(13, "Mã số doanh nghiệp không được vượt quá 13 ký tự"),
   licenseAddress: z
     .string()
     .nonempty("Vui lòng nhập địa chỉ trụ sở chính của doanh nghiệp"),
