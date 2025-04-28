@@ -254,12 +254,12 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-fourth font-bold text-sm ml-6">
-                        Tên tiện ích
+                        Tên món
                       </FormLabel>
                       <FormControl>
                         <Input
                           className="py-4 px-4 rounded-md file:bg-seventh"
-                          placeholder="Nhập tên tiện ích..."
+                          placeholder="Nhập tên món..."
                           {...field}
                         />
                       </FormControl>
