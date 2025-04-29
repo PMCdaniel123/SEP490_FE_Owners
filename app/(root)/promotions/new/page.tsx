@@ -1,3 +1,5 @@
+"use client";
+
 import PromotionForm from "@/components/owner-form/PromotionForm";
 
 function NewPromotion() {
