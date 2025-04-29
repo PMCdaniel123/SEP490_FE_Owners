@@ -31,11 +31,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CirclePlus, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import getHeaderText from "@/constants/format-header";
 import SlideArrowButton from "../animate-ui/slide-arrow-button";
+import { Workspace } from "@/types";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import Loader from "../loader/Loader";
+import { fetchWorkspaceList } from "@/features";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -50,7 +55,16 @@ export default function PromotionTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [workspaceList, setWorkspaceList] = useState<Workspace[]>([]);
   const router = useRouter();
+  const { owner } = useSelector((state: RootState) => state.auth);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!owner) return;
+    fetchWorkspaceList(owner.id, setWorkspaceList, setLoading);
+    setLoading(false);
+  }, [owner]);
 
   const table = useReactTable({
     data,
@@ -71,23 +85,27 @@ export default function PromotionTable<TData, TValue>({
     },
   });
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="flex flex-col gap-4">
       <div className="w-full mx-auto bg-gradient-to-r from-primary to-secondary rounded-md p-3">
         <h1 className="text-base font-bold text-center text-white flex items-center justify-center gap-4">
           Danh sách khuyến mãi
         </h1>
       </div>
-      <div className="flex items-center justify-end">
-        <div onClick={() => router.push("promotions/new")}>
-          <SlideArrowButton
-            text="Tạo mã khuyến mãi mới"
-            primaryColor="#835101"
-            icon={CirclePlus}
-            className="cursor-pointer"
-          />
+      {workspaceList.length > 0 && (
+        <div className="flex items-center justify-end">
+          <div onClick={() => router.push("promotions/new")}>
+            <SlideArrowButton
+              text="Tạo mã khuyến mãi mới"
+              primaryColor="#835101"
+              icon={CirclePlus}
+              className="cursor-pointer"
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="flex items-center">
         <Input
           placeholder="Mã khuyến mãi..."
