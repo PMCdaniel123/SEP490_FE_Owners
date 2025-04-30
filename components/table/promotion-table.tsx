@@ -62,7 +62,7 @@ export default function PromotionTable<TData, TValue>({
 
   useEffect(() => {
     if (!owner) return;
-    fetchWorkspaceList(owner.id, setWorkspaceList, setLoading);
+    fetchWorkspaceList(owner.id, setWorkspaceList);
     setLoading(false);
   }, [owner]);
 
