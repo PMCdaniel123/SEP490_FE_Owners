@@ -67,9 +67,11 @@ function BookingModal({ bookingId }: { bookingId: string }) {
             ? null
             : data.bookingByBookingIdDTO;
         setBooking(formatted);
-        fetchCustomerDetail(formatted.userId, setCustomer, setLoading);
-        fetchWorkspaceDetail(formatted.workspaceId, setWorkspace, setLoading);
-        fetchPromotionDetail(formatted.promotionId, setPromotion, setLoading);
+        await Promise.all([
+          fetchCustomerDetail(formatted.userId, setCustomer),
+          fetchWorkspaceDetail(formatted.workspaceId, setWorkspace),
+          fetchPromotionDetail(formatted.promotionId, setPromotion),
+        ]);
         setLoading(false);
       } catch (error) {
         const errorMessage =

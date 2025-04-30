@@ -35,7 +35,7 @@ function FeedbackModal({ feedbackId }: { feedbackId: string }) {
       return;
     }
     setFeedback(feedbackList[Number(feedbackId) - 1]);
-    fetchCustomerDetail("1", setCustomer, setLoading);
+    fetchCustomerDetail("1", setCustomer);
     const getWorkspaceDetail = async () => {
       try {
         const response = await fetch(

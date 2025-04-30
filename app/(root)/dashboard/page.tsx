@@ -45,7 +45,6 @@ import RevenueByMonthChart from "@/components/charts/line-chart";
 
 export default function OwnerPage() {
   const [loading, setLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
   const [customerList, setCustomerList] = useState<CustomerProps[]>([]);
   const [amenityList, setAmenityList] = useState<AmenityProps[]>([]);
   const [beverageList, setBeverageList] = useState<BeverageProps[]>([]);
@@ -64,18 +63,26 @@ export default function OwnerPage() {
 
   useEffect(() => {
     if (!owner) return;
-    fetchCustomerList(owner.id, setCustomerList, setLoading);
-    fetchAmenityList(owner.id, setAmenityList, setLoading);
-    fetchBeverageList(owner.id, setBeverageList, setLoading);
-    fetchBookingList(owner.id, setBookingList, setLoading);
-    fetchWorkspaceList(owner.id, setWorkspaceList, setLoading);
-    fetchBookingAmenityList(owner.id, setBookingAmenityList, setLoading);
-    fetchBookingBeverageList(owner.id, setBookingBeverageList, setLoading);
-    fetchTopWorkspaceList(owner.id, setTopWorkspaceList, setLoading);
-    setIsLoading(false);
+
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchCustomerList(owner.id, setCustomerList),
+        fetchAmenityList(owner.id, setAmenityList),
+        fetchBeverageList(owner.id, setBeverageList),
+        fetchBookingList(owner.id, setBookingList),
+        fetchWorkspaceList(owner.id, setWorkspaceList),
+        fetchBookingAmenityList(owner.id, setBookingAmenityList),
+        fetchBookingBeverageList(owner.id, setBookingBeverageList),
+        fetchTopWorkspaceList(owner.id, setTopWorkspaceList),
+      ]);
+      setLoading(false);
+    };
+
+    loadData();
   }, [owner]);
 
-  if (loading || isLoading) {
+  if (loading) {
     return (
       <div className="text-center">
         <Loader />
