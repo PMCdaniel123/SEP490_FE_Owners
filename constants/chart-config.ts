@@ -12,12 +12,15 @@ export function getRevenuePerDay(
   bookings: BookingListProps[]
 ): RevenuePerDay[] {
   const now = dayjs();
-  const isMonday = now.isoWeekday() === 1;
+  // const isMonday = now.isoWeekday() === 1;
 
-  // Start of current or next week depending on today
-  const weekStart = isMonday
-    ? now.add(7, "day").startOf("isoWeek")
-    : now.startOf("isoWeek");
+  // // Start of current or next week depending on today
+  // const weekStart = isMonday
+  //   ? now.add(7, "day").startOf("isoWeek")
+  //   : now.startOf("isoWeek");
+  // const weekEnd = weekStart.clone().add(6, "day").endOf("day");
+
+  const weekStart = now.startOf("isoWeek"); // always current week
   const weekEnd = weekStart.clone().add(6, "day").endOf("day");
 
   // Prepare the result array for each day of the week

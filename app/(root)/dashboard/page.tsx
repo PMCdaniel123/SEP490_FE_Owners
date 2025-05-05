@@ -162,7 +162,7 @@ export default function OwnerPage() {
             <PiggyBank size={36} />
           </div>
           <div className="col-span-2 flex flex-col items-start justify-start gap-2">
-            <p className="font-bold">Doanh thu</p>
+            <p className="font-bold">Tổng tiền</p>
             <p className="text-[#6F757E] text-xl flex items-end gap-2">
               <span>{formatCurrency(currentRevenue ?? 0)}</span> |
               <span className="text-sm">
