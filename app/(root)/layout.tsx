@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "../globals.css";
-import TopNav from "@/components/layout/top-nav";
-import Sidebar from "@/components/layout/sidebar";
-import { ToastContainer } from "react-toastify";
+import RootLayoutClient from "@/components/layout/root-layout-client";
 import { Providers } from "@/stores/Providers";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -23,17 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <Providers>
-          <div className="flex bg-gradient-to-r from-secondary to-third p-4 gap-4 min-h-screen w-full">
-            <div className="h-fit sticky top-4">
-              <Sidebar />
-            </div>
-            <main className="flex-1 sticky top-4 h-fit">
-              <TopNav />
-              {children}
-            </main>
-          </div>
+          <RootLayoutClient>{children}</RootLayoutClient>
         </Providers>
-        <ToastContainer />
       </body>
     </html>
   );
