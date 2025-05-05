@@ -111,6 +111,9 @@ export default function CustomerTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <p className="text-gray-500 text-sm mt-4">
+        Có {table.getFilteredRowModel().rows.length} khách hàng đã đặt chỗ trên hệ thống
+      </p>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

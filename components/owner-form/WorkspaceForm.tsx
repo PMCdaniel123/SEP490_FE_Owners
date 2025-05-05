@@ -665,12 +665,12 @@ function WorkspaceForm({ initialData }: WorkspaceFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-fourth font-bold text-sm ml-6">
-                    Mã bàn
+                    Mã không gian
                   </FormLabel>
                   <FormControl>
                     <Input
                       className="py-4 px-4 rounded-md file:bg-seventh"
-                      placeholder="Nhập mã bàn..."
+                      placeholder="Nhập mã không gian..."
                       {...field}
                     />
                   </FormControl>

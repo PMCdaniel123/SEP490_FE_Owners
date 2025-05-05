@@ -65,7 +65,7 @@ export const workspaceSchema = z
     name: z.string().min(3, "Tên không gian phải có ít nhất 3 ký tự"),
     openTime: z.string().nonempty("Vui lòng chọn thời gian mở cửa"),
     closeTime: z.string().nonempty("Vui lòng chọn thời gian đóng cửa"),
-    code: z.string().nonempty("Vui lòng nhập mã bàn"),
+    code: z.string().nonempty("Vui lòng nhập mã không gian"),
     is24h: z.number().min(0).max(1),
     category: z.string({
       required_error: "Vui lòng loại không gian hợp lệ",

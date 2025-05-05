@@ -124,6 +124,9 @@ export default function BeverageTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <p className="text-gray-500 text-sm mt-4">
+        Có {table.getFilteredRowModel().rows.length} món trên hệ thống
+      </p>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
