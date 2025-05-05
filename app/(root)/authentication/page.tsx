@@ -351,6 +351,12 @@ function AuthenticationManagement() {
                 và các tài liệu liên quan.
               </span>
             </li>
+            <li className="flex items-center gap-2">
+              <span className="text-green-500">
+                <CheckCheck />
+              </span>
+              <span>Phí hệ thống sẽ là 10% trên mỗi đơn đặt chỗ.</span>
+            </li>
           </ul>
         </div>
       </Modal>

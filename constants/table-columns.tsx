@@ -989,10 +989,14 @@ export const WithdrawalTableColumns: ColumnDef<WithdrawalProps>[] = [
 export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
   {
     accessorKey: "amount",
-    header: () => {
+    header: ({ column }) => {
       return (
-        <div className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer">
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer"
+        >
           <p>Số tiền</p>
+          <ArrowUpDown size={16} className="ml-2" />
         </div>
       );
     },
@@ -1006,10 +1010,14 @@ export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
   },
   {
     accessorKey: "afterAmount",
-    header: () => {
+    header: ({ column }) => {
       return (
-        <div className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer">
+        <div
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer"
+        >
           <p>Số dư</p>
+          <ArrowUpDown size={16} className="ml-2" />
         </div>
       );
     },
@@ -1178,43 +1186,30 @@ export const BookingTableColumns: ColumnDef<BookingListProps>[] = [
     },
   },
   {
-    accessorKey: "start_Date",
+    accessorKey: "status",
     header: ({ column }) => {
       return (
         <div
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer"
         >
-          <p>Bắt đầu</p>
+          <p>Trạng thái</p>
           <ArrowUpDown size={16} className="ml-2" />
         </div>
       );
     },
     cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">
-          {dayjs(row.getValue("start_Date")).format("HH:mm DD/MM/YYYY")}
+      return row.getValue("status") === "Handling" ? (
+        <p className="text-center font-medium flex items-center justify-center text-yellow-500">
+          <span>Chờ xử lý</span>
         </p>
-      );
-    },
-  },
-  {
-    accessorKey: "end_Date",
-    header: ({ column }) => {
-      return (
-        <div
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="text-white font-bold text-sm text-center items-center flex justify-center cursor-pointer"
-        >
-          <p>Kết thúc</p>
-          <ArrowUpDown size={16} className="ml-2" />
-        </div>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-center font-medium">
-          {dayjs(row.getValue("end_Date")).format("HH:mm DD/MM/YYYY")}
+      ) : row.getValue("status") === "Success" ? (
+        <p className="text-center font-medium flex items-center justify-center text-green-500">
+          <span>Thành công</span>
+        </p>
+      ) : (
+        <p className="text-center font-medium flex items-center justify-center text-red-500">
+          <span>Đã hủy</span>
         </p>
       );
     },

@@ -131,7 +131,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
           </p>
         ) : (
           <p className="flex items-center justify-start gap-1">
-            Trạng thái: <span className="text-red-500">Thất bại</span>
+            Trạng thái: <span className="text-red-500">Đã hủy</span>
           </p>
         )}
         <p>
@@ -153,7 +153,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
                     workspace?.workspace?.images[0].imgUrl || "/placeholder.png"
                   }
                   alt={workspace?.workspace?.name || ""}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500"
                 />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
@@ -242,7 +242,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
                   <p className="font-semibold text-primary flex gap-2 text-sm">
                     <Boxes size={16} /> Tiện ích
                   </p>
-                  <ul className="list-disc pl-6 ">
+                  <ul className="list pl-6 ">
                     {booking?.amenities.map((item, index) => (
                       <li key={index}>
                         <img
@@ -263,7 +263,7 @@ function BookingModal({ bookingId }: { bookingId: string }) {
                   <p className="font-semibold text-primary flex gap-2 text-sm">
                     <UtensilsCrossed size={16} /> Thực đơn
                   </p>
-                  <ul className="list-disc pl-6 ">
+                  <ul className="list pl-6 ">
                     {booking?.beverages.map((item, index) => (
                       <li key={index}>
                         <img

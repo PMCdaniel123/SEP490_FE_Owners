@@ -34,7 +34,9 @@ function BookingManagement() {
             ? []
             : data.bookingByOwnerIdDTOs
                 .filter(
-                  (booking: BookingListProps) => booking.status === "Success"
+                  (booking: BookingListProps) =>
+                    booking.status === "Success" ||
+                    booking.status === "Cancelled"
                 )
                 .sort(
                   (a: BookingListProps, b: BookingListProps) =>
