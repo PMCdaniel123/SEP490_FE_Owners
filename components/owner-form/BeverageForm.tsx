@@ -33,6 +33,7 @@ import { toast } from "react-toastify";
 import { LoadingOutlined } from "@ant-design/icons";
 import { BASE_URL } from "@/constants/environments";
 import Cookies from "js-cookie";
+import { cn } from "@/lib/utils";
 
 interface BeverageFormProps {
   initialData?: BeverageProps | null;
@@ -421,9 +422,14 @@ function BeverageForm({ initialData }: BeverageFormProps) {
           </div>
           <div className="sm:col-span-2 flex flex-col gap-2 w-full">
             <button
-              className="z-10 flex gap-2 items-center justify-center bg-primary text-white py-3 rounded-md hover:bg-secondary"
+              className={cn(
+                "z-10 flex gap-2 items-center justify-center",
+                "bg-primary text-white font-bold py-3 px-6 rounded-md",
+                "hover:bg-secondary transition-colors duration-200",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
               type="submit"
-              disabled={loading}
+              disabled={!form.formState.isDirty || loading}
             >
               {loading ? (
                 <LoadingOutlined style={{ color: "white" }} />
@@ -432,6 +438,21 @@ function BeverageForm({ initialData }: BeverageFormProps) {
                   <Save size={18} /> Xác nhận
                 </span>
               )}
+            </button>
+          </div>
+          <div className="sm:col-span-1 flex flex-col gap-2 w-full">
+            <button
+              className={cn(
+                "z-10 flex gap-2 items-center justify-center",
+                "bg-red-500 text-white font-bold py-3 px-6 rounded-md",
+                "hover:bg-red-300 transition-colors duration-200",
+                "disabled:opacity-30 disabled:cursor-not-allowed"
+              )}
+              type="button"
+              disabled={!form.formState.isDirty || loading}
+              onClick={() => router.push("/beverages")}
+            >
+              <span className="font-bold flex items-center gap-2">Hủy</span>
             </button>
           </div>
         </form>
