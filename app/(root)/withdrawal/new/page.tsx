@@ -27,7 +27,7 @@ function NewWithdrawal() {
       >
         <div className="flex flex-col border border-primary rounded-md p-6 mt-4">
           <p className="text-center text-gray-500 italic mb-4 text-sm">
-            Để hoàn tất quá trình xác minh, vui lòng cung cấp đầy đủ các thông
+            Để hoàn tất quá trình rút tiền, vui lòng cung cấp đầy đủ các thông
             tin bắt buộc.
           </p>
           <ul className="mt-4 space-y-2 text-gray-600">
@@ -36,7 +36,7 @@ function NewWithdrawal() {
                 <CheckCheck />
               </span>
               <span>
-                Yêu cầu xác minh sẽ được xem xét trong vòng <b>24 giờ</b> kể từ
+                Yêu cầu rút tiền sẽ được xem xét trong vòng <b>24 giờ</b> kể từ
                 thời điểm gửi.
               </span>
             </li>
