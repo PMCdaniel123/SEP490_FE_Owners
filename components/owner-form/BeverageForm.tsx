@@ -443,13 +443,12 @@ function BeverageForm({ initialData }: BeverageFormProps) {
           <div className="sm:col-span-1 flex flex-col gap-2 w-full">
             <button
               className={cn(
-                "z-10 flex gap-2 items-center justify-center",
-                "bg-red-500 text-white font-bold py-3 px-6 rounded-md",
-                "hover:bg-red-300 transition-colors duration-200",
-                "disabled:opacity-30 disabled:cursor-not-allowed"
+                "z-10 flex gap-2 items-center justify-center cursor-pointer",
+                "bg-white text-gray-500 border border-gray-500 font-bold py-3 px-6 rounded-md",
+                "hover:bg-gray-500 hover:text-white transition-colors duration-200"
               )}
               type="button"
-              disabled={!form.formState.isDirty || loading}
+              disabled={loading}
               onClick={() => router.push("/beverages")}
             >
               <span className="font-bold flex items-center gap-2">Hủy</span>
