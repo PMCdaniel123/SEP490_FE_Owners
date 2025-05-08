@@ -1103,6 +1103,11 @@ export const TransactionTableColumns: ColumnDef<TransactionProp>[] = [
 export const BookingTableColumns: ColumnDef<BookingListProps>[] = [
   {
     accessorKey: "bookingId",
+    filterFn: (row, columnId, filterValue) => {
+      const bookingId = Number(row.getValue(columnId));
+      const formattedId = `ĐC${bookingId.toString().padStart(4, "0")}`;
+      return formattedId.toLowerCase().includes(filterValue.toLowerCase());
+    },
     header: ({ column }) => {
       return (
         <div
