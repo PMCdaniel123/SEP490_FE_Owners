@@ -33,6 +33,7 @@ import {
 import { useState } from "react";
 import { Info } from "lucide-react";
 import getHeaderText from "@/constants/format-header";
+import { Input } from "../ui/input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -75,6 +76,16 @@ export default function BookingTable<TData, TValue>({
         </h1>
       </div>
       <div className="flex items-center">
+        <Input
+          placeholder="Mã đặt chỗ..."
+          value={
+            (table.getColumn("bookingId")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("bookingId")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
